@@ -1,0 +1,33 @@
+# Old versions (keep only current)
+autopilot-v*/
+acepilot-v49/
+acepilot-5.0/
+
+# State files (per-project, not distributed)
+.claude/state/
+.claude/settings.json
+.claude/settings.local.json
+.claude/launch.json
+.claude/acepilot-license
+
+# Sensitive data
+site/data/
+site/api/config.php
+site/licenses.json
+site/waitlist.csv
+*.env
+*.bak.*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Internal docs (not for public distribution)
+RESEARCH_*.md
+ACE-CONCEPT-*.md
+*.log
+
+# Agent memory (per-machine)
+.claude/agent-memory/
+.claude/backups/
+.claude/plans/

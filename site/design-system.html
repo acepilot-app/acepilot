@@ -1,0 +1,2281 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Design System — AcePilot</title>
+    <meta
+      name="description"
+      content="AcePilot design system. Tokens, components, and patterns for building consistent AcePilot interfaces."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%236c5ce7'/><g transform='translate(4,6) scale(0.462)'><path fill-rule='evenodd' fill='white' d='M26 2 L0 44 L14 44 L17 28 L35 28 L38 44 L52 44 Z M26 10 L17 28 L35 28 Z'/></g></svg>"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --bg: #0a0a0b;
+        --bg-surface: #111113;
+        --bg-elevated: #1a1a1e;
+        --text: #e8e8ed;
+        --text-muted: #a1a1a6;
+        --accent: #6c5ce7;
+        --accent-dim: #5a4bd4;
+        --green: #30d158;
+        --warn: #ff9f0a;
+        --danger: #ff453a;
+        --border: #2c2c2e;
+        --radius-sm: 4px;
+        --radius-md: 8px;
+        --radius-lg: 12px;
+        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+        --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
+        --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.6);
+        --mono: "SF Mono", "Fira Code", "Cascadia Code", Consolas, monospace;
+        --sans:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      }
+
+      body {
+        font-family: var(--sans);
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+
+      /* NAV */
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        background: rgba(10, 10, 11, 0.9);
+        backdrop-filter: blur(16px);
+        border-bottom: 1px solid var(--border);
+      }
+      nav .wrap {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 56px;
+      }
+      .nav-logo {
+        font-family: var(--mono);
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        letter-spacing: -0.3px;
+        text-decoration: none;
+      }
+      .nav-links {
+        display: flex;
+        gap: 24px;
+        font-size: 14px;
+      }
+      .nav-links a {
+        color: var(--text-muted);
+        transition: color 0.2s;
+      }
+      .nav-links a:hover,
+      .nav-links a.active {
+        color: var(--text);
+        text-decoration: none;
+      }
+
+      /* LAYOUT */
+      .layout {
+        display: grid;
+        grid-template-columns: 220px 1fr;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 80px 24px 80px;
+        gap: 56px;
+        min-height: 100vh;
+      }
+
+      /* SIDEBAR */
+      .sidebar {
+        padding-top: 16px;
+        position: sticky;
+        top: 72px;
+        align-self: start;
+      }
+      .sidebar-section {
+        margin-bottom: 28px;
+      }
+      .sidebar-label {
+        font-family: var(--mono);
+        font-size: 10px;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        margin-bottom: 6px;
+      }
+      .sidebar a {
+        display: block;
+        font-size: 13px;
+        color: var(--text-muted);
+        padding: 4px 0;
+        transition: color 0.15s;
+      }
+      .sidebar a:hover,
+      .sidebar a.active {
+        color: var(--text);
+        text-decoration: none;
+      }
+      .sidebar a.active {
+        color: var(--accent);
+      }
+
+      /* MAIN */
+      .main {
+        min-width: 0;
+      }
+
+      .page-header {
+        margin-bottom: 56px;
+        padding-bottom: 32px;
+        border-bottom: 1px solid var(--border);
+      }
+      .page-label {
+        font-family: var(--mono);
+        font-size: 11px;
+        color: var(--accent);
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        margin-bottom: 12px;
+      }
+      .page-header h1 {
+        font-size: 40px;
+        font-weight: 700;
+        margin-bottom: 8px;
+        letter-spacing: -1px;
+      }
+      .page-header p {
+        color: var(--text-muted);
+        font-size: 16px;
+        max-width: 520px;
+      }
+
+      /* SECTION */
+      .section {
+        margin-bottom: 72px;
+        scroll-margin-top: 80px;
+      }
+      .section-header {
+        margin-bottom: 24px;
+      }
+      .section h2 {
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom: 6px;
+      }
+      .section-desc {
+        color: var(--text-muted);
+        font-size: 14px;
+      }
+
+      .subsection {
+        margin-bottom: 40px;
+      }
+      .subsection h3 {
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--text-muted);
+        margin-bottom: 16px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-size: 12px;
+      }
+
+      /* TOKEN DISPLAY */
+      .token-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 12px;
+      }
+
+      .color-swatch {
+        border-radius: var(--radius-md);
+        overflow: hidden;
+        border: 1px solid var(--border);
+        cursor: pointer;
+        transition: transform 0.15s;
+      }
+      .color-swatch:hover {
+        transform: translateY(-2px);
+      }
+      .swatch-color {
+        height: 64px;
+      }
+      .swatch-info {
+        padding: 10px 12px;
+        background: var(--bg-surface);
+      }
+      .swatch-name {
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 2px;
+      }
+      .swatch-value {
+        font-family: var(--mono);
+        font-size: 11px;
+        color: var(--text-muted);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .copy-hint {
+        font-size: 10px;
+        color: var(--accent);
+        opacity: 0;
+        transition: opacity 0.15s;
+      }
+      .color-swatch:hover .copy-hint {
+        opacity: 1;
+      }
+      .copied-flash {
+        font-size: 10px;
+        color: var(--green);
+      }
+
+      /* SPACING SCALE */
+      .space-row {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 10px;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(44, 44, 46, 0.5);
+      }
+      .space-bar-wrap {
+        flex: 1;
+      }
+      .space-bar {
+        background: var(--accent);
+        height: 8px;
+        border-radius: 2px;
+        opacity: 0.7;
+      }
+      .space-meta {
+        display: flex;
+        gap: 24px;
+        min-width: 200px;
+      }
+      .space-name {
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--text);
+        min-width: 40px;
+      }
+      .space-px {
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--text-muted);
+        min-width: 40px;
+      }
+      .space-use {
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+
+      /* TYPE SCALE */
+      .type-row {
+        display: grid;
+        grid-template-columns: 80px 1fr 140px;
+        align-items: baseline;
+        gap: 16px;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(44, 44, 46, 0.5);
+      }
+      .type-name {
+        font-family: var(--mono);
+        font-size: 11px;
+        color: var(--text-muted);
+      }
+      .type-use {
+        font-family: var(--mono);
+        font-size: 11px;
+        color: var(--text-muted);
+        text-align: right;
+      }
+
+      /* RADIUS + SHADOW */
+      .radius-grid,
+      .shadow-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 16px;
+      }
+      .radius-swatch {
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        padding: 32px 16px;
+        text-align: center;
+      }
+      .radius-box {
+        width: 64px;
+        height: 64px;
+        background: var(--accent);
+        opacity: 0.3;
+        margin: 0 auto 12px;
+      }
+      .radius-label {
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--text-muted);
+        display: block;
+        margin-bottom: 4px;
+      }
+      .radius-value {
+        font-family: var(--mono);
+        font-size: 11px;
+        color: var(--accent);
+      }
+
+      .shadow-swatch {
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        padding: 32px 16px;
+        text-align: center;
+      }
+      .shadow-box {
+        width: 64px;
+        height: 48px;
+        background: var(--bg-elevated);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        margin: 0 auto 12px;
+      }
+      .shadow-label {
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--text-muted);
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      /* MOTION */
+      .motion-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .motion-table th {
+        text-align: left;
+        font-size: 11px;
+        color: var(--text-muted);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        padding: 8px 12px;
+        border-bottom: 1px solid var(--border);
+      }
+      .motion-table td {
+        padding: 10px 12px;
+        font-size: 13px;
+        border-bottom: 1px solid rgba(44, 44, 46, 0.4);
+        vertical-align: top;
+      }
+      .motion-table td:first-child {
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--accent);
+      }
+      .motion-table td:last-child {
+        color: var(--text-muted);
+      }
+
+      /* COMPONENTS */
+      .component-demo {
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        margin-bottom: 24px;
+      }
+      .demo-canvas {
+        padding: 40px 32px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .demo-canvas.vertical {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .demo-canvas.center {
+        justify-content: center;
+      }
+      .demo-code {
+        border-top: 1px solid var(--border);
+        padding: 16px 20px;
+        background: var(--bg);
+        overflow-x: auto;
+      }
+      .demo-code pre {
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--text-muted);
+        white-space: pre;
+      }
+      .demo-code .hl {
+        color: var(--accent);
+      }
+      .demo-code .hl-green {
+        color: var(--green);
+      }
+      .demo-code .hl-str {
+        color: #ff9f0a;
+      }
+
+      /* BUTTONS */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 9px 18px;
+        border-radius: var(--radius-md);
+        font-size: 14px;
+        font-weight: 600;
+        font-family: var(--sans);
+        cursor: pointer;
+        border: none;
+        transition: all 0.15s;
+        white-space: nowrap;
+        text-decoration: none;
+      }
+      .btn-primary {
+        background: var(--accent);
+        color: white;
+      }
+      .btn-primary:hover {
+        background: var(--accent-dim);
+        text-decoration: none;
+        color: white;
+      }
+      .btn-secondary {
+        background: var(--bg-elevated);
+        color: var(--text);
+        border: 1px solid var(--border);
+      }
+      .btn-secondary:hover {
+        border-color: #444;
+        text-decoration: none;
+        color: var(--text);
+      }
+      .btn-ghost {
+        background: transparent;
+        color: var(--text-muted);
+        border: 1px solid transparent;
+      }
+      .btn-ghost:hover {
+        color: var(--text);
+        background: var(--bg-elevated);
+        text-decoration: none;
+      }
+      .btn-danger {
+        background: rgba(255, 69, 58, 0.15);
+        color: var(--danger);
+        border: 1px solid rgba(255, 69, 58, 0.3);
+      }
+      .btn-danger:hover {
+        background: rgba(255, 69, 58, 0.25);
+        text-decoration: none;
+        color: var(--danger);
+      }
+      .btn-sm {
+        padding: 6px 12px;
+        font-size: 13px;
+      }
+      .btn-lg {
+        padding: 13px 28px;
+        font-size: 16px;
+      }
+      .btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+
+      /* BADGES / TAGS */
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 3px 10px;
+        border-radius: 100px;
+        font-size: 12px;
+        font-weight: 600;
+        font-family: var(--mono);
+      }
+      .badge-accent {
+        background: rgba(108, 92, 231, 0.15);
+        color: var(--accent);
+      }
+      .badge-green {
+        background: rgba(48, 209, 88, 0.15);
+        color: var(--green);
+      }
+      .badge-warn {
+        background: rgba(255, 159, 10, 0.15);
+        color: var(--warn);
+      }
+      .badge-danger {
+        background: rgba(255, 69, 58, 0.15);
+        color: var(--danger);
+      }
+      .badge-muted {
+        background: var(--bg-elevated);
+        color: var(--text-muted);
+        border: 1px solid var(--border);
+      }
+      .badge-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: currentColor;
+      }
+
+      .tag {
+        display: inline-block;
+        font-family: var(--mono);
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: var(--radius-sm);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .tag-feat {
+        background: rgba(48, 209, 88, 0.15);
+        color: var(--green);
+      }
+      .tag-fix {
+        background: rgba(255, 159, 10, 0.15);
+        color: var(--warn);
+      }
+      .tag-improve {
+        background: rgba(108, 92, 231, 0.15);
+        color: var(--accent);
+      }
+      .tag-breaking {
+        background: rgba(255, 69, 58, 0.15);
+        color: var(--danger);
+      }
+
+      /* INPUTS */
+      .input {
+        width: 100%;
+        padding: 9px 14px;
+        font-size: 14px;
+        background: var(--bg-elevated);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        color: var(--text);
+        font-family: var(--sans);
+        transition:
+          border-color 0.15s,
+          box-shadow 0.15s;
+        outline: none;
+      }
+      .input::placeholder {
+        color: var(--text-muted);
+      }
+      .input:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.15);
+      }
+      .input:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .input-error {
+        border-color: var(--danger);
+      }
+      .input-error:focus {
+        box-shadow: 0 0 0 3px rgba(255, 69, 58, 0.15);
+      }
+      .input-wrap {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        max-width: 320px;
+        width: 100%;
+      }
+      .input-label {
+        font-size: 13px;
+        font-weight: 600;
+      }
+      .input-hint {
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+      .input-error-msg {
+        font-size: 12px;
+        color: var(--danger);
+      }
+
+      /* CODE */
+      .code-inline {
+        font-family: var(--mono);
+        font-size: 13px;
+        background: var(--bg-elevated);
+        color: var(--accent);
+        padding: 2px 7px;
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--border);
+      }
+      .code-block {
+        font-family: var(--mono);
+        font-size: 13px;
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        padding: 16px 20px;
+        overflow-x: auto;
+        line-height: 1.7;
+        white-space: pre;
+        color: var(--text-muted);
+      }
+      .code-block .c-keyword {
+        color: var(--accent);
+      }
+      .code-block .c-str {
+        color: var(--green);
+      }
+      .code-block .c-comment {
+        color: #4a4a50;
+      }
+      .code-block .c-cmd {
+        color: var(--warn);
+      }
+
+      /* CARDS */
+      .card {
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: 24px;
+      }
+      .card-hover {
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s,
+          border-color 0.2s;
+        cursor: pointer;
+      }
+      .card-hover:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-md);
+        border-color: rgba(108, 92, 231, 0.3);
+      }
+      .card-icon {
+        font-size: 24px;
+        margin-bottom: 12px;
+      }
+      .card h4 {
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 6px;
+      }
+      .card p {
+        font-size: 14px;
+        color: var(--text-muted);
+        line-height: 1.5;
+      }
+      .card-stat {
+        font-family: var(--mono);
+        font-size: 32px;
+        font-weight: 700;
+        color: var(--accent);
+      }
+      .card-stat-label {
+        font-size: 13px;
+        color: var(--text-muted);
+        margin-top: 4px;
+      }
+
+      /* NOTIFICATION / ALERT */
+      .alert {
+        display: flex;
+        gap: 12px;
+        padding: 14px 16px;
+        border-radius: var(--radius-md);
+        border: 1px solid;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+      .alert-icon {
+        font-size: 16px;
+        flex-shrink: 0;
+        margin-top: 1px;
+      }
+      .alert-info {
+        background: rgba(108, 92, 231, 0.08);
+        border-color: rgba(108, 92, 231, 0.25);
+        color: var(--text);
+      }
+      .alert-success {
+        background: rgba(48, 209, 88, 0.08);
+        border-color: rgba(48, 209, 88, 0.25);
+        color: var(--text);
+      }
+      .alert-warn {
+        background: rgba(255, 159, 10, 0.08);
+        border-color: rgba(255, 159, 10, 0.25);
+        color: var(--text);
+      }
+      .alert-danger {
+        background: rgba(255, 69, 58, 0.08);
+        border-color: rgba(255, 69, 58, 0.25);
+        color: var(--text);
+      }
+      .alert strong {
+        font-weight: 700;
+      }
+
+      /* TERMINAL */
+      .terminal {
+        background: #0d0d0f;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+      }
+      .terminal-bar {
+        padding: 10px 16px;
+        background: var(--bg-surface);
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .term-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+      }
+      .term-title {
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--text-muted);
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .terminal-body {
+        padding: 20px;
+        font-family: var(--mono);
+        font-size: 13px;
+        line-height: 1.8;
+      }
+      .term-prompt {
+        color: var(--green);
+      }
+      .term-cmd {
+        color: var(--text);
+      }
+      .term-out {
+        color: var(--text-muted);
+      }
+      .term-accent {
+        color: var(--accent);
+      }
+      .term-dim {
+        color: #4a4a50;
+      }
+
+      /* DIVIDER */
+      .divider {
+        height: 1px;
+        background: var(--border);
+        margin: 32px 0;
+      }
+
+      /* ICON ROW */
+      .icon-grid {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .icon-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        padding: 16px 12px;
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        min-width: 80px;
+        font-size: 11px;
+        color: var(--text-muted);
+        font-family: var(--mono);
+      }
+      .icon-item svg {
+        display: block;
+      }
+
+      /* SPECIALIST CARD */
+      .spec-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 12px;
+      }
+      .spec-card {
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .spec-name {
+        font-family: var(--mono);
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--accent);
+      }
+      .spec-model {
+        font-family: var(--mono);
+        font-size: 11px;
+        color: var(--text-muted);
+      }
+      .spec-desc {
+        font-size: 13px;
+        color: var(--text-muted);
+        line-height: 1.4;
+      }
+
+      /* FINDING ROW */
+      .finding {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(44, 44, 46, 0.4);
+        font-size: 13px;
+      }
+      .finding:last-child {
+        border-bottom: none;
+      }
+      .find-sev {
+        font-size: 16px;
+        flex-shrink: 0;
+      }
+      .find-text {
+        flex: 1;
+        color: var(--text-muted);
+        line-height: 1.5;
+      }
+      .find-text strong {
+        color: var(--text);
+        font-weight: 600;
+      }
+
+      /* PROGRESS */
+      .progress-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .progress-row {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .progress-header {
+        display: flex;
+        justify-content: space-between;
+        font-size: 13px;
+      }
+      .progress-label {
+        color: var(--text);
+      }
+      .progress-val {
+        font-family: var(--mono);
+        color: var(--text-muted);
+        font-size: 12px;
+      }
+      .progress-track {
+        height: 6px;
+        background: var(--bg-elevated);
+        border-radius: 3px;
+        overflow: hidden;
+      }
+      .progress-fill {
+        height: 100%;
+        border-radius: 3px;
+        background: var(--accent);
+      }
+      .progress-fill.green {
+        background: var(--green);
+      }
+      .progress-fill.warn {
+        background: var(--warn);
+      }
+
+      /* TABLE */
+      .ds-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+      .ds-table th {
+        text-align: left;
+        padding: 10px 14px;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--text-muted);
+        border-bottom: 1px solid var(--border);
+        font-weight: 600;
+      }
+      .ds-table td {
+        padding: 10px 14px;
+        border-bottom: 1px solid rgba(44, 44, 46, 0.4);
+        vertical-align: top;
+        line-height: 1.5;
+      }
+      .ds-table td:first-child {
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--accent);
+      }
+      .ds-table tr:last-child td {
+        border-bottom: none;
+      }
+
+      /* USAGE NOTES */
+      .usage-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+      .usage-card {
+        padding: 20px;
+        border-radius: var(--radius-md);
+        border: 1px solid;
+      }
+      .usage-do {
+        background: rgba(48, 209, 88, 0.05);
+        border-color: rgba(48, 209, 88, 0.2);
+      }
+      .usage-dont {
+        background: rgba(255, 69, 58, 0.05);
+        border-color: rgba(255, 69, 58, 0.15);
+      }
+      .usage-label {
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 10px;
+      }
+      .usage-do .usage-label {
+        color: var(--green);
+      }
+      .usage-dont .usage-label {
+        color: var(--danger);
+      }
+      .usage-card ul {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .usage-card li {
+        font-size: 13px;
+        color: var(--text-muted);
+        padding-left: 16px;
+        position: relative;
+        line-height: 1.4;
+      }
+      .usage-do li::before {
+        content: "✓";
+        position: absolute;
+        left: 0;
+        color: var(--green);
+        font-weight: 700;
+      }
+      .usage-dont li::before {
+        content: "✕";
+        position: absolute;
+        left: 0;
+        color: var(--danger);
+        font-weight: 700;
+      }
+
+      @media (max-width: 768px) {
+        .layout {
+          grid-template-columns: 1fr;
+          padding-top: 72px;
+        }
+        .sidebar {
+          display: none;
+        }
+        .usage-grid {
+          grid-template-columns: 1fr;
+        }
+        .token-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+        html {
+          scroll-behavior: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div class="wrap">
+        <a href="/" class="nav-logo">
+          <svg
+            width="26"
+            height="26"
+            viewBox="0 0 32 32"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <rect width="32" height="32" rx="7" fill="#6c5ce7" />
+            <g transform="translate(2,4) scale(0.538)">
+              <path
+                fill-rule="evenodd"
+                fill="white"
+                d="M26 2 L0 44 L14 44 L17 28 L35 28 L38 44 L52 44 Z M26 10 L17 28 L35 28 Z"
+              />
+            </g>
+          </svg>
+          AcePilot<span
+            style="color: var(--text-muted); font-weight: 400; font-size: 13px"
+            >.app</span
+          >
+        </a>
+        <div class="nav-links">
+          <a href="/#features">Features</a>
+          <a href="/brand.html">Brand</a>
+          <a href="/design-system.html" class="active">Design System</a>
+          <a href="/changelog.html">Changelog</a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="sidebar-section">
+          <div class="sidebar-label">Foundations</div>
+          <a href="#colors" class="active">Colors</a>
+          <a href="#typography">Typography</a>
+          <a href="#spacing">Spacing</a>
+          <a href="#radius">Radius</a>
+          <a href="#shadows">Shadows</a>
+          <a href="#motion">Motion</a>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-label">Components</div>
+          <a href="#buttons">Buttons</a>
+          <a href="#badges">Badges &amp; Tags</a>
+          <a href="#inputs">Inputs</a>
+          <a href="#code">Code</a>
+          <a href="#cards">Cards</a>
+          <a href="#alerts">Alerts</a>
+          <a href="#terminal">Terminal</a>
+          <a href="#progress">Progress</a>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-label">Patterns</div>
+          <a href="#specialists">Specialists</a>
+          <a href="#findings">Findings</a>
+          <a href="#usage">Usage Rules</a>
+        </div>
+      </aside>
+
+      <main class="main">
+        <div class="page-header">
+          <div class="page-label">Design System</div>
+          <h1>Build consistent.<br />Ship fast.</h1>
+          <p>
+            Every token, component, and pattern used in AcePilot interfaces.
+            Copy, paste, ship.
+          </p>
+        </div>
+
+        <!-- COLORS -->
+        <section class="section" id="colors">
+          <div class="section-header">
+            <h2>Colors</h2>
+            <p class="section-desc">
+              All colors pass WCAG AA on
+              <code style="font-size: 12px; color: var(--accent)">#0a0a0b</code
+              >. Click any swatch to copy the hex.
+            </p>
+          </div>
+
+          <div class="subsection">
+            <h3>Brand</h3>
+            <div class="token-grid">
+              <div class="color-swatch" onclick="copyColor('#6c5ce7', this)">
+                <div class="swatch-color" style="background: #6c5ce7"></div>
+                <div class="swatch-info">
+                  <div class="swatch-name">Accent</div>
+                  <div class="swatch-value">
+                    #6c5ce7 <span class="copy-hint">copy</span>
+                  </div>
+                </div>
+              </div>
+              <div class="color-swatch" onclick="copyColor('#5a4bd4', this)">
+                <div class="swatch-color" style="background: #5a4bd4"></div>
+                <div class="swatch-info">
+                  <div class="swatch-name">Accent Dim</div>
+                  <div class="swatch-value">
+                    #5a4bd4 <span class="copy-hint">copy</span>
+                  </div>
+                </div>
+              </div>
+              <div class="color-swatch" onclick="copyColor('#30d158', this)">
+                <div class="swatch-color" style="background: #30d158"></div>
+                <div class="swatch-info">
+                  <div class="swatch-name">Green</div>
+                  <div class="swatch-value">
+                    #30d158 <span class="copy-hint">copy</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="subsection">
+            <h3>Semantic</h3>
+            <div class="token-grid">
+              <div class="color-swatch" onclick="copyColor('#ff9f0a', this)">
+                <div class="swatch-color" style="background: #ff9f0a"></div>
+                <div class="swatch-info">
+                  <div class="swatch-name">Warning</div>
+                  <div class="swatch-value">
+                    #ff9f0a <span class="copy-hint">copy</span>
+                  </div>
+                </div>
+              </div>
+              <div class="color-swatch" onclick="copyColor('#ff453a', this)">
+                <div class="swatch-color" style="background: #ff453a"></div>
+                <div class="swatch-info">
+                  <div class="swatch-name">Danger</div>
+                  <div class="swatch-value">
+                    #ff453a <span class="copy-hint">copy</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="subsection">
+            <h3>Backgrounds</h3>
+            <div class="token-grid">
+              <div class="color-swatch" onclick="copyColor('#0a0a0b', this)">
+                <div
+                  class="swatch-color"
+                  style="background: #0a0a0b; border-bottom: 1px solid #2c2c2e"
+                ></div>
+                <div class="swatch-info">
+                  <div class="swatch-name">BG</div>
+                  <div class="swatch-value">
+                    #0a0a0b <span class="copy-hint">copy</span>
+                  </div>
+                </div>
+              </div>
+              <div class="color-swatch" onclick="copyColor('#111113', this)">
+                <div class="swatch-color" style="background: #111113"></div>
+                <div class="swatch-info">
+                  <div class="swatch-name">Surface</div>
+                  <div class="swatch-value">
+                    #111113 <span class="copy-hint">copy</span>
+                  </div>
+                </div>
+              </div>
+              <div class="color-swatch" onclick="copyColor('#1a1a1e', this)">
+                <div class="swatch-color" style="background: #1a1a1e"></div>
+                <div class="swatch-info">
+                  <div class="swatch-name">Elevated</div>
+                  <div class="swatch-value">
+                    #1a1a1e <span class="copy-hint">copy</span>
+                  </div>
+                </div>
+              </div>
+              <div class="color-swatch" onclick="copyColor('#2c2c2e', this)">
+                <div class="swatch-color" style="background: #2c2c2e"></div>
+                <div class="swatch-info">
+                  <div class="swatch-name">Border</div>
+                  <div class="swatch-value">
+                    #2c2c2e <span class="copy-hint">copy</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="subsection">
+            <h3>Text</h3>
+            <div class="token-grid">
+              <div class="color-swatch" onclick="copyColor('#e8e8ed', this)">
+                <div class="swatch-color" style="background: #e8e8ed"></div>
+                <div class="swatch-info">
+                  <div class="swatch-name">Text</div>
+                  <div class="swatch-value">
+                    #e8e8ed <span class="copy-hint">copy</span>
+                  </div>
+                </div>
+              </div>
+              <div class="color-swatch" onclick="copyColor('#a1a1a6', this)">
+                <div class="swatch-color" style="background: #a1a1a6"></div>
+                <div class="swatch-info">
+                  <div class="swatch-name">Text Muted</div>
+                  <div class="swatch-value">
+                    #a1a1a6 <span class="copy-hint">copy</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TYPOGRAPHY -->
+        <section class="section" id="typography">
+          <div class="section-header">
+            <h2>Typography</h2>
+            <p class="section-desc">
+              Two families. Mono for identity and code. Sans for everything
+              readable.
+            </p>
+          </div>
+
+          <div class="subsection">
+            <h3>Type Scale</h3>
+            <div
+              class="type-row"
+              style="border-top: 1px solid rgba(44, 44, 46, 0.4)"
+            >
+              <span class="type-name">--text-xs</span>
+              <span style="font-size: 11px">Mono label, meta, uppercase</span>
+              <span class="type-use">11px / mono</span>
+            </div>
+            <div class="type-row">
+              <span class="type-name">--text-sm</span>
+              <span style="font-size: 13px">Body small, nav links, hints</span>
+              <span class="type-use">13px</span>
+            </div>
+            <div class="type-row">
+              <span class="type-name">--text-base</span>
+              <span style="font-size: 15px"
+                >Body, descriptions, feature copy</span
+              >
+              <span class="type-use">15px</span>
+            </div>
+            <div class="type-row">
+              <span class="type-name">--text-lg</span>
+              <span style="font-size: 18px">Section labels, nav logo</span>
+              <span class="type-use">18px / mono</span>
+            </div>
+            <div class="type-row">
+              <span class="type-name">--text-xl</span>
+              <span style="font-size: 22px; font-weight: 700"
+                >Section headings</span
+              >
+              <span class="type-use">22px / 700</span>
+            </div>
+            <div class="type-row">
+              <span class="type-name">--text-2xl</span>
+              <span
+                style="
+                  font-size: 28px;
+                  font-weight: 700;
+                  letter-spacing: -0.5px;
+                "
+                >Page titles</span
+              >
+              <span class="type-use">28px / 700</span>
+            </div>
+            <div class="type-row">
+              <span class="type-name">--text-hero</span>
+              <span
+                style="
+                  font-size: 40px;
+                  font-weight: 700;
+                  letter-spacing: -1.5px;
+                  line-height: 1.1;
+                "
+                >Hero</span
+              >
+              <span class="type-use">40–56px / 700</span>
+            </div>
+          </div>
+
+          <div class="subsection">
+            <h3>Families</h3>
+            <div
+              style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px"
+            >
+              <div class="card">
+                <div
+                  style="
+                    font-family: var(--mono);
+                    font-size: 28px;
+                    font-weight: 700;
+                    letter-spacing: -1px;
+                    color: var(--accent);
+                    margin-bottom: 12px;
+                  "
+                >
+                  AaBbCc
+                </div>
+                <div
+                  style="font-size: 13px; font-weight: 600; margin-bottom: 4px"
+                >
+                  Mono
+                </div>
+                <div
+                  style="
+                    font-family: var(--mono);
+                    font-size: 11px;
+                    color: var(--text-muted);
+                  "
+                >
+                  SF Mono → Fira Code → Cascadia Code → Consolas
+                </div>
+                <div
+                  style="
+                    margin-top: 10px;
+                    font-size: 12px;
+                    color: var(--text-muted);
+                  "
+                >
+                  Use for: logo, code, labels, metrics, CLI output
+                </div>
+              </div>
+              <div class="card">
+                <div
+                  style="
+                    font-size: 28px;
+                    font-weight: 700;
+                    letter-spacing: -1px;
+                    margin-bottom: 12px;
+                  "
+                >
+                  AaBbCc
+                </div>
+                <div
+                  style="font-size: 13px; font-weight: 600; margin-bottom: 4px"
+                >
+                  Sans
+                </div>
+                <div
+                  style="
+                    font-family: var(--mono);
+                    font-size: 11px;
+                    color: var(--text-muted);
+                  "
+                >
+                  -apple-system → BlinkMacSystemFont → system-ui
+                </div>
+                <div
+                  style="
+                    margin-top: 10px;
+                    font-size: 12px;
+                    color: var(--text-muted);
+                  "
+                >
+                  Use for: body, headings, UI text, buttons
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SPACING -->
+        <section class="section" id="spacing">
+          <div class="section-header">
+            <h2>Spacing</h2>
+            <p class="section-desc">
+              Base unit: 4px. Every value is a multiple.
+            </p>
+          </div>
+          <div>
+            <div class="space-row">
+              <div class="space-meta">
+                <span class="space-name">1</span>
+                <span class="space-px">4px</span>
+                <span class="space-use">Icon gaps, tight nudges</span>
+              </div>
+              <div class="space-bar-wrap">
+                <div class="space-bar" style="width: 4px"></div>
+              </div>
+            </div>
+            <div class="space-row">
+              <div class="space-meta">
+                <span class="space-name">2</span>
+                <span class="space-px">8px</span>
+                <span class="space-use">Badge padding, small gaps</span>
+              </div>
+              <div class="space-bar-wrap">
+                <div class="space-bar" style="width: 8px"></div>
+              </div>
+            </div>
+            <div class="space-row">
+              <div class="space-meta">
+                <span class="space-name">3</span>
+                <span class="space-px">12px</span>
+                <span class="space-use">Button padding (sm)</span>
+              </div>
+              <div class="space-bar-wrap">
+                <div class="space-bar" style="width: 12px"></div>
+              </div>
+            </div>
+            <div class="space-row">
+              <div class="space-meta">
+                <span class="space-name">4</span>
+                <span class="space-px">16px</span>
+                <span class="space-use">Card padding, nav padding</span>
+              </div>
+              <div class="space-bar-wrap">
+                <div class="space-bar" style="width: 16px"></div>
+              </div>
+            </div>
+            <div class="space-row">
+              <div class="space-meta">
+                <span class="space-name">6</span>
+                <span class="space-px">24px</span>
+                <span class="space-use">Section gaps, container padding</span>
+              </div>
+              <div class="space-bar-wrap">
+                <div class="space-bar" style="width: 24px"></div>
+              </div>
+            </div>
+            <div class="space-row">
+              <div class="space-meta">
+                <span class="space-name">8</span>
+                <span class="space-px">32px</span>
+                <span class="space-use">Card padding (lg), subsections</span>
+              </div>
+              <div class="space-bar-wrap">
+                <div class="space-bar" style="width: 32px"></div>
+              </div>
+            </div>
+            <div class="space-row">
+              <div class="space-meta">
+                <span class="space-name">12</span>
+                <span class="space-px">48px</span>
+                <span class="space-use">Section spacing</span>
+              </div>
+              <div class="space-bar-wrap">
+                <div class="space-bar" style="width: 48px"></div>
+              </div>
+            </div>
+            <div class="space-row">
+              <div class="space-meta">
+                <span class="space-name">16</span>
+                <span class="space-px">64px</span>
+                <span class="space-use">Hero padding, section breaks</span>
+              </div>
+              <div class="space-bar-wrap">
+                <div class="space-bar" style="width: 64px"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- RADIUS -->
+        <section class="section" id="radius">
+          <div class="section-header">
+            <h2>Border Radius</h2>
+            <p class="section-desc">
+              Three values. Small for tight UI, medium for most components,
+              large for cards.
+            </p>
+          </div>
+          <div class="radius-grid">
+            <div class="radius-swatch">
+              <div class="radius-box" style="border-radius: 4px"></div>
+              <span class="radius-label">--radius-sm</span>
+              <span class="radius-value">4px — tags, inline code</span>
+            </div>
+            <div class="radius-swatch">
+              <div class="radius-box" style="border-radius: 8px"></div>
+              <span class="radius-label">--radius-md</span>
+              <span class="radius-value">8px — buttons, inputs, badges</span>
+            </div>
+            <div class="radius-swatch">
+              <div class="radius-box" style="border-radius: 12px"></div>
+              <span class="radius-label">--radius-lg</span>
+              <span class="radius-value">12px — cards, modals, panels</span>
+            </div>
+            <div class="radius-swatch">
+              <div class="radius-box" style="border-radius: 100px"></div>
+              <span class="radius-label">pill</span>
+              <span class="radius-value">100px — status badges</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- SHADOWS -->
+        <section class="section" id="shadows">
+          <div class="section-header">
+            <h2>Shadows</h2>
+            <p class="section-desc">
+              Used to establish depth on dark backgrounds. Keep it subtle — this
+              isn't light mode.
+            </p>
+          </div>
+          <div class="shadow-grid">
+            <div class="shadow-swatch">
+              <div
+                class="shadow-box"
+                style="box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4)"
+              ></div>
+              <span class="shadow-label">--shadow-sm</span>
+              <span
+                style="
+                  font-family: var(--mono);
+                  font-size: 11px;
+                  color: var(--accent);
+                "
+                >0 1px 3px rgba(0,0,0,.4)</span
+              >
+              <div
+                style="
+                  font-size: 12px;
+                  color: var(--text-muted);
+                  margin-top: 6px;
+                "
+              >
+                Subtle lift, hover states
+              </div>
+            </div>
+            <div class="shadow-swatch">
+              <div
+                class="shadow-box"
+                style="box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5)"
+              ></div>
+              <span class="shadow-label">--shadow-md</span>
+              <span
+                style="
+                  font-family: var(--mono);
+                  font-size: 11px;
+                  color: var(--accent);
+                "
+                >0 4px 16px rgba(0,0,0,.5)</span
+              >
+              <div
+                style="
+                  font-size: 12px;
+                  color: var(--text-muted);
+                  margin-top: 6px;
+                "
+              >
+                Card hover, dropdowns
+              </div>
+            </div>
+            <div class="shadow-swatch">
+              <div
+                class="shadow-box"
+                style="box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6)"
+              ></div>
+              <span class="shadow-label">--shadow-lg</span>
+              <span
+                style="
+                  font-family: var(--mono);
+                  font-size: 11px;
+                  color: var(--accent);
+                "
+                >0 12px 40px rgba(0,0,0,.6)</span
+              >
+              <div
+                style="
+                  font-size: 12px;
+                  color: var(--text-muted);
+                  margin-top: 6px;
+                "
+              >
+                Modals, floating panels
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- MOTION -->
+        <section class="section" id="motion">
+          <div class="section-header">
+            <h2>Motion</h2>
+            <p class="section-desc">
+              Fast, intentional. No animation that doesn't inform the user.
+            </p>
+          </div>
+          <table class="motion-table">
+            <thead>
+              <tr>
+                <th>Token</th>
+                <th>Value</th>
+                <th>Use</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>--duration-fast</td>
+                <td>0.15s ease</td>
+                <td>Color/border transitions, hover states</td>
+              </tr>
+              <tr>
+                <td>--duration-base</td>
+                <td>0.2s ease</td>
+                <td>Transform transitions (cards lifting)</td>
+              </tr>
+              <tr>
+                <td>--duration-reveal</td>
+                <td>0.5s ease</td>
+                <td>Scroll reveal opacity + translateY</td>
+              </tr>
+              <tr>
+                <td>--duration-typewriter</td>
+                <td>40–120ms/char</td>
+                <td>Terminal typewriter (variable speed = human)</td>
+              </tr>
+              <tr>
+                <td>--cursor-blink</td>
+                <td>0.9s step-end infinite</td>
+                <td>Terminal cursor blink</td>
+              </tr>
+            </tbody>
+          </table>
+          <div style="margin-top: 16px">
+            <div class="alert alert-info">
+              <span class="alert-icon">ℹ</span>
+              <div>
+                Always respect
+                <code class="code-inline">prefers-reduced-motion</code>. Wrap
+                animations in
+                <code class="code-inline"
+                  >@media (prefers-reduced-motion: no-preference)</code
+                >.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- BUTTONS -->
+        <section class="section" id="buttons">
+          <div class="section-header">
+            <h2>Buttons</h2>
+            <p class="section-desc">
+              5 variants. 3 sizes. One rule: primary CTA per screen.
+            </p>
+          </div>
+
+          <div class="component-demo">
+            <div class="demo-canvas">
+              <button class="btn btn-primary">Get AcePilot Pro</button>
+              <button class="btn btn-secondary">View Changelog</button>
+              <button class="btn btn-ghost">Cancel</button>
+              <button class="btn btn-danger">Delete Session</button>
+            </div>
+            <div class="demo-code">
+              <pre><span class="hl">&lt;button</span> class=<span class="hl-str">"btn btn-primary"</span><span class="hl">&gt;</span>Get AcePilot Pro<span class="hl">&lt;/button&gt;</span>
+<span class="hl">&lt;button</span> class=<span class="hl-str">"btn btn-secondary"</span><span class="hl">&gt;</span>View Changelog<span class="hl">&lt;/button&gt;</span>
+<span class="hl">&lt;button</span> class=<span class="hl-str">"btn btn-ghost"</span><span class="hl">&gt;</span>Cancel<span class="hl">&lt;/button&gt;</span>
+<span class="hl">&lt;button</span> class=<span class="hl-str">"btn btn-danger"</span><span class="hl">&gt;</span>Delete Session<span class="hl">&lt;/button&gt;</span></pre>
+            </div>
+          </div>
+
+          <div class="component-demo">
+            <div class="demo-canvas">
+              <button class="btn btn-primary btn-sm">Small</button>
+              <button class="btn btn-primary">Default</button>
+              <button class="btn btn-primary btn-lg">Large</button>
+              <button class="btn btn-primary" disabled>Disabled</button>
+            </div>
+            <div class="demo-code">
+              <pre>class=<span class="hl-str">"btn btn-primary btn-sm"</span>   <span class="hl">// 13px · 6/12px padding</span>
+class=<span class="hl-str">"btn btn-primary"</span>         <span class="hl">// 14px · 9/18px padding (default)</span>
+class=<span class="hl-str">"btn btn-primary btn-lg"</span>   <span class="hl">// 16px · 13/28px padding</span>
+<span class="hl-green">disabled</span>                         <span class="hl">// opacity: 0.4</span></pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- BADGES -->
+        <section class="section" id="badges">
+          <div class="section-header">
+            <h2>Badges &amp; Tags</h2>
+            <p class="section-desc">
+              Badges for status. Tags for changelog entries and change types.
+            </p>
+          </div>
+
+          <div class="component-demo">
+            <div class="demo-canvas">
+              <span class="badge badge-accent"
+                ><span class="badge-dot"></span>Pro</span
+              >
+              <span class="badge badge-green"
+                ><span class="badge-dot"></span>Active</span
+              >
+              <span class="badge badge-warn"
+                ><span class="badge-dot"></span>Pending</span
+              >
+              <span class="badge badge-danger"
+                ><span class="badge-dot"></span>Blocked</span
+              >
+              <span class="badge badge-muted">Starter</span>
+            </div>
+            <div class="demo-code">
+              <pre><span class="hl">&lt;span</span> class=<span class="hl-str">"badge badge-accent"</span><span class="hl">&gt;&lt;span</span> class=<span class="hl-str">"badge-dot"</span><span class="hl">&gt;&lt;/span&gt;</span>Pro<span class="hl">&lt;/span&gt;</span>
+<span class="hl">&lt;span</span> class=<span class="hl-str">"badge badge-green"</span><span class="hl">&gt;</span>...<span class="hl">&lt;/span&gt;</span>
+<span class="hl">&lt;span</span> class=<span class="hl-str">"badge badge-warn"</span><span class="hl">&gt;</span>...<span class="hl">&lt;/span&gt;</span>
+<span class="hl">&lt;span</span> class=<span class="hl-str">"badge badge-danger"</span><span class="hl">&gt;</span>...<span class="hl">&lt;/span&gt;</span>
+<span class="hl">&lt;span</span> class=<span class="hl-str">"badge badge-muted"</span><span class="hl">&gt;</span>...<span class="hl">&lt;/span&gt;</span></pre>
+            </div>
+          </div>
+
+          <div class="component-demo">
+            <div class="demo-canvas">
+              <span class="tag tag-feat">feat</span>
+              <span class="tag tag-fix">fix</span>
+              <span class="tag tag-improve">improve</span>
+              <span class="tag tag-breaking">breaking</span>
+            </div>
+            <div class="demo-code">
+              <pre>class=<span class="hl-str">"tag tag-feat"</span>      <span class="hl">// New feature — green</span>
+class=<span class="hl-str">"tag tag-fix"</span>       <span class="hl">// Bug fix — orange</span>
+class=<span class="hl-str">"tag tag-improve"</span>   <span class="hl">// Improvement — accent</span>
+class=<span class="hl-str">"tag tag-breaking"</span>  <span class="hl">// Breaking change — danger</span></pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- INPUTS -->
+        <section class="section" id="inputs">
+          <div class="section-header">
+            <h2>Inputs</h2>
+            <p class="section-desc">
+              Focus ring at 3px, accent color. Error state uses danger. Never
+              remove the label.
+            </p>
+          </div>
+
+          <div class="component-demo">
+            <div class="demo-canvas vertical">
+              <div class="input-wrap">
+                <label class="input-label">License key</label>
+                <input
+                  class="input"
+                  type="text"
+                  placeholder="ace-xxxxxxxx-xxxx"
+                />
+                <span class="input-hint"
+                  >Found in your dashboard after purchase.</span
+                >
+              </div>
+              <div class="input-wrap">
+                <label class="input-label">Email</label>
+                <input
+                  class="input input-error"
+                  type="email"
+                  value="notanemail"
+                />
+                <span class="input-error-msg"
+                  >Enter a valid email address.</span
+                >
+              </div>
+              <div class="input-wrap">
+                <label class="input-label">Disabled</label>
+                <input class="input" type="text" value="Read only" disabled />
+              </div>
+            </div>
+            <div class="demo-code">
+              <pre><span class="hl">&lt;div</span> class=<span class="hl-str">"input-wrap"</span><span class="hl">&gt;</span>
+  <span class="hl">&lt;label</span> class=<span class="hl-str">"input-label"</span><span class="hl">&gt;</span>Label<span class="hl">&lt;/label&gt;</span>
+  <span class="hl">&lt;input</span> class=<span class="hl-str">"input"</span> type=<span class="hl-str">"text"</span> placeholder=<span class="hl-str">"..."</span> <span class="hl">/&gt;</span>
+  <span class="hl">&lt;span</span> class=<span class="hl-str">"input-hint"</span><span class="hl">&gt;</span>Hint text<span class="hl">&lt;/span&gt;</span>
+<span class="hl">&lt;/div&gt;</span>
+<span class="hl-green">// Error state: add</span> class=<span class="hl-str">"input input-error"</span></pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- CODE -->
+        <section class="section" id="code">
+          <div class="section-header">
+            <h2>Code</h2>
+            <p class="section-desc">
+              Inline for references in prose. Block for multi-line examples.
+              Terminal for live CLI demos.
+            </p>
+          </div>
+
+          <div class="component-demo">
+            <div class="demo-canvas vertical" style="gap: 16px; padding: 32px">
+              <p style="font-size: 15px">
+                Run <code class="code-inline">/acepilot god</code> to activate
+                all 6 specialists.
+              </p>
+              <div class="code-block">
+                <span class="c-comment"># Install AcePilot in 30 seconds</span>
+                <span class="c-cmd">curl</span> -fsSL
+                https://acepilot.app/install.sh | bash
+
+                <span class="c-comment"
+                  ># Activate god mode with an objective</span
+                >
+                <span class="c-keyword">/acepilot</span> god reduce page load
+                time <span class="c-keyword">by</span> 50%
+              </div>
+            </div>
+            <div class="demo-code">
+              <pre>Inline: <span class="hl">&lt;code</span> class=<span class="hl-str">"code-inline"</span><span class="hl">&gt;</span>/acepilot god<span class="hl">&lt;/code&gt;</span>
+Block:  <span class="hl">&lt;div</span> class=<span class="hl-str">"code-block"</span><span class="hl">&gt;</span>...<span class="hl">&lt;/div&gt;</span>
+
+Syntax colors:
+  .c-keyword  <span class="hl">→ var(--accent)</span>
+  .c-str      <span class="hl">→ var(--green)</span>
+  .c-cmd      <span class="hl">→ var(--warn)</span>
+  .c-comment  <span class="hl">→ #4a4a50</span></pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- CARDS -->
+        <section class="section" id="cards">
+          <div class="section-header">
+            <h2>Cards</h2>
+            <p class="section-desc">
+              Base card for content. Hover card for interactive grids. Stat card
+              for metrics.
+            </p>
+          </div>
+
+          <div class="component-demo">
+            <div
+              class="demo-canvas"
+              style="align-items: stretch; padding: 32px; gap: 16px"
+            >
+              <div class="card card-hover" style="flex: 1; min-width: 160px">
+                <div class="card-icon">🔒</div>
+                <h4>Security</h4>
+                <p>
+                  Scans for OWASP Top 10, secrets, auth issues on every diff.
+                </p>
+              </div>
+              <div class="card card-hover" style="flex: 1; min-width: 160px">
+                <div class="card-stat">6</div>
+                <div class="card-stat-label">
+                  Specialists reviewing every task
+                </div>
+              </div>
+            </div>
+            <div class="demo-code">
+              <pre><span class="hl">&lt;div</span> class=<span class="hl-str">"card"</span><span class="hl">&gt;</span>...<span class="hl">&lt;/div&gt;</span>                <span class="hl">// Static card</span>
+<span class="hl">&lt;div</span> class=<span class="hl-str">"card card-hover"</span><span class="hl">&gt;</span>...<span class="hl">&lt;/div&gt;</span>       <span class="hl">// Lifts on hover</span>
+.card-stat      <span class="hl">→ Large mono metric in --accent</span>
+.card-stat-label <span class="hl">→ Label below metric</span></pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- ALERTS -->
+        <section class="section" id="alerts">
+          <div class="section-header">
+            <h2>Alerts</h2>
+            <p class="section-desc">
+              Inline contextual feedback. Not toasts — those need a different
+              component.
+            </p>
+          </div>
+
+          <div class="component-demo">
+            <div class="demo-canvas vertical" style="padding: 32px; gap: 12px">
+              <div class="alert alert-info">
+                <span class="alert-icon">ℹ</span>
+                <div>
+                  <strong>Pro feature.</strong> God mode requires an active
+                  AcePilot Pro subscription.
+                </div>
+              </div>
+              <div class="alert alert-success">
+                <span class="alert-icon">✓</span>
+                <div>
+                  <strong>Session complete.</strong> 12 tasks done, 0 blocked.
+                  PR pushed.
+                </div>
+              </div>
+              <div class="alert alert-warn">
+                <span class="alert-icon">⚠</span>
+                <div>
+                  <strong>Rate limit approaching.</strong> ~15 tasks remaining
+                  before throttle.
+                </div>
+              </div>
+              <div class="alert alert-danger">
+                <span class="alert-icon">✕</span>
+                <div>
+                  <strong>Circuit open.</strong> 3 consecutive failures on this
+                  task. Blocked.
+                </div>
+              </div>
+            </div>
+            <div class="demo-code">
+              <pre>class=<span class="hl-str">"alert alert-info"</span>     <span class="hl">// Accent — informational</span>
+class=<span class="hl-str">"alert alert-success"</span>  <span class="hl">// Green — success / done</span>
+class=<span class="hl-str">"alert alert-warn"</span>     <span class="hl">// Orange — caution / limit</span>
+class=<span class="hl-str">"alert alert-danger"</span>   <span class="hl">// Red — error / blocked</span></pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- TERMINAL -->
+        <section class="section" id="terminal">
+          <div class="section-header">
+            <h2>Terminal</h2>
+            <p class="section-desc">
+              The signature AcePilot UI element. Used for demo sections and CLI
+              output.
+            </p>
+          </div>
+
+          <div class="component-demo">
+            <div
+              class="demo-canvas center"
+              style="padding: 32px; background: var(--bg)"
+            >
+              <div class="terminal" style="width: 100%; max-width: 560px">
+                <div class="terminal-bar">
+                  <div class="term-dot" style="background: #ff453a"></div>
+                  <div class="term-dot" style="background: #ff9f0a"></div>
+                  <div class="term-dot" style="background: #30d158"></div>
+                  <span class="term-title">acepilot — zsh</span>
+                </div>
+                <div class="terminal-body">
+                  <div>
+                    <span class="term-prompt">$</span>
+                    <span class="term-cmd"
+                      >/acepilot god reduce page load time</span
+                    >
+                  </div>
+                  <div class="term-out">GOD MODE. Objective received.</div>
+                  <div class="term-accent">
+                    Working Backwards → @researcher strategy → 4 tasks
+                  </div>
+                  <div class="term-dim">
+                    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                  </div>
+                  <div>
+                    <span class="term-out">[1/4] ✓ Lazy-load hero images</span>
+                    <span class="term-accent">@designer 🟢</span>
+                  </div>
+                  <div>
+                    <span class="term-out"
+                      >[2/4] ✓ Remove render-blocking CSS</span
+                    >
+                    <span class="term-accent">@architect 🟡→fixed</span>
+                  </div>
+                  <div class="term-dim">⟳ [3/4] Inlining critical CSS...</div>
+                </div>
+              </div>
+            </div>
+            <div class="demo-code">
+              <pre>.terminal        <span class="hl">→ outer wrapper, dark bg, border-radius-lg</span>
+.terminal-bar    <span class="hl">→ title bar with 3 dots</span>
+.terminal-body   <span class="hl">→ mono output area, line-height 1.8</span>
+
+Text colors:
+  .term-prompt  <span class="hl">→ var(--green)  — $ prompt</span>
+  .term-cmd     <span class="hl">→ var(--text)   — user command</span>
+  .term-out     <span class="hl">→ var(--text-muted) — output</span>
+  .term-accent  <span class="hl">→ var(--accent) — highlights</span>
+  .term-dim     <span class="hl">→ #4a4a50       — dividers, meta</span></pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- PROGRESS -->
+        <section class="section" id="progress">
+          <div class="section-header">
+            <h2>Progress</h2>
+            <p class="section-desc">
+              Task completion, session metrics, and objective tracking.
+            </p>
+          </div>
+
+          <div class="component-demo">
+            <div class="demo-canvas vertical" style="padding: 32px">
+              <div class="progress-wrap" style="width: 100%; max-width: 400px">
+                <div class="progress-row">
+                  <div class="progress-header">
+                    <span class="progress-label">Tasks complete</span>
+                    <span class="progress-val">8 / 12</span>
+                  </div>
+                  <div class="progress-track">
+                    <div class="progress-fill" style="width: 66%"></div>
+                  </div>
+                </div>
+                <div class="progress-row">
+                  <div class="progress-header">
+                    <span class="progress-label">Tests passing</span>
+                    <span class="progress-val">47 / 47</span>
+                  </div>
+                  <div class="progress-track">
+                    <div class="progress-fill green" style="width: 100%"></div>
+                  </div>
+                </div>
+                <div class="progress-row">
+                  <div class="progress-header">
+                    <span class="progress-label">🔴 Findings fixed</span>
+                    <span class="progress-val">2 / 5</span>
+                  </div>
+                  <div class="progress-track">
+                    <div class="progress-fill warn" style="width: 40%"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="demo-code">
+              <pre>.progress-track  <span class="hl">→ 6px track, bg-elevated</span>
+.progress-fill   <span class="hl">→ accent fill (default)</span>
+.progress-fill<span class="hl-green">.green</span> <span class="hl">→ success fill</span>
+.progress-fill<span class="hl-str">.warn</span>  <span class="hl">→ warning fill</span></pre>
+            </div>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- SPECIALISTS -->
+        <section class="section" id="specialists">
+          <div class="section-header">
+            <h2>Specialist Cards</h2>
+            <p class="section-desc">
+              The 6 agents. Use this pattern when displaying the team.
+            </p>
+          </div>
+
+          <div class="spec-grid">
+            <div class="spec-card">
+              <div class="spec-name">@researcher</div>
+              <div class="spec-model">Haiku · Scanning</div>
+              <div class="spec-desc">
+                Explores codebases, seeds knowledge, drives god mode strategy.
+              </div>
+            </div>
+            <div class="spec-card">
+              <div class="spec-name">@reviewer</div>
+              <div class="spec-model">Sonnet · Code Quality</div>
+              <div class="spec-desc">
+                Reviews every diff. Qualifies every task. Last line of defense.
+              </div>
+            </div>
+            <div class="spec-card">
+              <div class="spec-name">@designer</div>
+              <div class="spec-model">Sonnet · UX &amp; A11y</div>
+              <div class="spec-desc">
+                Nielsen heuristics, WCAG Big 6, Refactoring UI rules.
+              </div>
+            </div>
+            <div class="spec-card">
+              <div class="spec-name">@security</div>
+              <div class="spec-model">Sonnet · Vulnerabilities</div>
+              <div class="spec-desc">
+                OWASP Top 10, Schneier attacker mindset, Troy Hunt automation.
+              </div>
+            </div>
+            <div class="spec-card">
+              <div class="spec-name">@architect</div>
+              <div class="spec-model">Sonnet · Architecture</div>
+              <div class="spec-desc">
+                USE method, Fowler coupling, Google SRE playbooks.
+              </div>
+            </div>
+            <div class="spec-card">
+              <div class="spec-name">@strategist</div>
+              <div class="spec-model">Sonnet · Product</div>
+              <div class="spec-desc">
+                Test pyramid, OMTM, Stripe docs standard, Ellis PMF rule.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- FINDINGS -->
+        <section class="section" id="findings">
+          <div class="section-header">
+            <h2>Findings</h2>
+            <p class="section-desc">
+              How specialist review results are displayed. Severity drives
+              action — not just display.
+            </p>
+          </div>
+
+          <div class="component-demo">
+            <div class="demo-canvas vertical" style="padding: 24px 32px">
+              <div class="finding">
+                <span class="find-sev">🔴</span>
+                <div class="find-text">
+                  <strong>XSS via unsanitized innerHTML</strong> — user-supplied
+                  content rendered without escaping in
+                  <code class="code-inline">dashboard/index.html:234</code>.
+                  Auto-fix: replace with textContent.
+                </div>
+              </div>
+              <div class="finding">
+                <span class="find-sev">🟡</span>
+                <div class="find-text">
+                  <strong>Missing loading state</strong> — submit button stays
+                  active during API call. Could trigger double submission. Add
+                  disabled+spinner on click.
+                </div>
+              </div>
+              <div class="finding">
+                <span class="find-sev">🟢</span>
+                <div class="find-text">
+                  <strong>Consider aria-live region</strong> — the demo output
+                  area would benefit from
+                  <code class="code-inline">aria-live="polite"</code> for screen
+                  reader users. Low priority.
+                </div>
+              </div>
+            </div>
+            <div class="demo-code">
+              <pre>
+🔴 Must fix → auto-fix + re-verify (max 2 cycles)
+🟡 Should fix → auto-fix in auto/ship/god modes
+🟢 Nice to have → log to DECISIONS.md only</pre
+              >
+            </div>
+          </div>
+        </section>
+
+        <!-- USAGE RULES -->
+        <section class="section" id="usage">
+          <div class="section-header">
+            <h2>Usage Rules</h2>
+            <p class="section-desc">What to always do. What to never do.</p>
+          </div>
+
+          <div class="usage-grid">
+            <div class="usage-card usage-do">
+              <div class="usage-label">Do</div>
+              <ul>
+                <li>One primary CTA per screen</li>
+                <li>
+                  All text on dark bg: use
+                  <code class="code-inline" style="font-size: 11px"
+                    >#a1a1a6</code
+                  >
+                  minimum for muted
+                </li>
+                <li>Label every input — no placeholder-only fields</li>
+                <li>Use mono font for all metrics, counts, code</li>
+                <li>
+                  Respect
+                  <code class="code-inline" style="font-size: 11px"
+                    >prefers-reduced-motion</code
+                  >
+                </li>
+                <li>Keep 4px spacing base — all values ÷ 4 = integer</li>
+              </ul>
+            </div>
+            <div class="usage-card usage-dont">
+              <div class="usage-label">Don't</div>
+              <ul>
+                <li>
+                  Use
+                  <code class="code-inline" style="font-size: 11px"
+                    >#8e8e93</code
+                  >
+                  — fails WCAG AA (3.3:1)
+                </li>
+                <li>Add icon mark next to "AcePilot" wordmark — double A</li>
+                <li>Use playing card visuals — reads gambling brand</li>
+                <li>Use light backgrounds — dark theme only</li>
+                <li>Use more than 2 typefaces on one page</li>
+                <li>
+                  Skip
+                  <code class="code-inline" style="font-size: 11px"
+                    >aria-hidden</code
+                  >
+                  on decorative SVGs
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      // Copy color hex to clipboard
+      function copyColor(hex, el) {
+        navigator.clipboard.writeText(hex).then(() => {
+          const val = el.querySelector(".swatch-value");
+          const orig = val.innerHTML;
+          val.innerHTML = '<span class="copied-flash">✓ copied</span>';
+          setTimeout(() => {
+            val.innerHTML = orig;
+          }, 1200);
+        });
+      }
+
+      // Sidebar active state on scroll
+      const sections = document.querySelectorAll(".section");
+      const links = document.querySelectorAll(".sidebar a");
+
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              links.forEach((l) => l.classList.remove("active"));
+              const active = document.querySelector(
+                `.sidebar a[href="#${e.target.id}"]`,
+              );
+              if (active) active.classList.add("active");
+            }
+          });
+        },
+        { rootMargin: "-20% 0px -70% 0px" },
+      );
+
+      sections.forEach((s) => io.observe(s));
+    </script>
+  </body>
+</html>

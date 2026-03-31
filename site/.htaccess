@@ -1,0 +1,13 @@
+<Files "licenses.json">
+    Require all denied
+</Files>
+
+<Files "waitlist.csv">
+    Require all denied
+</Files>
+
+# Protect data directory
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^data/ - [F,L]
+</IfModule>

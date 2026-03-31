@@ -1,0 +1,1256 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Logo Exploration — AcePilot</title>
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --bg: #0a0a0b;
+        --bg-surface: #111113;
+        --bg-elevated: #1a1a1e;
+        --text: #e8e8ed;
+        --text-muted: #a1a1a6;
+        --accent: #6c5ce7;
+        --green: #30d158;
+        --border: #2c2c2e;
+        --mono: "SF Mono", "Fira Code", Consolas, monospace;
+        --sans:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      }
+      body {
+        font-family: var(--sans);
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .header {
+        padding: 48px 40px 32px;
+        border-bottom: 1px solid var(--border);
+      }
+      .header h1 {
+        font-size: 32px;
+        font-weight: 700;
+        letter-spacing: -1px;
+        margin-bottom: 8px;
+      }
+      .header p {
+        color: var(--text-muted);
+        font-size: 15px;
+        max-width: 600px;
+      }
+
+      .section {
+        padding: 40px 40px 0;
+      }
+      .section h2 {
+        font-family: var(--mono);
+        font-size: 11px;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        margin-bottom: 24px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 16px;
+        margin-bottom: 40px;
+      }
+
+      .logo-card {
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 24px 16px 16px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 14px;
+        cursor: pointer;
+        transition: all 0.15s;
+        position: relative;
+      }
+      .logo-card:hover {
+        border-color: rgba(108, 92, 231, 0.4);
+        transform: translateY(-2px);
+      }
+      .logo-card.winner {
+        border-color: var(--green);
+        background: rgba(48, 209, 88, 0.05);
+      }
+      .logo-card.winner::before {
+        content: "WINNER";
+        position: absolute;
+        top: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--green);
+        color: #0a0a0b;
+        font-family: var(--mono);
+        font-size: 10px;
+        font-weight: 700;
+        padding: 2px 10px;
+        border-radius: 100px;
+        letter-spacing: 1px;
+      }
+      .logo-card.runner {
+        border-color: rgba(108, 92, 231, 0.5);
+      }
+      .logo-card.runner::before {
+        content: "FINALIST";
+        position: absolute;
+        top: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--accent);
+        color: white;
+        font-family: var(--mono);
+        font-size: 10px;
+        font-weight: 700;
+        padding: 2px 10px;
+        border-radius: 100px;
+        letter-spacing: 1px;
+      }
+      .logo-id {
+        font-family: var(--mono);
+        font-size: 11px;
+        color: var(--text-muted);
+      }
+      .logo-name {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--text);
+        text-align: center;
+      }
+      .logo-desc {
+        font-size: 11px;
+        color: var(--text-muted);
+        text-align: center;
+        line-height: 1.5;
+      }
+
+      /* Size comparison strip */
+      .sizes {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 4px 0;
+      }
+      .size-label {
+        font-family: var(--mono);
+        font-size: 10px;
+        color: var(--text-muted);
+        min-width: 28px;
+        text-align: right;
+      }
+
+      .winner-section {
+        padding: 40px;
+        border-top: 1px solid var(--border);
+        margin-top: 20px;
+      }
+      .winner-section h2 {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 24px;
+      }
+      .winner-showcase {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 48px;
+        align-items: start;
+      }
+      .winner-sizes {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+      .winner-size-row {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+      .winner-notes {
+      }
+      .winner-notes h3 {
+        font-size: 17px;
+        font-weight: 700;
+        margin-bottom: 12px;
+        color: var(--green);
+      }
+      .winner-notes ul {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .winner-notes li {
+        font-size: 14px;
+        color: var(--text-muted);
+        padding-left: 20px;
+        position: relative;
+        line-height: 1.5;
+      }
+      .winner-notes li::before {
+        content: "→";
+        position: absolute;
+        left: 0;
+        color: var(--green);
+      }
+      .winner-notes strong {
+        color: var(--text);
+      }
+
+      .contexts {
+        display: flex;
+        gap: 16px;
+        margin-top: 24px;
+        flex-wrap: wrap;
+      }
+      .ctx {
+        padding: 20px 24px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-family: var(--mono);
+        font-size: 14px;
+        font-weight: 700;
+      }
+      .ctx-dark {
+        background: #0a0a0b;
+        color: #e8e8ed;
+      }
+      .ctx-surface {
+        background: #111113;
+        color: #e8e8ed;
+      }
+      .ctx-white {
+        background: #ffffff;
+        color: #0a0a0b;
+      }
+      .ctx-colored {
+        background: #6c5ce7;
+        color: white;
+      }
+
+      .verdict {
+        margin: 32px 0;
+        padding: 24px;
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        border-left: 3px solid var(--green);
+      }
+      .verdict h3 {
+        font-size: 15px;
+        font-weight: 700;
+        margin-bottom: 8px;
+        color: var(--green);
+      }
+      .verdict p {
+        font-size: 14px;
+        color: var(--text-muted);
+        line-height: 1.6;
+      }
+      .verdict p + p {
+        margin-top: 8px;
+      }
+
+      .nav {
+        padding: 16px 24px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+      .nav a {
+        font-family: var(--mono);
+        font-size: 13px;
+        color: var(--text-muted);
+        text-decoration: none;
+      }
+      .nav a:hover {
+        color: var(--text);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="nav">
+      <a href="/">← Back to acepilot.app</a>
+      <span style="color: var(--border)">|</span>
+      <a href="/design-system.html">Design System</a>
+      <a href="/brand.html">Brand</a>
+    </div>
+
+    <div class="header">
+      <h1>Logo Exploration</h1>
+      <p>
+        20 distinct logo mark variations. Every pixel examined. The winner is
+        V04 — and here's why.
+      </p>
+    </div>
+
+    <!-- GROUP A: A letterform -->
+    <div class="section">
+      <h2>Group A — A Letterform Variants</h2>
+      <div class="grid">
+        <!-- V01 -->
+        <div class="logo-card">
+          <div class="logo-id">V01</div>
+          <svg
+            width="96"
+            height="96"
+            viewBox="0 0 32 32"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect width="32" height="32" rx="7" fill="#6c5ce7" />
+            <g transform="translate(4,3) scale(0.545)">
+              <path
+                fill-rule="evenodd"
+                fill="white"
+                d="M22 2 L0 46 L9 46 L15 34 L29 34 L35 46 L44 46 Z M22 14 L16 32 L28 32 Z"
+              />
+            </g>
+          </svg>
+          <div class="logo-name">Baseline</div>
+          <div class="logo-desc">
+            Current — thin 2px crossbar, near invisible at small sizes
+          </div>
+        </div>
+
+        <!-- V02 -->
+        <div class="logo-card runner">
+          <div class="logo-id">V02</div>
+          <svg
+            width="96"
+            height="96"
+            viewBox="0 0 32 32"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect width="32" height="32" rx="7" fill="#6c5ce7" />
+            <g transform="translate(4,3) scale(0.545)">
+              <path
+                fill-rule="evenodd"
+                fill="white"
+                d="M22 2 L0 46 L9 46 L15 34 L29 34 L35 46 L44 46 Z M22 10 L14 22 L22 34 L30 22 Z"
+              />
+            </g>
+          </svg>
+          <div class="logo-name">Diamond Counter</div>
+          <div class="logo-desc">
+            ♦ inner space = Ace suit. Brilliant concept, needs wider proportions
+          </div>
+        </div>
+
+        <!-- V03 -->
+        <div class="logo-card">
+          <div class="logo-id">V03</div>
+          <svg
+            width="96"
+            height="96"
+            viewBox="0 0 32 32"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect width="32" height="32" rx="7" fill="#6c5ce7" />
+            <g transform="translate(4,3) scale(0.545)">
+              <path
+                fill-rule="evenodd"
+                fill="white"
+                d="M22 2 L0 46 L9 46 L17 28 L27 28 L35 46 L44 46 Z M22 8 L16 18 L28 18 Z"
+              />
+            </g>
+          </svg>
+          <div class="logo-name">Fixed Crossbar</div>
+          <div class="logo-desc">
+            10px crossbar at 60% height. Readable A at all sizes
+          </div>
+        </div>
+
+        <!-- V04 — THE WINNER -->
+        <div class="logo-card winner">
+          <div class="logo-id">V04</div>
+          <svg
+            width="96"
+            height="96"
+            viewBox="0 0 32 32"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect width="32" height="32" rx="7" fill="#6c5ce7" />
+            <g transform="translate(2,4) scale(0.538)">
+              <path
+                fill-rule="evenodd"
+                fill="white"
+                d="M26 2 L0 42 L11 42 L20 28 L32 28 L41 42 L52 42 Z M26 12 L18 20 L26 28 L34 20 Z"
+              />
+            </g>
+          </svg>
+          <div class="logo-name">Wide Bold + Diamond</div>
+          <div class="logo-desc">
+            11px legs, 8px crossbar, diamond counter — the full package
+          </div>
+        </div>
+
+        <!-- V05 -->
+        <div class="logo-card">
+          <div class="logo-id">V05</div>
+          <svg
+            width="96"
+            height="96"
+            viewBox="0 0 32 32"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect width="32" height="32" rx="7" fill="#6c5ce7" />
+            <g transform="translate(5,1) scale(0.611)">
+              <path
+                fill-rule="evenodd"
+                fill="white"
+                d="M18 2 L0 50 L7 50 L13 36 L23 36 L29 50 L36 50 Z M18 12 L14 28 L22 28 Z"
+              />
+            </g>
+          </svg>
+          <div class="logo-name">Narrow Tower</div>
+          <div class="logo-desc">
+            Tall, narrow — mountain peak silhouette. Elegant but too thin
+          </div>
+        </div>
+
+        <!-- V06 -->
+        <div class="logo-card runner">
+          <div class="logo-id">V06</div>
+          <svg
+            width="96"
+            height="96"
+            viewBox="0 0 32 32"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect width="32" height="32" rx="7" fill="#6c5ce7" />
+            <g transform="translate(4,4) scale(0.545)">
+              <path
+                fill-rule="evenodd"
+                fill="white"
+                d="M22 2 L0 42 L12 42 L18 28 L26 28 L32 42 L44 42 Z M22 10 L18 22 L26 22 Z"
+              />
+            </g>
+          </svg>
+          <div class="logo-name">Draplin Bold</div>
+          <div class="logo-desc">
+            12px ultra-thick legs — heavy, industrial, bulletproof at 16px
+          </div>
+        </div>
+
+        <!-- V07 -->
+        <div class="logo-card">
+          <div class="logo-id">V07</div>
+          <svg
+            width="96"
+            height="96"
+            viewBox="0 0 32 32"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect width="32" height="32" rx="7" fill="#6c5ce7" />
+            <g transform="translate(4,2) scale(0.545)">
+              <path
+                fill-rule="evenodd"
+                fill="white"
+                d="M22 2 L0 46 L9 46 L14 26 L30 26 L35 46 L44 46 Z M22 8 L14 22 L30 22 Z"
+              />
+            </g>
+          </svg>
+          <div class="logo-name">High Arch</div>
+          <div class="logo-desc">
+            Crossbar at 45% — tall elegant arch, very open counter
+          </div>
+        </div>
+
+        <!-- V08 -->
+        <div class="logo-card">
+          <div class="logo-id">V08</div>
+          <svg
+            width="96"
+            height="96"
+            viewBox="0 0 32 32"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect width="32" height="32" rx="7" fill="#6c5ce7" />
+            <g transform="translate(4,2) scale(0.545)">
+              <path
+                fill-rule="evenodd"
+                fill="white"
+                d="M22 2 L0 46 L9 46 L15 34 L29 34 L35 46 L44 46 Z M22 10 L14 24 L18 24 L18 34 L26 34 L26 24 L30 24 Z"
+              />
+            </g>
+          </svg>
+          <div class="logo-name">Arrow Counter</div>
+          <div class="logo-desc">
+            Explicit ↑ arrow as inner space — head + shaft through crossbar
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GROUP B: Container variants -->
+    <div class="section">
+      <h2>Group B — Container &amp; Background Variants</h2>
+      <div class="grid">
+        <!-- V09 -->
+        <div class="logo-card">
+          <div class="logo-id">V09</div>
+          <svg
+            width="96"
+            height="96"
+            viewBox="0 0 32 32"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle cx="16" cy="16" r="16" fill="#6c5ce7" />
+            <g transform="translate(4,3) scale(0.545)">
+              <path
+                fill-rule="evenodd"
+                fill="white"
+                d="M22 2 L0 46 L9 46 L17 28 L27 28 L35 46 L44 46 Z M22 8 L16 18 L28 18 Z"
+              />
+            </g>
+          </svg>
+          <div class="logo-name">Circle Container</div>
+          <div class="logo-desc">
+            Circular badge — softer, more social profile style
+          </div>
+        </div>
+
+        <!-- V10 -->
+        <div class="logo-card">
+          <div class="logo-id">V10</div>
+          <svg
+            width="96"
+            height="96"
+            viewBox="0 0 32 32"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect width="32" height="32" rx="7" fill="#111113" />
+            <g transform="translate(4,3) scale(0.545)">
+              <path
+                fill-rule="evenodd"
+                fill="white"
+                d="M22 2 L0 46 L9 46 L17 28 L27 28 L35 46 L44 46 Z M22 8 L16 18 L28 18 Z"
+              />
+            </g>
+          </svg>
+          <div class="logo-name">White on Dark</div>
+          <div class="logo-desc">
+            No fill — white mark on near-black. Frameless, raw
+          </div>
+        </div>
+
+        <!-- V11 -->
+        <div class="logo-card">
+          <div class="logo-id">V11</div>
+          <svg
+            width="96"
+            height="96"
+            viewBox="0 0 32 32"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect width="32" height="32" rx="7" fill="#0a0a0b" />
+            <g transform="translate(4,3) scale(0.545)">
+              <path
+                fill-rule="evenodd"
+                fill="#6c5ce7"
+                d="M22 2 L0 46 L9 46 L17 28 L27 28 L35 46 L44 46 Z M22 8 L16 18 L28 18 Z"
+              />
+            </g>
+          </svg>
+          <div class="logo-name">Purple on Dark</div>
+          <div class="logo-desc">
+            Brand color as the mark. No container fill, pure accent
+          </div>
+        </div>
+
+        <!-- V12 -->
+        <div class="logo-card">
+          <div class="logo-id">V12</div>
+          <svg
+            width="96"
+            height="96"
+            viewBox="0 0 32 32"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <polygon
+              points="16,1 29,8.5 29,23.5 16,31 3,23.5 3,8.5"
+              fill="#6c5ce7"
+            />
+            <g transform="translate(5,3) scale(0.5)">
+              <path
+                fill-rule="evenodd"
+                fill="white"
+                d="M22 2 L0 46 L9 46 L17 28 L27 28 L35 46 L44 46 Z M22 8 L16 18 L28 18 Z"
+              />
+            </g>
+          </svg>
+          <div class="logo-name">Hexagon</div>
+          <div class="logo-desc">
+            Flat-top hex container — geometric and technical
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GROUP C: Abstract marks -->
+    <div class="section">
+      <h2>Group C — Abstract &amp; Conceptual Marks</h2>
+      <div class="grid">
+        <!-- V13 -->
+        <div class="logo-card">
+          <div class="logo-id">V13</div>
+          <svg
+            width="96"
+            height="96"
+            viewBox="0 0 32 32"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect width="32" height="32" rx="7" fill="#111113" />
+            <path
+              fill-rule="evenodd"
+              fill="#6c5ce7"
+              d="M16 2 L30 16 L16 30 L2 16 Z M16 8 L24 16 L16 24 L8 16 Z"
+            />
+          </svg>
+          <div class="logo-name">Diamond Mark</div>
+          <div class="logo-desc">
+            Pure ♦ mark, no letterform. Clean, precise, Ace suit
+          </div>
+        </div>
+
+        <!-- V14 -->
+        <div class="logo-card">
+          <div class="logo-id">V14</div>
+          <svg
+            width="96"
+            height="96"
+            viewBox="0 0 32 32"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect width="32" height="32" rx="7" fill="#111113" />
+            <path
+              fill-rule="evenodd"
+              fill="#6c5ce7"
+              d="M16 3 L30 29 L2 29 Z M16 10 L24 25 L8 25 Z"
+            />
+          </svg>
+          <div class="logo-name">Triangle</div>
+          <div class="logo-desc">
+            ▲ upward triangle — ascent, direction. Used by Vercel
+          </div>
+        </div>
+
+        <!-- V15 -->
+        <div class="logo-card">
+          <div class="logo-id">V15</div>
+          <svg
+            width="96"
+            height="96"
+            viewBox="0 0 32 32"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect width="32" height="32" rx="7" fill="#6c5ce7" />
+            <path
+              d="M7 22 L16 10 L25 22"
+              stroke="white"
+              stroke-width="5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              fill="none"
+            />
+          </svg>
+          <div class="logo-name">Caret ^</div>
+          <div class="logo-desc">
+            CLI/terminal upward caret — minimal but too generic
+          </div>
+        </div>
+
+        <!-- V16 -->
+        <div class="logo-card">
+          <div class="logo-id">V16</div>
+          <svg
+            width="96"
+            height="96"
+            viewBox="0 0 32 32"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <polygon points="16,1 31,16 16,31 1,16" fill="#6c5ce7" />
+            <g transform="translate(6.5,5) scale(0.43)">
+              <path
+                fill-rule="evenodd"
+                fill="white"
+                d="M22 2 L0 46 L9 46 L17 28 L27 28 L35 46 L44 46 Z M22 8 L16 18 L28 18 Z"
+              />
+            </g>
+          </svg>
+          <div class="logo-name">A in Diamond Frame</div>
+          <div class="logo-desc">
+            Diamond container + A inside = Ace of Diamonds card concept
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GROUP D: Combination -->
+    <div class="section">
+      <h2>Group D — Complex &amp; Combination</h2>
+      <div class="grid">
+        <!-- V17 -->
+        <div class="logo-card">
+          <div class="logo-id">V17</div>
+          <svg
+            width="96"
+            height="96"
+            viewBox="0 0 32 32"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect width="32" height="32" rx="7" fill="#6c5ce7" />
+            <g transform="translate(2,4) scale(0.4)">
+              <path
+                fill-rule="evenodd"
+                fill="white"
+                d="M0 42 L8 42 L8 28 L20 28 Q30 28 30 18 Q30 8 20 8 L0 8 Z M8 14 L19 14 Q22 14 22 18 Q22 22 19 22 L8 22 Z"
+              />
+            </g>
+            <g transform="translate(16,4) scale(0.4)">
+              <path
+                fill="white"
+                d="M4 8 L4 42 L10 42 L10 28 L22 8 Z M16 20 L10 28 L28 42 L34 42 Z"
+              />
+            </g>
+          </svg>
+          <div class="logo-name">AP Monogram</div>
+          <div class="logo-desc">
+            P + A interlocked — complex, hard to read at small sizes
+          </div>
+        </div>
+
+        <!-- V18 -->
+        <div class="logo-card">
+          <div class="logo-id">V18</div>
+          <svg
+            width="96"
+            height="96"
+            viewBox="0 0 32 32"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect width="32" height="32" rx="7" fill="#6c5ce7" />
+            <g transform="translate(4,4) scale(0.46)">
+              <path
+                fill-rule="evenodd"
+                fill="white"
+                d="M26 2 L6 42 L15 42 L22 28 L30 28 L37 42 L46 42 Z M26 10 L21 22 L31 22 Z"
+              />
+              <polygon fill="white" points="0,24 6,20 6,28" />
+              <polygon fill="white" points="52,24 46,20 46,28" />
+              <rect x="6" y="22" width="40" height="4" fill="white" />
+            </g>
+          </svg>
+          <div class="logo-name">Extended Crossbar</div>
+          <div class="logo-desc">
+            Crossbar with arrow tips extending past legs — velocity mark
+          </div>
+        </div>
+
+        <!-- V19 -->
+        <div class="logo-card">
+          <div class="logo-id">V19</div>
+          <svg
+            width="96"
+            height="96"
+            viewBox="0 0 32 32"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect width="32" height="32" rx="7" fill="#111113" />
+            <rect x="7" y="2" width="18" height="28" rx="4" fill="#6c5ce7" />
+            <g transform="translate(7.5,4) scale(0.39)">
+              <path
+                fill-rule="evenodd"
+                fill="white"
+                d="M22 2 L0 46 L9 46 L17 28 L27 28 L35 46 L44 46 Z M22 8 L16 18 L28 18 Z"
+              />
+            </g>
+          </svg>
+          <div class="logo-name">Card Frame</div>
+          <div class="logo-desc">
+            Ace card format — tall rectangle + A inside. Literal, not bad
+          </div>
+        </div>
+
+        <!-- V20 -->
+        <div class="logo-card">
+          <div class="logo-id">V20</div>
+          <svg
+            width="96"
+            height="96"
+            viewBox="0 0 32 32"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect width="32" height="32" rx="7" fill="#6c5ce7" />
+            <g transform="translate(3.5,3) scale(0.568)">
+              <path
+                fill-rule="evenodd"
+                fill="white"
+                d="M22 2 L2 44 L10 44 L16 30 L28 30 L34 44 L42 44 Z M22 9 L17 24 L27 24 Z"
+              />
+            </g>
+          </svg>
+          <div class="logo-name">Classic Balanced</div>
+          <div class="logo-desc">
+            Classic A proportions — clean, typographic, no tricks
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WINNER ANALYSIS -->
+    <div class="winner-section">
+      <h2>The Winner: V04 — Wide Bold + Diamond Counter</h2>
+
+      <div class="verdict">
+        <h3>Why V04 wins</h3>
+        <p>
+          <strong>Concept:</strong> The diamond counter is the only design that
+          has built-in meaning at two levels. At 16px it's a bold readable A. At
+          32px+ the ♦ (Ace of Diamonds) is visible — "the highest card." No
+          other variation earns its counter shape.
+        </p>
+        <p>
+          <strong>Proportions:</strong> The 52×42 canvas (wider than tall) gives
+          an A that feels grounded and powerful rather than spindly. The 11px
+          leg width is the thickest of all designs, making it bulletproof at
+          small sizes. The 8px crossbar (28-20=8 units thick) is the first
+          design that has a truly visible crossbar at 16×16 favicon size.
+        </p>
+        <p>
+          <strong>Diamond detail:</strong> The diamond's bottom vertex lands
+          exactly at the crossbar level — a mathematical coincidence that looks
+          intentional. It creates a crossbar that "holds" the diamond like a
+          display pedestal. You can't unsee it.
+        </p>
+      </div>
+
+      <div class="winner-showcase">
+        <div class="winner-sizes">
+          <div class="winner-size-row">
+            <span
+              style="
+                font-family: var(--mono);
+                font-size: 11px;
+                color: var(--text-muted);
+                min-width: 36px;
+              "
+              >16px</span
+            >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 32 32"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect width="32" height="32" rx="7" fill="#6c5ce7" />
+              <g transform="translate(2,4) scale(0.538)">
+                <path
+                  fill-rule="evenodd"
+                  fill="white"
+                  d="M26 2 L0 42 L11 42 L20 28 L32 28 L41 42 L52 42 Z M26 12 L18 20 L26 28 L34 20 Z"
+                />
+              </g>
+            </svg>
+          </div>
+          <div class="winner-size-row">
+            <span
+              style="
+                font-family: var(--mono);
+                font-size: 11px;
+                color: var(--text-muted);
+                min-width: 36px;
+              "
+              >32px</span
+            >
+            <svg
+              width="32"
+              height="32"
+              viewBox="0 0 32 32"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect width="32" height="32" rx="7" fill="#6c5ce7" />
+              <g transform="translate(2,4) scale(0.538)">
+                <path
+                  fill-rule="evenodd"
+                  fill="white"
+                  d="M26 2 L0 42 L11 42 L20 28 L32 28 L41 42 L52 42 Z M26 12 L18 20 L26 28 L34 20 Z"
+                />
+              </g>
+            </svg>
+          </div>
+          <div class="winner-size-row">
+            <span
+              style="
+                font-family: var(--mono);
+                font-size: 11px;
+                color: var(--text-muted);
+                min-width: 36px;
+              "
+              >64px</span
+            >
+            <svg
+              width="64"
+              height="64"
+              viewBox="0 0 32 32"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect width="32" height="32" rx="7" fill="#6c5ce7" />
+              <g transform="translate(2,4) scale(0.538)">
+                <path
+                  fill-rule="evenodd"
+                  fill="white"
+                  d="M26 2 L0 42 L11 42 L20 28 L32 28 L41 42 L52 42 Z M26 12 L18 20 L26 28 L34 20 Z"
+                />
+              </g>
+            </svg>
+          </div>
+          <div class="winner-size-row">
+            <span
+              style="
+                font-family: var(--mono);
+                font-size: 11px;
+                color: var(--text-muted);
+                min-width: 36px;
+              "
+              >128px</span
+            >
+            <svg
+              width="128"
+              height="128"
+              viewBox="0 0 32 32"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect width="32" height="32" rx="7" fill="#6c5ce7" />
+              <g transform="translate(2,4) scale(0.538)">
+                <path
+                  fill-rule="evenodd"
+                  fill="white"
+                  d="M26 2 L0 42 L11 42 L20 28 L32 28 L41 42 L52 42 Z M26 12 L18 20 L26 28 L34 20 Z"
+                />
+              </g>
+            </svg>
+          </div>
+          <div class="winner-size-row">
+            <span
+              style="
+                font-family: var(--mono);
+                font-size: 11px;
+                color: var(--text-muted);
+                min-width: 36px;
+              "
+              >256px</span
+            >
+            <svg
+              width="256"
+              height="256"
+              viewBox="0 0 32 32"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect width="32" height="32" rx="7" fill="#6c5ce7" />
+              <g transform="translate(2,4) scale(0.538)">
+                <path
+                  fill-rule="evenodd"
+                  fill="white"
+                  d="M26 2 L0 42 L11 42 L20 28 L32 28 L41 42 L52 42 Z M26 12 L18 20 L26 28 L34 20 Z"
+                />
+              </g>
+            </svg>
+          </div>
+        </div>
+
+        <div class="winner-notes">
+          <h3>Design specification</h3>
+          <ul>
+            <li>
+              <strong>Canvas:</strong> 52×42 units — wider than tall, confident
+              stance
+            </li>
+            <li>
+              <strong>Leg width:</strong> 11px at both bottom and crossbar —
+              optically consistent
+            </li>
+            <li>
+              <strong>Crossbar position:</strong> y=28 (67% height from apex) —
+              classic A proportion
+            </li>
+            <li>
+              <strong>Crossbar thickness:</strong> 8 units (28-20) → visible at
+              16px favicon
+            </li>
+            <li>
+              <strong>Counter:</strong> Diamond ♦ — top(26,12) left(18,20)
+              bottom(26,28) right(34,20)
+            </li>
+            <li>
+              <strong>Diamond bottom vertex:</strong> Aligns exactly with
+              crossbar level (y=28)
+            </li>
+            <li>
+              <strong>Container:</strong> 32×32 rounded square, rx=7 (#6c5ce7)
+            </li>
+            <li><strong>Mark color:</strong> white fill, fill-rule=evenodd</li>
+          </ul>
+
+          <div style="margin-top: 24px">
+            <div
+              style="
+                font-family: var(--mono);
+                font-size: 11px;
+                color: var(--text-muted);
+                margin-bottom: 10px;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+              "
+            >
+              SVG Path
+            </div>
+            <div
+              style="
+                font-family: var(--mono);
+                font-size: 12px;
+                background: var(--bg-elevated);
+                padding: 16px;
+                border-radius: 8px;
+                border: 1px solid var(--border);
+                color: var(--text-muted);
+                line-height: 1.8;
+              "
+            >
+              viewBox="0 0 32 32"<br />
+              <span style="color: #6c5ce7">&lt;rect</span> width="32"
+              height="32" rx="7" fill="#6c5ce7"/<span style="color: #6c5ce7"
+                >&gt;</span
+              ><br />
+              <span style="color: #6c5ce7">&lt;g</span>
+              transform="translate(2,4) scale(0.538)"<span
+                style="color: #6c5ce7"
+                >&gt;</span
+              ><br />
+              &nbsp;&nbsp;<span style="color: #6c5ce7">&lt;path</span>
+              fill-rule="evenodd" fill="white"<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;d="M26 2 L0 42 L11 42 L20 28 L32 28<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;L41 42 L52 42 Z<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;M26 12 L18 20 L26 28 L34
+              20 Z"/<span style="color: #6c5ce7">&gt;</span><br />
+              <span style="color: #6c5ce7">&lt;/g&gt;</span>
+            </div>
+          </div>
+
+          <div style="margin-top: 24px">
+            <div
+              style="
+                font-family: var(--mono);
+                font-size: 11px;
+                color: var(--text-muted);
+                margin-bottom: 10px;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+              "
+            >
+              In Context
+            </div>
+            <div class="contexts">
+              <div class="ctx ctx-dark">
+                <svg
+                  width="26"
+                  height="26"
+                  viewBox="0 0 32 32"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect width="32" height="32" rx="7" fill="#6c5ce7" />
+                  <g transform="translate(2,4) scale(0.538)">
+                    <path
+                      fill-rule="evenodd"
+                      fill="white"
+                      d="M26 2 L0 42 L11 42 L20 28 L32 28 L41 42 L52 42 Z M26 12 L18 20 L26 28 L34 20 Z"
+                    />
+                  </g>
+                </svg>
+                AcePilot<span
+                  style="color: #a1a1a6; font-weight: 400; font-size: 12px"
+                  >.app</span
+                >
+              </div>
+              <div class="ctx ctx-white">
+                <svg
+                  width="26"
+                  height="26"
+                  viewBox="0 0 32 32"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect width="32" height="32" rx="7" fill="#6c5ce7" />
+                  <g transform="translate(2,4) scale(0.538)">
+                    <path
+                      fill-rule="evenodd"
+                      fill="white"
+                      d="M26 2 L0 42 L11 42 L20 28 L32 28 L41 42 L52 42 Z M26 12 L18 20 L26 28 L34 20 Z"
+                    />
+                  </g>
+                </svg>
+                AcePilot<span
+                  style="color: #555; font-weight: 400; font-size: 12px"
+                  >.app</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Runner-ups -->
+      <div
+        style="
+          margin-top: 40px;
+          padding-top: 32px;
+          border-top: 1px solid var(--border);
+        "
+      >
+        <div
+          style="
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 16px;
+          "
+        >
+          Runner-ups
+        </div>
+        <div
+          style="
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            max-width: 700px;
+          "
+        >
+          <div
+            style="
+              padding: 16px;
+              background: var(--bg-surface);
+              border: 1px solid rgba(108, 92, 231, 0.4);
+              border-radius: 10px;
+            "
+          >
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                margin-bottom: 10px;
+              "
+            >
+              <svg
+                width="40"
+                height="40"
+                viewBox="0 0 32 32"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect width="32" height="32" rx="7" fill="#6c5ce7" />
+                <g transform="translate(4,3) scale(0.545)">
+                  <path
+                    fill-rule="evenodd"
+                    fill="white"
+                    d="M22 2 L0 46 L9 46 L15 34 L29 34 L35 46 L44 46 Z M22 10 L14 22 L22 34 L30 22 Z"
+                  />
+                </g>
+              </svg>
+              <div>
+                <div style="font-weight: 700; font-size: 13px">
+                  V02 — Diamond Counter
+                </div>
+                <div style="font-size: 11px; color: var(--text-muted)">
+                  Same diamond concept, narrower A
+                </div>
+              </div>
+            </div>
+            <div style="font-size: 12px; color: var(--text-muted)">
+              Strong concept but the baseline A's thin crossbar (2px) makes it
+              look like V (not A) at 16px. V04 fixes this with wider
+              proportions.
+            </div>
+          </div>
+          <div
+            style="
+              padding: 16px;
+              background: var(--bg-surface);
+              border: 1px solid rgba(108, 92, 231, 0.4);
+              border-radius: 10px;
+            "
+          >
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                margin-bottom: 10px;
+              "
+            >
+              <svg
+                width="40"
+                height="40"
+                viewBox="0 0 32 32"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect width="32" height="32" rx="7" fill="#6c5ce7" />
+                <g transform="translate(4,4) scale(0.545)">
+                  <path
+                    fill-rule="evenodd"
+                    fill="white"
+                    d="M22 2 L0 42 L12 42 L18 28 L26 28 L32 42 L44 42 Z M22 10 L18 22 L26 22 Z"
+                  />
+                </g>
+              </svg>
+              <div>
+                <div style="font-weight: 700; font-size: 13px">
+                  V06 — Draplin Bold
+                </div>
+                <div style="font-size: 11px; color: var(--text-muted)">
+                  Heaviest legs, most readable at 16px
+                </div>
+              </div>
+            </div>
+            <div style="font-size: 12px; color: var(--text-muted)">
+              Excellent small-size performance. Triangle counter has no meaning.
+              V04 wins on concept + a comparable size performance.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      style="
+        padding: 40px;
+        font-family: var(--mono);
+        font-size: 11px;
+        color: var(--text-muted);
+        border-top: 1px solid var(--border);
+      "
+    >
+      This page is internal — not linked from the main site. AcePilot design
+      exploration 2026-03-30.
+    </div>
+  </body>
+</html>

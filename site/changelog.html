@@ -1,0 +1,634 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Changelog — AcePilot</title>
+    <meta
+      name="description"
+      content="What's new in AcePilot. Release notes, new features, and improvements."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%236c5ce7'/><g transform='translate(4,6) scale(0.462)'><path fill-rule='evenodd' fill='white' d='M26 2 L0 44 L14 44 L17 28 L35 28 L38 44 L52 44 Z M26 10 L17 28 L35 28 Z'/></g></svg>"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --bg: #0a0a0b;
+        --bg-surface: #111113;
+        --bg-elevated: #1a1a1e;
+        --text: #e8e8ed;
+        --text-muted: #a1a1a6;
+        --accent: #6c5ce7;
+        --green: #30d158;
+        --border: #2c2c2e;
+        --mono: "SF Mono", "Fira Code", "Cascadia Code", Consolas, monospace;
+        --sans:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      }
+      body {
+        font-family: var(--sans);
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.7;
+      }
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+
+      .nav {
+        padding: 16px 24px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .nav-logo {
+        font-family: var(--mono);
+        font-weight: 700;
+        font-size: 16px;
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        letter-spacing: -0.3px;
+        text-decoration: none;
+      }
+      .nav-links {
+        display: flex;
+        gap: 24px;
+        font-size: 14px;
+      }
+      .nav-links a {
+        color: var(--text-muted);
+      }
+      .nav-links a:hover {
+        color: var(--text);
+        text-decoration: none;
+      }
+      .nav-links a.nav-active {
+        color: var(--text);
+      }
+
+      .container {
+        max-width: 680px;
+        margin: 0 auto;
+        padding: 64px 24px;
+      }
+      h1 {
+        font-size: 36px;
+        margin-bottom: 8px;
+      }
+      .subtitle {
+        color: var(--text-muted);
+        font-size: 16px;
+        margin-bottom: 48px;
+      }
+
+      .release {
+        margin-bottom: 48px;
+        padding-bottom: 48px;
+        border-bottom: 1px solid var(--border);
+      }
+      .release:last-child {
+        border-bottom: none;
+      }
+      .release-header {
+        display: flex;
+        align-items: baseline;
+        gap: 12px;
+        margin-bottom: 16px;
+        flex-wrap: wrap;
+      }
+      .release-version {
+        font-size: 24px;
+        font-weight: 700;
+      }
+      .release-name {
+        color: var(--accent);
+        font-size: 16px;
+        font-weight: 500;
+      }
+      .release-date {
+        color: var(--text-muted);
+        font-size: 14px;
+        font-family: var(--mono);
+      }
+      .release-desc {
+        color: var(--text-muted);
+        margin-bottom: 16px;
+        font-size: 15px;
+      }
+
+      .changes {
+        list-style: none;
+      }
+      .changes li {
+        padding: 6px 0;
+        padding-left: 24px;
+        position: relative;
+        font-size: 15px;
+      }
+      .changes li::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 14px;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+      }
+      .changes li.feat::before {
+        background: var(--green);
+      }
+      .changes li.fix::before {
+        background: #ff9f0a;
+      }
+      .changes li.improve::before {
+        background: var(--accent);
+      }
+      .changes li.breaking::before {
+        background: #ff453a;
+      }
+
+      .tag {
+        display: inline-block;
+        font-size: 11px;
+        font-family: var(--mono);
+        padding: 2px 8px;
+        border-radius: 4px;
+        margin-right: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .tag-feat {
+        background: rgba(48, 209, 88, 0.15);
+        color: var(--green);
+      }
+      .tag-fix {
+        background: rgba(255, 159, 10, 0.15);
+        color: #ff9f0a;
+      }
+      .tag-improve {
+        background: rgba(108, 92, 231, 0.15);
+        color: var(--accent);
+      }
+      .tag-breaking {
+        background: rgba(255, 69, 58, 0.15);
+        color: #ff453a;
+      }
+
+      .legend {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 32px;
+        font-size: 13px;
+        color: var(--text-muted);
+        flex-wrap: wrap;
+      }
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .legend-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+      }
+
+      .cta {
+        text-align: center;
+        margin-top: 48px;
+        padding: 32px;
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+      }
+      .cta p {
+        color: var(--text-muted);
+        margin-bottom: 16px;
+      }
+      .cta a {
+        display: inline-block;
+        padding: 10px 24px;
+        background: var(--accent);
+        color: white;
+        border-radius: 8px;
+        font-weight: 600;
+      }
+      .cta a:hover {
+        opacity: 0.9;
+        text-decoration: none;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+        html {
+          scroll-behavior: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="nav">
+      <a href="/" class="nav-logo">
+        <svg
+          width="26"
+          height="26"
+          viewBox="0 0 32 32"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          <rect width="32" height="32" rx="7" fill="#6c5ce7" />
+          <g transform="translate(2,4) scale(0.538)">
+            <path
+              fill-rule="evenodd"
+              fill="white"
+              d="M26 2 L0 44 L14 44 L17 28 L35 28 L38 44 L52 44 Z M26 10 L17 28 L35 28 Z"
+            />
+          </g>
+        </svg>
+        AcePilot<span
+          style="color: var(--text-muted); font-weight: 400; font-size: 13px"
+          >.app</span
+        >
+      </a>
+      <div class="nav-links">
+        <a href="/#features">Features</a>
+        <a href="/#pricing">Pricing</a>
+        <a href="/dashboard/">Dashboard</a>
+        <a href="/changelog.html" class="nav-active" aria-current="page"
+          >Changelog</a
+        >
+      </div>
+    </nav>
+
+    <div class="container">
+      <h1>Changelog</h1>
+      <p class="subtitle">
+        What's new in AcePilot. Every release, every improvement.
+      </p>
+
+      <div class="legend" role="list" aria-label="Change type legend">
+        <div class="legend-item" role="listitem">
+          <div
+            class="legend-dot"
+            style="background: var(--green)"
+            aria-hidden="true"
+          ></div>
+          New feature
+        </div>
+        <div class="legend-item" role="listitem">
+          <div
+            class="legend-dot"
+            style="background: #ff9f0a"
+            aria-hidden="true"
+          ></div>
+          Bug fix
+        </div>
+        <div class="legend-item" role="listitem">
+          <div
+            class="legend-dot"
+            style="background: var(--accent)"
+            aria-hidden="true"
+          ></div>
+          Improvement
+        </div>
+        <div class="legend-item" role="listitem">
+          <div
+            class="legend-dot"
+            style="background: #ff453a"
+            aria-hidden="true"
+          ></div>
+          Breaking change
+        </div>
+      </div>
+
+      <div class="release">
+        <div class="release-header">
+          <span class="release-version">6.4</span>
+          <span class="release-name">Token Diet</span>
+          <span class="release-date">2026-03-30</span>
+        </div>
+        <p class="release-desc">
+          Every prompt line audited for ROI. 1039 to 544 lines across 7 files.
+          Same execution quality, 48% fewer tokens burned.
+        </p>
+        <ul class="changes">
+          <li class="improve">
+            <span class="tag tag-improve">improve</span> All 6 agent prompts
+            compressed — verbose domain knowledge replaced with concise
+            references. Models already know these frameworks.
+          </li>
+          <li class="improve">
+            <span class="tag tag-improve">improve</span> acepilot.md modes
+            compressed to table format. Research Foundation docs removed (45
+            lines of citations never used for execution).
+          </li>
+          <li class="improve">
+            <span class="tag tag-improve">improve</span> God mode per-task
+            review cost: ~500 to ~200 Sonnet tokens per cycle.
+          </li>
+        </ul>
+      </div>
+
+      <div class="release">
+        <div class="release-header">
+          <span class="release-version">6.3</span>
+          <span class="release-name">Anti-Mediocrity</span>
+          <span class="release-date">2026-03-30</span>
+        </div>
+        <p class="release-desc">
+          Designer agent and main command gain anti-cliche awareness for
+          public-facing pages.
+        </p>
+        <ul class="changes">
+          <li class="feat">
+            <span class="tag tag-feat">feat</span> @designer anti-cliche filter
+            — flags generic SaaS patterns, AI-tool cliches, weak copy, missing
+            conversion signals, and visual sameness.
+          </li>
+          <li class="feat">
+            <span class="tag tag-feat">feat</span> COMPOUND anti-mediocrity
+            rules for landing page work. Grounded in Stripe, Linear, Cursor,
+            CXL, Baymard, Copyhackers conversion research.
+          </li>
+        </ul>
+      </div>
+
+      <div class="release">
+        <div class="release-header">
+          <span class="release-version">6.2</span>
+          <span class="release-name">Objective Auto</span>
+          <span class="release-date">2026-03-30</span>
+        </div>
+        <p class="release-desc">
+          Auto mode now accepts objectives — give it a goal and it strategizes
+          before executing.
+        </p>
+        <ul class="changes">
+          <li class="feat">
+            <span class="tag tag-feat">feat</span> Objective-driven auto mode —
+            Working Backwards + strategy before execution
+          </li>
+          <li class="improve">
+            <span class="tag tag-improve">improve</span> Consistent objective
+            support across plan, auto, and god modes
+          </li>
+        </ul>
+      </div>
+
+      <div class="release">
+        <div class="release-header">
+          <span class="release-version">6.1</span>
+          <span class="release-name">God Mode</span>
+          <span class="release-date">2026-03-30</span>
+        </div>
+        <p class="release-desc">
+          14 modes consolidated to 8. Clear trust ladder from plan to god.
+        </p>
+        <ul class="changes">
+          <li class="feat">
+            <span class="tag tag-feat">feat</span> God mode — all 6 specialists
+            review every task, zero interruptions
+          </li>
+          <li class="feat">
+            <span class="tag tag-feat">feat</span> Ship mode — handle it and
+            push a PR in one command
+          </li>
+          <li class="improve">
+            <span class="tag tag-improve">improve</span> 8 modes total (down
+            from 14) — cleaner, clearer escalation
+          </li>
+          <li class="improve">
+            <span class="tag tag-improve">improve</span> Mid-task re-orient —
+            smarter recovery when blocked
+          </li>
+        </ul>
+      </div>
+
+      <div class="release">
+        <div class="release-header">
+          <span class="release-version">6.0</span>
+          <span class="release-name">Dream Team</span>
+          <span class="release-date">2026-03-30</span>
+        </div>
+        <p class="release-desc">
+          Six domain experts — design, security, architecture, strategy, and
+          more — automatically review everything you ship.
+        </p>
+        <ul class="changes">
+          <li class="feat">
+            <span class="tag tag-feat">feat</span> Dream Team mode — parallel
+            specialist agents working together on complex tasks
+          </li>
+          <li class="feat">
+            <span class="tag tag-feat">feat</span> Overview — see status across
+            all your projects in one view
+          </li>
+          <li class="feat">
+            <span class="tag tag-feat">feat</span> Web dashboard — track
+            sessions, set objectives, manage subscription
+          </li>
+          <li class="feat">
+            <span class="tag tag-feat">feat</span> Action items — tasks
+            requiring your input appear in the dashboard automatically
+          </li>
+          <li class="improve">
+            <span class="tag tag-improve">improve</span> Pro subscription with
+            instant activation — 60 seconds from payment to working
+          </li>
+        </ul>
+      </div>
+
+      <div class="release">
+        <div class="release-header">
+          <span class="release-version">5.0</span>
+          <span class="release-name">The Complete Package</span>
+          <span class="release-date">2026-03-30</span>
+        </div>
+        <p class="release-desc">
+          Major quality and speed improvements. AcePilot gets smarter with every
+          session you run.
+        </p>
+        <ul class="changes">
+          <li class="feat">
+            <span class="tag tag-feat">feat</span> Learns your codebase and
+            preferences — each session is faster and needs fewer clarifications
+          </li>
+          <li class="feat">
+            <span class="tag tag-feat">feat</span> Progress estimation — shows
+            remaining tasks and estimated time
+          </li>
+          <li class="feat">
+            <span class="tag tag-feat">feat</span> Never makes the same mistake
+            twice — remembers error patterns across sessions
+          </li>
+          <li class="improve">
+            <span class="tag tag-improve">improve</span> Smarter error recovery
+            — tries alternative approaches before giving up
+          </li>
+        </ul>
+      </div>
+
+      <div class="release">
+        <div class="release-header">
+          <span class="release-version">4.1</span>
+          <span class="release-name">Fast Path</span>
+          <span class="release-date">2026-03-30</span>
+        </div>
+        <p class="release-desc">
+          Simple fixes complete in under 60 seconds. Quality checks still run —
+          just faster.
+        </p>
+        <ul class="changes">
+          <li class="feat">
+            <span class="tag tag-feat">feat</span> Quick tasks (1-2 files) now
+            complete dramatically faster
+          </li>
+          <li class="feat">
+            <span class="tag tag-feat">feat</span> Plan mode — see the strategy
+            before committing to execution
+          </li>
+          <li class="improve">
+            <span class="tag tag-improve">improve</span> Smarter verification —
+            skips unnecessary checks for simple changes
+          </li>
+        </ul>
+      </div>
+
+      <div class="release">
+        <div class="release-header">
+          <span class="release-version">4.0</span>
+          <span class="release-name">Decision Intelligence</span>
+          <span class="release-date">2026-03-29</span>
+        </div>
+        <p class="release-desc">
+          Fundamentally better decision-making. AcePilot now understands your
+          code before changing it, and makes safer autonomous choices.
+        </p>
+        <ul class="changes">
+          <li class="feat">
+            <span class="tag tag-feat">feat</span> Deep project understanding
+            before every task — catches wrong direction early
+          </li>
+          <li class="feat">
+            <span class="tag tag-feat">feat</span> Safer autonomous decisions —
+            risky changes require confirmation, safe changes execute instantly
+          </li>
+          <li class="feat">
+            <span class="tag tag-feat">feat</span> Cleaner output — eliminates
+            unnecessary code before writing new code
+          </li>
+          <li class="feat">
+            <span class="tag tag-feat">feat</span> Three-stage quality check —
+            correctness first, then code quality, then performance
+          </li>
+          <li class="feat">
+            <span class="tag tag-feat">feat</span> Auto-skips tasks that become
+            irrelevant as work progresses
+          </li>
+          <li class="feat">
+            <span class="tag tag-feat">feat</span> CEO mode — give a business
+            objective, get a PR
+          </li>
+          <li class="feat">
+            <span class="tag tag-feat">feat</span> Cycle time tracking in every
+            session summary
+          </li>
+        </ul>
+      </div>
+
+      <div class="release">
+        <div class="release-header">
+          <span class="release-version">3.0</span>
+          <span class="release-name">Launch</span>
+          <span class="release-date">2026-03-29</span>
+        </div>
+        <p class="release-desc">
+          AcePilot goes public. Landing page, branding, and the first
+          installable release.
+        </p>
+        <ul class="changes">
+          <li class="feat">
+            <span class="tag tag-feat">feat</span> acepilot.app — landing page
+            with install instructions and pricing
+          </li>
+          <li class="feat">
+            <span class="tag tag-feat">feat</span> 30-second install — one
+            command, zero dependencies
+          </li>
+          <li class="feat">
+            <span class="tag tag-feat">feat</span> 11 execution modes from fully
+            interactive to fully autonomous
+          </li>
+        </ul>
+      </div>
+
+      <div class="release">
+        <div class="release-header">
+          <span class="release-version">1.0 – 2.0</span>
+          <span class="release-name">The Foundation</span>
+          <span class="release-date">2026</span>
+        </div>
+        <p class="release-desc">
+          50+ iterations building the core engine. From a single prompt to a
+          complete autonomous execution system.
+        </p>
+        <ul class="changes">
+          <li class="feat">
+            <span class="tag tag-feat">feat</span> Autonomous scan-to-PR
+            pipeline — finds tasks, prioritizes, executes, commits
+          </li>
+          <li class="feat">
+            <span class="tag tag-feat">feat</span> Smart priority scoring —
+            tasks ranked by impact, urgency, and confidence
+          </li>
+          <li class="feat">
+            <span class="tag tag-feat">feat</span> Parallel execution — multiple
+            tasks run simultaneously when safe
+          </li>
+          <li class="feat">
+            <span class="tag tag-feat">feat</span> Project memory — AcePilot
+            remembers your codebase across sessions
+          </li>
+          <li class="feat">
+            <span class="tag tag-feat">feat</span> Operator memory — learns how
+            you work and adapts to your style
+          </li>
+          <li class="feat">
+            <span class="tag tag-feat">feat</span> Safety systems — automatic
+            rollback, error recovery, never commits to main
+          </li>
+          <li class="fix">
+            <span class="tag tag-fix">fix</span> 30+ correctness fixes across
+            the engine
+          </li>
+        </ul>
+      </div>
+
+      <div class="cta">
+        <p>Stay updated. New releases ship regularly.</p>
+        <a href="/#pricing">Get AcePilot Pro</a>
+      </div>
+    </div>
+  </body>
+</html>
