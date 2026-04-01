@@ -722,68 +722,7 @@
         text-decoration: none;
       }
 
-      /* Waitlist */
-      .waitlist-form {
-        max-width: 480px;
-        margin: 0 auto;
-        display: flex;
-        gap: 12px;
-      }
-      .waitlist-form input {
-        flex: 1;
-        background: var(--bg-surface);
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        padding: 12px 16px;
-        font-size: 15px;
-        color: var(--text);
-        font-family: var(--sans);
-        outline: none;
-        transition: border-color 0.2s;
-      }
-      .waitlist-form input:focus {
-        border-color: var(--accent);
-      }
-      .waitlist-form input::placeholder {
-        color: var(--text-muted);
-      }
-      .waitlist-form button {
-        background: var(--accent);
-        color: white;
-        border: none;
-        border-radius: 8px;
-        padding: 12px 24px;
-        font-size: 15px;
-        font-weight: 600;
-        font-family: var(--sans);
-        cursor: pointer;
-        transition: background 0.2s;
-        white-space: nowrap;
-      }
-      .waitlist-form button:hover {
-        background: var(--accent-dim);
-      }
-      .waitlist-note {
-        text-align: center;
-        font-size: 13px;
-        color: var(--text-muted);
-        margin-top: 12px;
-      }
-      .waitlist-success {
-        display: none;
-        text-align: center;
-        padding: 16px;
-        background: rgba(48, 209, 88, 0.1);
-        border: 1px solid rgba(48, 209, 88, 0.2);
-        border-radius: 8px;
-        color: var(--green);
-        font-size: 15px;
-      }
-
       @media (max-width: 640px) {
-        .waitlist-form {
-          flex-direction: column;
-        }
         .pricing-grid {
           grid-template-columns: 1fr;
         }
@@ -1028,9 +967,7 @@
           <a href="#features">Features</a>
           <a href="#modes">Modes</a>
           <a href="#pricing">Pricing</a>
-          <a href="https://github.com/acepilot-app/acepilot" class="nav-cta"
-            >Get AcePilot</a
-          >
+          <a href="#install" class="nav-cta">Install free</a>
         </div>
       </div>
     </nav>
@@ -1077,7 +1014,18 @@
           </div>
           <div class="stat">
             <div class="stat-num">42%</div>
-            <div class="stat-label">Faster by session 10</div>
+            <div class="stat-label">
+              Faster by session 10
+              <span
+                style="
+                  display: block;
+                  font-size: 10px;
+                  opacity: 0.5;
+                  margin-top: 2px;
+                "
+                >Playbook replay cycle time, session 1 vs 10</span
+              >
+            </div>
           </div>
           <div class="stat">
             <div class="stat-num">30s</div>
@@ -1487,10 +1435,10 @@
 
         <div class="pricing-grid">
           <div class="price-card">
-            <div class="price-tier">Starter</div>
-            <h3>Free trial</h3>
+            <div class="price-tier">Free</div>
+            <h3>Free forever</h3>
             <div class="price-amount">$0</div>
-            <div class="price-period">14 days, no card required</div>
+            <div class="price-period">No card required. No time limit.</div>
             <ul class="price-features">
               <li>Plan + Go modes (interactive)</li>
               <li>Confidence gate + circuit breaker</li>
@@ -1543,42 +1491,34 @@
               <li>Custom adapter configs for your stack</li>
               <li>Onboarding setup + dedicated support</li>
             </ul>
-            <a href="#waitlist" class="price-btn outline">Join waitlist</a>
+            <a
+              href="mailto:hello@acepilot.app?subject=AcePilot%20Teams"
+              class="price-btn outline"
+              >Contact us</a
+            >
           </div>
         </div>
       </div>
     </section>
 
-    <section id="waitlist" class="cta-section">
+    <section id="cta" class="cta-section">
       <div class="container">
-        <h2>Get early access to AcePilot Pro</h2>
-        <p>Join the waitlist. We'll notify you when Pro launches.</p>
-        <div id="waitlist-form-container">
-          <form class="waitlist-form" onsubmit="submitWaitlist(event)">
-            <input
-              type="email"
-              name="email"
-              placeholder="you@company.com"
-              required
-            />
-            <button type="submit">Join waitlist</button>
-          </form>
-          <p class="waitlist-note">
-            No spam. Just a launch email when Pro is ready.
-          </p>
-        </div>
-        <div id="waitlist-success" class="waitlist-success">
-          You're on the list. We'll email you when Pro launches.
-        </div>
-        <p class="cta-footnote">Or start with the free version now:</p>
-        <a href="https://github.com/acepilot-app/acepilot" class="btn-primary"
-          >View on GitHub</a
+        <h2>Start shipping faster today</h2>
+        <p>
+          Free forever. Upgrade when you want playbooks, god mode, and deploy
+          pipeline.
+        </p>
+        <a href="#install" class="btn-primary">Install free</a>
+        <a href="/api/checkout.php?plan=pro_monthly" class="btn-secondary"
+          >Get Pro &mdash; $29/mo</a
         >
-        <a
-          href="https://github.com/acepilot-app/acepilot/blob/main/acepilot-10.0/README.md"
-          class="btn-secondary"
-          >Read the docs</a
-        >
+        <p class="cta-footnote" style="margin-top: 24px">
+          <a href="https://github.com/acepilot-app/acepilot">GitHub</a> &middot;
+          <a
+            href="https://github.com/acepilot-app/acepilot/blob/main/acepilot-10.0/README.md"
+            >Docs</a
+          >
+        </p>
       </div>
     </section>
 
@@ -1601,32 +1541,6 @@
           btn.textContent = "Copied!";
           setTimeout(() => (btn.textContent = "Copy"), 2000);
         });
-      }
-
-      /* ── Waitlist ── */
-      function submitWaitlist(e) {
-        e.preventDefault();
-        const form = e.target;
-        const email = form.querySelector('input[name="email"]').value;
-        const btn = form.querySelector("button");
-        btn.textContent = "Joining...";
-        btn.disabled = true;
-        fetch("/waitlist.php", {
-          method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: "email=" + encodeURIComponent(email),
-        })
-          .then((r) => r.json())
-          .then(() => {
-            document.getElementById("waitlist-form-container").style.display =
-              "none";
-            document.getElementById("waitlist-success").style.display = "block";
-          })
-          .catch(() => {
-            btn.textContent = "Join waitlist";
-            btn.disabled = false;
-            alert("Something went wrong. Try again.");
-          });
       }
 
       /* ── Typewriter demo ── */
@@ -1795,9 +1709,40 @@
         ).observe(sec);
       }
 
+      /* ── Analytics events ── */
+      function track(name, props) {
+        /* Plausible: drop in <script data-domain="acepilot.app" src="..."> to activate */
+        if (window.plausible) window.plausible(name, { props });
+        /* GA4 fallback */
+        if (window.gtag) window.gtag("event", name, props);
+      }
+
       document.addEventListener("DOMContentLoaded", () => {
         initReveal();
         initDemoObserver();
+
+        /* ── Track key conversion events ── */
+        document
+          .querySelectorAll(".copy-btn")
+          .forEach((b) =>
+            b.addEventListener("click", () => track("install-copy")),
+          );
+        document.querySelectorAll('a[href*="checkout.php"]').forEach((a) =>
+          a.addEventListener("click", () =>
+            track("checkout-click", {
+              plan: new URL(a.href, location).searchParams.get("plan"),
+            }),
+          ),
+        );
+        document
+          .querySelectorAll(
+            '.price-btn.free, .nav-cta, .btn-primary[href="#install"]',
+          )
+          .forEach((a) =>
+            a.addEventListener("click", () =>
+              track("cta-click", { label: a.textContent.trim() }),
+            ),
+          );
 
         /* ── Hamburger menu ── */
         const hbBtn = document.querySelector(".nav-hamburger");
