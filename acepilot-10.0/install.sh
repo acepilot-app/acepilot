@@ -38,7 +38,7 @@ install_file() {
 }
 
 install_user() {
-  echo -e "${BOLD}Installing AcePilot 10.0 — Autonomous Business Intelligence${NC}"
+  echo -e "${BOLD}Installing AcePilot 10.0 — Self-Evolving Autonomy${NC}"
   echo ""
 
   # Core files

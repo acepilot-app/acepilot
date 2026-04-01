@@ -1,7 +1,9 @@
-# Old versions (keep only current)
+# Old versions (archive + individual)
+archive/
 autopilot-v*/
 acepilot-v49/
 acepilot-5.0/
+acepilot-6.0/
 
 # State files (per-project, not distributed)
 .claude/state/
@@ -21,6 +23,7 @@ site/waitlist.csv
 # OS
 .DS_Store
 Thumbs.db
+.git 2/
 
 # Internal docs (not for public distribution)
 RESEARCH_*.md

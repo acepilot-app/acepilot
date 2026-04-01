@@ -7,7 +7,31 @@ Starting with this release, AcePilot uses public versioning: **Major.Minor** (e.
 - `v49.1` (internal) = `5.0` (public) — first public release
 - Minor bumps (5.01, 5.02...) for fixes and refinements
 - Major bumps (6.0, 7.0...) for architectural changes
-- Directory: `acepilot-9.0/` (current)
+- Directory: `acepilot-10.0/` (current)
+
+## 10.0 — Self-Evolving Autonomy
+
+Ship today. Ship faster tomorrow. AcePilot now captures what works, replays proven workflows, and auto-tunes its own execution engine from data. Session 1 figures it out. Session 10 runs it from memory.
+
+### What changed:
+
+- **Playbook System** (PLAYBOOKS.md, 13th state file) — after a successful creation session, AcePilot captures the task sequence, decisions, and specialist routing as a replayable playbook. Next time a matching directive arrives, the playbook replays instead of re-deriving everything. Proven workflows get faster every time.
+- **Self-Calibration Engine** — every 10 sessions, AcePilot reads its own ANALYTICS.md and adjusts: gate thresholds shift based on accuracy, specialist routing weights update based on precision trends, ceremony tiers recalibrate based on cycle time drift. Not just logging data — changing behavior from data.
+- **Session Chains** — objectives persist across sessions via handoff state in CONTEXT.md. Next session resumes with momentum instead of re-scanning. 5-session chain limit forces re-evaluation. Chains are what separate a tool from a teammate.
+- **Deploy Pipeline** — auto-detects platform (Vercel, Netlify, Docker, GitHub Pages, FTP/file manager), builds, deploys, and runs the full VERIFY DEPLOY checklist. The last mile, automated. Opt-out with `[no-deploy]`.
+- **@researcher PLAYBOOK MODE** — new mode for capturing and analyzing execution workflows during playbook creation.
+- **@strategist gains chain + deploy lenses** — reviews session chain continuity and deployment verification alongside existing analytics and growth analysis.
+- **ANALYTICS.md expanded** — two new sections: Calibration Log (self-calibration cycle results) and Chain Log (multi-session objective tracking).
+- **ABSORB expanded** — three new steps: session chain pickup (step 9), playbook match (step 10), deploy detection (step 12). Smarter startup.
+
+### What was NOT changed:
+
+- All v9.0 features (Directive Expansion Engine, IDENTITY.md, Business Decision Framework) — still active
+- Four feedback loops (gate calibration, specialist precision, cycle time, error recovery) — still active
+- Revenue-first Algorithm step — still active
+- Never-compact policy on all append-only files
+- Two-attempts-max circuit breaker
+- Flat file state system
 
 ## 9.0 — Autonomous Business Intelligence
 
