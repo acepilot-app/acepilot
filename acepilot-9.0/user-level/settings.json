@@ -1,0 +1,42 @@
+{
+  "statusLine": {
+    "type": "command",
+    "command": "cwd=$(cat | sed -n 's/.*\"cwd\"[[:space:]]*:[[:space:]]*\"\\([^\"]*\\)\".*/\\1/p'); proj=$(basename \"$cwd\"); mode=$(cat \"$cwd/.claude/state/MODE\" 2>/dev/null); if [ -n \"$mode\" ]; then m=$(echo \"$mode\" | cut -d: -f1 | tr -d ' '); d=$(grep -cE '- \\[x\\]|- \\[~\\]' \"$cwd/.claude/state/TASKS.md\" 2>/dev/null || echo 0); t=$(grep -c '- \\[' \"$cwd/.claude/state/TASKS.md\" 2>/dev/null || echo 0); [ \"$t\" -gt 0 ] && echo \"ACE $proj $m $d/$t\" || echo \"ACE $proj $m\"; else echo \"ACE $proj\"; fi"
+  },
+  "permissions": {
+    "allow": [
+      "Read",
+      "Write",
+      "Edit",
+      "MultiEdit",
+      "Glob",
+      "Grep",
+      "WebFetch",
+      "WebSearch",
+      "TodoRead",
+      "TodoWrite",
+      "Bash(*)",
+      "mcp__*"
+    ],
+    "deny": [
+      "Bash(rm -rf *)",
+      "Bash(rm -rf.*)",
+      "Bash(rm -r /*)",
+      "Bash(rm -r .*)",
+      "Bash(sudo rm*)",
+      "Bash(sudo chmod*)",
+      "Bash(chmod 777*)",
+      "Bash(git push*--force*)",
+      "Bash(git push*-f *)",
+      "Bash(git reset --hard*)",
+      "Bash(git checkout -- .)",
+      "Bash(git clean -fd*)",
+      "Bash(curl*|*bash*)",
+      "Bash(wget*|*bash*)",
+      "Bash(*DROP TABLE*)",
+      "Bash(*DROP DATABASE*)",
+      "Bash(*> /dev/sd*)",
+      "Bash(*mkfs*)"
+    ]
+  }
+}
