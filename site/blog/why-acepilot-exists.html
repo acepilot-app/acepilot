@@ -1,0 +1,650 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Why AcePilot Exists — The Problem with AI Coding Assistants</title>
+    <meta
+      name="description"
+      content="Claude Code is powerful but forgets everything between sessions. It doesn't review its own code or learn from mistakes. AcePilot fixes that with 14 state files and 6 specialist agents."
+    />
+    <meta
+      property="og:title"
+      content="Why AcePilot Exists — The Problem with AI Coding Assistants"
+    />
+    <meta
+      property="og:description"
+      content="Claude Code forgets everything between sessions. AcePilot fixes that with persistent state, specialist agents, and self-evolving autonomy."
+    />
+    <meta property="og:type" content="article" />
+    <meta
+      property="og:url"
+      content="https://acepilot.app/blog/why-acepilot-exists.html"
+    />
+    <meta property="og:image" content="https://acepilot.app/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link
+      rel="canonical"
+      href="https://acepilot.app/blog/why-acepilot-exists.html"
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230f172a'/><path fill='%2338bdf8' d='M16 4 L6 27 L16 19 L26 27 Z'/></svg>"
+    />
+    <script
+      defer
+      data-domain="acepilot.app"
+      src="https://plausible.io/js/script.tagged-events.js"
+    ></script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Why AcePilot Exists",
+        "description": "Claude Code forgets everything between sessions. AcePilot fixes that with persistent state, specialist agents, and self-evolving autonomy.",
+        "datePublished": "2026-04-01",
+        "author": {
+          "@type": "Person",
+          "name": "Paulo de Vries",
+          "url": "https://github.com/paulodevries"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "AcePilot",
+          "url": "https://acepilot.app"
+        }
+      }
+    </script>
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --bg: #0a0a0b;
+        --bg-surface: #111113;
+        --bg-elevated: #1a1a1e;
+        --text: #e8e8ed;
+        --text-muted: #a1a1a6;
+        --accent: #38bdf8;
+        --accent-dim: #0ea5e9;
+        --green: #30d158;
+        --border: #2c2c2e;
+        --mono:
+          "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas,
+          monospace;
+        --sans:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: var(--sans);
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.8;
+        -webkit-font-smoothing: antialiased;
+      }
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      .container {
+        max-width: 680px;
+        margin: 0 auto;
+        padding: 0 clamp(16px, 4vw, 40px);
+      }
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        background: rgba(10, 10, 11, 0.85);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-bottom: 1px solid var(--border);
+      }
+      nav .container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 56px;
+        max-width: 680px;
+      }
+      .nav-logo {
+        font-family: var(--mono);
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        text-decoration: none;
+      }
+      .nav-links {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+      }
+      .nav-links a {
+        color: var(--text-muted);
+        font-size: 14px;
+      }
+      .nav-links a:hover {
+        color: var(--text);
+        text-decoration: none;
+      }
+      .nav-cta {
+        background: var(--accent);
+        color: #0a0a0b !important;
+        padding: 6px 16px;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      article {
+        padding: 120px 0 60px;
+      }
+      .article-meta {
+        font-family: var(--mono);
+        font-size: 13px;
+        color: var(--text-muted);
+        margin-bottom: 16px;
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+      .article-tag {
+        background: rgba(56, 189, 248, 0.1);
+        color: var(--accent);
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 11px;
+      }
+      article h1 {
+        font-size: clamp(28px, 5vw, 40px);
+        font-weight: 800;
+        line-height: 1.15;
+        letter-spacing: -0.5px;
+        margin-bottom: 24px;
+      }
+      article h1 span {
+        color: var(--accent);
+      }
+      .article-lead {
+        font-size: 18px;
+        color: var(--text-muted);
+        line-height: 1.7;
+        margin-bottom: 40px;
+        border-left: 3px solid var(--accent);
+        padding-left: 20px;
+      }
+      article h2 {
+        font-size: 24px;
+        font-weight: 700;
+        margin: 48px 0 16px;
+        letter-spacing: -0.3px;
+      }
+      article h3 {
+        font-size: 18px;
+        font-weight: 600;
+        margin: 32px 0 12px;
+      }
+      article p {
+        margin-bottom: 20px;
+        font-size: 16px;
+      }
+      article ul,
+      article ol {
+        margin-bottom: 20px;
+        padding-left: 24px;
+      }
+      article li {
+        margin-bottom: 8px;
+        font-size: 16px;
+      }
+      .code-block {
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 20px;
+        font-family: var(--mono);
+        font-size: 13px;
+        line-height: 1.8;
+        overflow-x: auto;
+        margin-bottom: 24px;
+      }
+      .code-block .comment {
+        color: var(--text-muted);
+      }
+      .code-block .cmd {
+        color: var(--green);
+      }
+      .code-block .prompt {
+        color: var(--accent);
+        user-select: none;
+      }
+      .code-block .output {
+        color: var(--text-muted);
+      }
+      .callout {
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-left: 3px solid var(--accent);
+        border-radius: 8px;
+        padding: 20px 24px;
+        margin: 24px 0;
+        font-size: 15px;
+      }
+      .callout strong {
+        color: var(--accent);
+      }
+
+      .article-cta {
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 32px;
+        text-align: center;
+        margin: 48px 0;
+      }
+      .article-cta h2 {
+        font-size: 22px;
+        margin: 0 0 8px;
+      }
+      .article-cta p {
+        color: var(--text-muted);
+        margin-bottom: 20px;
+        font-size: 15px;
+      }
+      .btn-primary {
+        display: inline-block;
+        background: var(--accent);
+        color: #0a0a0b;
+        padding: 12px 28px;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 600;
+        transition:
+          background 0.2s,
+          transform 0.1s;
+      }
+      .btn-primary:hover {
+        background: var(--accent-dim);
+        text-decoration: none;
+        transform: translateY(-1px);
+      }
+
+      .share-bar {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        margin: 40px 0;
+        padding: 16px 0;
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+      }
+      .share-bar span {
+        font-size: 13px;
+        color: var(--text-muted);
+        font-family: var(--mono);
+      }
+      .share-btn {
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        color: var(--text-muted);
+        font-size: 13px;
+        padding: 6px 14px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-decoration: none;
+      }
+      .share-btn:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+        text-decoration: none;
+      }
+
+      footer {
+        border-top: 1px solid var(--border);
+        padding: 32px 0;
+        text-align: center;
+        font-size: 13px;
+        color: var(--text-muted);
+      }
+      footer a {
+        color: var(--text-muted);
+      }
+      footer a:hover {
+        color: var(--text);
+      }
+
+      @media (max-width: 640px) {
+        article {
+          padding: 90px 0 40px;
+        }
+        article h1 {
+          font-size: 28px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div class="container">
+        <a href="/" class="nav-logo">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 32 32"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect width="32" height="32" rx="8" fill="#0f172a" />
+            <path fill="#38bdf8" d="M16 4 L6 27 L16 19 L26 27 Z" />
+          </svg>
+          AcePilot
+        </a>
+        <div class="nav-links">
+          <a href="/blog/">Blog</a>
+          <a href="/#pricing">Pricing</a>
+          <a
+            href="https://github.com/acepilot-app/acepilot"
+            class="nav-cta"
+            rel="noopener noreferrer"
+            target="_blank"
+            >Install free</a
+          >
+        </div>
+      </div>
+    </nav>
+
+    <article class="container">
+      <div class="article-meta">
+        <span>April 1, 2026</span>
+        <span class="article-tag">Origin Story</span>
+        <span>5 min read</span>
+      </div>
+
+      <h1>Why <span>AcePilot</span> Exists</h1>
+
+      <p class="article-lead">
+        I built AcePilot because Claude Code kept making the same mistakes
+        across sessions. It forgot architectural decisions. It skipped security
+        reviews. It had no idea what it shipped yesterday. The fix wasn't a
+        better prompt &mdash; it was a persistent execution system.
+      </p>
+
+      <h2>The problem nobody talks about</h2>
+
+      <p>
+        AI coding assistants are impressive in a single session. Give Claude
+        Code a clear task, and it performs. But start a new session tomorrow,
+        and everything resets. The context is gone. The decisions are lost. The
+        patterns it learned vanish.
+      </p>
+
+      <p>
+        I noticed this after version 30-something of what would become AcePilot.
+        I was using Claude Code to build Claude Code tooling &mdash; deeply
+        recursive, I know. And every session, I'd watch the same failure modes:
+      </p>
+
+      <ul>
+        <li>
+          <strong>Amnesia.</strong> It didn't remember that we decided to use
+          flat files instead of a database. So it kept proposing database
+          solutions.
+        </li>
+        <li>
+          <strong>No self-review.</strong> It would ship code with inline
+          onclick handlers (XSS risk) because there was no security specialist
+          checking the diff.
+        </li>
+        <li>
+          <strong>Scope creep.</strong> Ask it to fix a typo, and it refactors
+          the entire module. No sense of proportional response.
+        </li>
+        <li>
+          <strong>Repeated mistakes.</strong> Same error three sessions in a
+          row. No error memory, no pattern recognition, no learning.
+        </li>
+      </ul>
+
+      <p>
+        These aren't bugs in Claude Code. Claude Code is excellent at what it
+        does. These are gaps in the <em>execution layer</em> &mdash; the
+        difference between a smart assistant and an autonomous teammate.
+      </p>
+
+      <h2>What a teammate actually does</h2>
+
+      <p>
+        Think about what makes a great engineering teammate. They don't just
+        write code. They:
+      </p>
+
+      <ul>
+        <li>Remember every decision the team has made</li>
+        <li>Review their own work before submitting it</li>
+        <li>Know when to ask and when to just handle it</li>
+        <li>Get faster at recurring tasks over time</li>
+        <li>Pick up where they left off the next morning</li>
+        <li>Scale their ceremony to the size of the task</li>
+      </ul>
+
+      <p>
+        None of these require being smarter. They require
+        <em>persistent state</em> and <em>structured execution</em>. That's what
+        AcePilot adds.
+      </p>
+
+      <h2>The solution: 14 state files and 6 specialists</h2>
+
+      <p>
+        AcePilot is 12 config files that install into Claude Code's native
+        config structure. No fork, no wrapper, no separate tool. It adds a
+        <code>/acepilot</code> command that transforms Claude Code's behavior
+        for that session.
+      </p>
+
+      <h3>Persistent state that survives sessions</h3>
+
+      <p>
+        14 state files in <code>.claude/state/</code>. TASKS.md tracks work.
+        DECISIONS.md is append-only &mdash; every autonomous decision logged
+        permanently. KNOWLEDGE.md accumulates product understanding with
+        freshness markers. ANALYTICS.md feeds back into the engine so gates and
+        routing get smarter over time. PLAYBOOKS.md captures proven workflows
+        for replay.
+      </p>
+
+      <div class="callout">
+        <strong>Key insight:</strong> The state files are the moat. Without
+        them, every session starts from zero. With them, session 10 is
+        measurably faster than session 1 &mdash; because the engine has learned
+        your project, your patterns, and your preferences.
+      </div>
+
+      <h3>6 specialist agents that review every diff</h3>
+
+      <p>
+        After implementation, before commit, specialist agents review the diff
+        from their domain lens:
+      </p>
+
+      <ul>
+        <li>
+          <strong>@designer</strong> &mdash; UX heuristics from Nielsen's 249
+          usability problems, mobile-first from Wroblewski, accessibility Big 6
+        </li>
+        <li>
+          <strong>@security</strong> &mdash; Schneier's attacker mindset, OWASP
+          Top 3 (40%+ of vulnerabilities), secrets detection
+        </li>
+        <li>
+          <strong>@architect</strong> &mdash; Gregg's USE method for
+          performance, N+1 detection, coupling analysis from Fowler
+        </li>
+        <li>
+          <strong>@strategist</strong> &mdash; conversion optimization,
+          analytics instrumentation, growth patterns from Ellis &amp; Rachitsky
+        </li>
+        <li>
+          <strong>@reviewer</strong> &mdash; independent code review with
+          four-status qualify (done, concerns, needs context, blocked)
+        </li>
+        <li>
+          <strong>@researcher</strong> &mdash; codebase scanning, task
+          prioritization, knowledge seeding, strategy research
+        </li>
+      </ul>
+
+      <p>
+        Smart dispatch routes specialists by diff content. CSS changes get
+        @designer. Auth changes get @security. Not every specialist on every
+        task &mdash; that would be noise. The routing itself calibrates from
+        historical precision data.
+      </p>
+
+      <h3>A confidence gate that thinks in doors</h3>
+
+      <p>
+        Inspired by Bezos's Type 1 / Type 2 decision framework. Reversible
+        changes (two-way doors) execute immediately. Irreversible changes
+        (one-way doors) get careful deliberation. Most changes are two-way doors
+        treated as one-way doors &mdash; that kills speed.
+      </p>
+
+      <div class="code-block">
+        <span class="comment"># Two-way door: execute instantly</span><br />
+        <span class="output"
+          >AUTO: CSS fix on internal page. Reversible with git revert.</span
+        ><br />
+        <br />
+        <span class="comment"># One-way door: stop and present options</span
+        ><br />
+        <span class="output"
+          >ASK: Delete API endpoint. Consumers depend on it. Show
+          alternatives.</span
+        >
+      </div>
+
+      <h2>What this looks like in practice</h2>
+
+      <p>Here's a real session. One command:</p>
+
+      <div class="code-block">
+        <span class="prompt">> </span
+        ><span class="cmd">/acepilot god website</span>
+      </div>
+
+      <p>
+        AcePilot classified the archetype (static site), decided the revenue
+        model (freemium, 3-tier pricing), generated the identity (dark theme,
+        developer aesthetic), expanded into 8 tasks, executed all of them, ran
+        specialist reviews that caught 2 XSS risks and 3 conversion
+        improvements, auto-fixed everything, and committed a buildable
+        checkpoint.
+      </p>
+
+      <p>
+        Total time: one session. Total questions asked: zero. Total files
+        created: 9 pages with SEO, analytics, social proof, comparison pages, a
+        badge system, and share mechanics.
+      </p>
+
+      <p>That's the landing page you're reading this on.</p>
+
+      <h2>Why now?</h2>
+
+      <p>
+        Claude Code reached the threshold where autonomous execution is
+        practical. The base model is smart enough. What's missing is the
+        <em>scaffolding</em> &mdash; the state management, the review pipeline,
+        the confidence calibration, the session continuity.
+      </p>
+
+      <p>
+        No other tool in this space does this. Cursor is a great IDE but doesn't
+        learn across sessions. Bolt and v0 generate code but don't review it.
+        GitHub Copilot suggests completions but doesn't execute autonomously.
+        AcePilot fills the gap between "AI that writes code" and "AI that ships
+        products."
+      </p>
+
+      <h2>Try it</h2>
+
+      <p>
+        30 seconds to install. Free tier includes plan + go modes &mdash; full
+        state system, two execution modes, no time limit. Pro unlocks auto,
+        ship, and god modes.
+      </p>
+
+      <div class="code-block">
+        <span class="prompt">$ </span
+        ><span class="cmd"
+          >git clone https://github.com/acepilot-app/acepilot.git</span
+        ><br />
+        <span class="prompt">$ </span
+        ><span class="cmd">cd acepilot && ./acepilot-11.0/install.sh</span
+        ><br />
+        <br />
+        <span class="comment"># Then in any project</span><br />
+        <span class="prompt">$ </span><span class="cmd">claude</span><br />
+        <span class="prompt">> </span
+        ><span class="cmd">/acepilot god build my SaaS</span>
+      </div>
+
+      <div class="share-bar">
+        <span>Share:</span>
+        <a
+          href="https://twitter.com/intent/tweet?text=Why%20AcePilot%20Exists%20%E2%80%94%20persistent%20state%20%2B%206%20specialist%20agents%20for%20Claude%20Code.%20Session%2010%20is%2042%25%20faster%20than%20session%201.&url=https://acepilot.app/blog/why-acepilot-exists.html"
+          class="share-btn plausible-event-name=Blog+Share+Twitter"
+          rel="noopener noreferrer"
+          target="_blank"
+          >Twitter/X</a
+        >
+        <button
+          class="share-btn plausible-event-name=Blog+Share+CopyLink"
+          onclick="
+            navigator.clipboard
+              .writeText('https://acepilot.app/blog/why-acepilot-exists.html')
+              .then(() => (this.textContent = 'Copied!'))
+          "
+        >
+          Copy link
+        </button>
+      </div>
+
+      <div class="article-cta">
+        <h2>Ready to ship faster?</h2>
+        <p>Install in 30 seconds. Free plan + go modes forever.</p>
+        <a
+          href="https://github.com/acepilot-app/acepilot"
+          class="btn-primary plausible-event-name=Blog+CTA+Install"
+          rel="noopener noreferrer"
+          target="_blank"
+          >Install AcePilot free</a
+        >
+      </div>
+    </article>
+
+    <footer>
+      <div class="container">
+        <a href="/">AcePilot</a> &middot; <a href="/blog/">Blog</a> &middot;
+        <a href="/demo/">Demo</a> &middot;
+        <a href="/compare/acepilot-vs-cursor.html">Compare</a>
+      </div>
+    </footer>
+  </body>
+</html>

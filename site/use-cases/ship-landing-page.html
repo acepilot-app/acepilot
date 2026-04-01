@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ship a Landing Page with AI in One Command — AcePilot</title>
+    <meta
+      name="description"
+      content="Type /acepilot god website and get a conversion-optimized landing page with pricing, SEO, analytics, comparison pages, and social proof. Shipped in one session."
+    />
+    <meta
+      property="og:title"
+      content="Ship a Landing Page with AI in One Command"
+    />
+    <meta
+      property="og:description"
+      content="One command: /acepilot god website. Result: a full landing page with pricing, SEO, analytics, and 6 specialist reviews."
+    />
+    <meta property="og:type" content="article" />
+    <meta
+      property="og:url"
+      content="https://acepilot.app/use-cases/ship-landing-page.html"
+    />
+    <meta property="og:image" content="https://acepilot.app/og-image.png" />
+    <link
+      rel="canonical"
+      href="https://acepilot.app/use-cases/ship-landing-page.html"
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230f172a'/><path fill='%2338bdf8' d='M16 4 L6 27 L16 19 L26 27 Z'/></svg>"
+    />
+    <script
+      defer
+      data-domain="acepilot.app"
+      src="https://plausible.io/js/script.tagged-events.js"
+    ></script>
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --bg: #0a0a0b;
+        --bg-surface: #111113;
+        --bg-elevated: #1a1a1e;
+        --text: #e8e8ed;
+        --text-muted: #a1a1a6;
+        --accent: #38bdf8;
+        --accent-dim: #0ea5e9;
+        --green: #30d158;
+        --border: #2c2c2e;
+        --mono:
+          "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas,
+          monospace;
+        --sans:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: var(--sans);
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.8;
+        -webkit-font-smoothing: antialiased;
+      }
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      .container {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 0 clamp(16px, 4vw, 40px);
+      }
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        background: rgba(10, 10, 11, 0.85);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-bottom: 1px solid var(--border);
+      }
+      nav .container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 56px;
+        max-width: 720px;
+      }
+      .nav-logo {
+        font-family: var(--mono);
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        text-decoration: none;
+      }
+      .nav-links {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+      }
+      .nav-links a {
+        color: var(--text-muted);
+        font-size: 14px;
+      }
+      .nav-links a:hover {
+        color: var(--text);
+        text-decoration: none;
+      }
+      .nav-cta {
+        background: var(--accent);
+        color: #0a0a0b !important;
+        padding: 6px 16px;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .hero {
+        padding: 120px 0 40px;
+      }
+      .hero-breadcrumb {
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--text-muted);
+        margin-bottom: 16px;
+      }
+      .hero-breadcrumb a {
+        color: var(--text-muted);
+      }
+      .hero-breadcrumb a:hover {
+        color: var(--accent);
+      }
+      .hero h1 {
+        font-size: clamp(28px, 4vw, 40px);
+        font-weight: 800;
+        line-height: 1.15;
+        letter-spacing: -0.5px;
+        margin-bottom: 16px;
+      }
+      .hero h1 span {
+        color: var(--accent);
+      }
+      .hero-sub {
+        font-size: 17px;
+        color: var(--text-muted);
+        max-width: 540px;
+      }
+
+      article {
+        padding: 40px 0 60px;
+      }
+      article h2 {
+        font-size: 24px;
+        font-weight: 700;
+        margin: 40px 0 14px;
+        letter-spacing: -0.3px;
+      }
+      article h3 {
+        font-size: 18px;
+        font-weight: 600;
+        margin: 28px 0 10px;
+      }
+      article p {
+        margin-bottom: 18px;
+        font-size: 16px;
+      }
+      article ul,
+      article ol {
+        margin-bottom: 18px;
+        padding-left: 24px;
+      }
+      article li {
+        margin-bottom: 6px;
+        font-size: 16px;
+      }
+
+      .code-block {
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 20px;
+        font-family: var(--mono);
+        font-size: 13px;
+        line-height: 1.8;
+        overflow-x: auto;
+        margin-bottom: 24px;
+      }
+      .code-block .comment {
+        color: var(--text-muted);
+      }
+      .code-block .cmd {
+        color: var(--green);
+      }
+      .code-block .prompt {
+        color: var(--accent);
+        user-select: none;
+      }
+      .code-block .output {
+        color: var(--text-muted);
+      }
+
+      .steps {
+        counter-reset: step;
+        margin: 24px 0;
+      }
+      .step {
+        counter-increment: step;
+        position: relative;
+        padding-left: 48px;
+        margin-bottom: 28px;
+      }
+      .step::before {
+        content: counter(step);
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 32px;
+        height: 32px;
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--mono);
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--accent);
+      }
+      .step h3 {
+        margin: 0 0 6px;
+        font-size: 16px;
+      }
+      .step p {
+        margin: 0;
+        font-size: 14px;
+        color: var(--text-muted);
+      }
+
+      .result-box {
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 24px;
+        margin: 32px 0;
+      }
+      .result-box h3 {
+        font-size: 16px;
+        margin: 0 0 12px;
+        color: var(--accent);
+        font-family: var(--mono);
+      }
+      .result-box ul {
+        margin: 0;
+        padding-left: 20px;
+      }
+      .result-box li {
+        font-size: 14px;
+        color: var(--text-muted);
+        margin-bottom: 4px;
+      }
+
+      .cta-box {
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 32px;
+        text-align: center;
+        margin: 48px 0;
+      }
+      .cta-box h2 {
+        font-size: 22px;
+        margin: 0 0 8px;
+      }
+      .cta-box p {
+        color: var(--text-muted);
+        margin-bottom: 20px;
+        font-size: 15px;
+      }
+      .btn-primary {
+        display: inline-block;
+        background: var(--accent);
+        color: #0a0a0b;
+        padding: 12px 28px;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 600;
+        transition:
+          background 0.2s,
+          transform 0.1s;
+      }
+      .btn-primary:hover {
+        background: var(--accent-dim);
+        text-decoration: none;
+        transform: translateY(-1px);
+      }
+
+      footer {
+        border-top: 1px solid var(--border);
+        padding: 24px 0;
+        text-align: center;
+        font-size: 13px;
+        color: var(--text-muted);
+      }
+      footer a {
+        color: var(--text-muted);
+      }
+      footer a:hover {
+        color: var(--text);
+      }
+      @media (max-width: 640px) {
+        .hero {
+          padding: 90px 0 32px;
+        }
+        .hero h1 {
+          font-size: 28px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div class="container">
+        <a href="/" class="nav-logo">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 32 32"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect width="32" height="32" rx="8" fill="#0f172a" />
+            <path fill="#38bdf8" d="M16 4 L6 27 L16 19 L26 27 Z" />
+          </svg>
+          AcePilot
+        </a>
+        <div class="nav-links">
+          <a href="/use-cases/">Use Cases</a>
+          <a href="/demo/">Demo</a>
+          <a
+            href="https://github.com/acepilot-app/acepilot"
+            class="nav-cta"
+            rel="noopener noreferrer"
+            target="_blank"
+            >Install free</a
+          >
+        </div>
+      </div>
+    </nav>
+
+    <header class="hero container">
+      <div class="hero-breadcrumb">
+        <a href="/use-cases/">Use Cases</a> / Ship a Landing Page
+      </div>
+      <h1>Ship a landing page <span>in one command</span></h1>
+      <p class="hero-sub">
+        Type <code>/acepilot god website</code> and get a conversion-optimized
+        page with pricing, SEO, analytics, and specialist reviews.
+      </p>
+    </header>
+
+    <article class="container">
+      <h2>The command</h2>
+
+      <div class="code-block">
+        <span class="prompt">> </span
+        ><span class="cmd">/acepilot god website</span>
+      </div>
+
+      <p>
+        That's it. One word after "god" and AcePilot handles the rest. Here's
+        what happens behind the scenes:
+      </p>
+
+      <h2>What AcePilot does</h2>
+
+      <div class="steps">
+        <div class="step">
+          <h3>Classifies the archetype</h3>
+          <p>
+            "website" maps to static site, conversion-optimized. Dark theme for
+            developer tools, monospace accents, direct copy.
+          </p>
+        </div>
+        <div class="step">
+          <h3>Decides the revenue model</h3>
+          <p>
+            Freemium with 3-tier pricing (charm pricing: $0 / $29 / $79). "Most
+            Popular" badge on mid tier. Annual discount at 20%.
+          </p>
+        </div>
+        <div class="step">
+          <h3>Expands into tasks</h3>
+          <p>
+            8 tasks generated: landing page, SEO infrastructure, comparison
+            pages, badge system, blog scaffold, social proof, share mechanics,
+            analytics.
+          </p>
+        </div>
+        <div class="step">
+          <h3>Executes autonomously</h3>
+          <p>
+            Each task: orient, confidence gate, execute, verify, specialist
+            review. Reversible changes execute instantly. Every commit is
+            buildable.
+          </p>
+        </div>
+        <div class="step">
+          <h3>Specialist review</h3>
+          <p>
+            @designer checks UX and accessibility. @security scans for XSS and
+            missing headers. @strategist optimizes CTA copy and conversion flow.
+            Findings auto-fixed.
+          </p>
+        </div>
+        <div class="step">
+          <h3>Ships</h3>
+          <p>
+            Final diff reviewed by all specialists. Git commit. Ready to push.
+            Deploy pipeline detects your platform and provides instructions.
+          </p>
+        </div>
+      </div>
+
+      <div class="result-box">
+        <h3>What you get</h3>
+        <ul>
+          <li>Landing page with hero, features, pricing, testimonials, CTA</li>
+          <li>
+            robots.txt, sitemap.xml, JSON-LD structured data, canonical URLs
+          </li>
+          <li>
+            3 comparison pages targeting "[product] vs [competitor]" searches
+          </li>
+          <li>Embeddable "Built with" badge system with ref tracking</li>
+          <li>Blog scaffold with 4 seed post cards</li>
+          <li>Share mechanics (Twitter/X, copy link, GitHub stars)</li>
+          <li>Plausible analytics on all pages with tagged events</li>
+          <li>
+            Mobile responsive, dark theme,
+            <abbr title="Web Content Accessibility Guidelines">WCAG</abbr>
+            accessible
+          </li>
+        </ul>
+      </div>
+
+      <h2>Real example</h2>
+
+      <p>
+        The <a href="/">acepilot.app</a> landing page was built exactly this
+        way. One <code>/acepilot god website</code> command. The specialist
+        review caught 2 XSS vulnerabilities in dashboard onclick handlers and
+        improved CTA copy for conversion. All auto-fixed before commit.
+      </p>
+
+      <p>Total session time: under 10 minutes. Total questions asked: zero.</p>
+
+      <h2>When to use this</h2>
+
+      <ul>
+        <li>You have a product idea and need a landing page today</li>
+        <li>
+          You want SEO infrastructure from day one, not as an afterthought
+        </li>
+        <li>
+          You need pricing pages, comparison pages, and conversion funnels
+        </li>
+        <li>You want specialist security and UX review on every page</li>
+      </ul>
+
+      <h2>Try it yourself</h2>
+
+      <div class="code-block">
+        <span class="prompt">$ </span
+        ><span class="cmd"
+          >git clone https://github.com/acepilot-app/acepilot.git</span
+        ><br />
+        <span class="prompt">$ </span
+        ><span class="cmd">cd acepilot && ./acepilot-11.0/install.sh</span
+        ><br />
+        <br />
+        <span class="comment"># In your project directory</span><br />
+        <span class="prompt">$ </span><span class="cmd">claude</span><br />
+        <span class="prompt">> </span
+        ><span class="cmd">/acepilot god website</span>
+      </div>
+
+      <div class="cta-box">
+        <h2>Ready to ship your landing page?</h2>
+        <p>Free tier. No credit card. Install in 30 seconds.</p>
+        <a
+          href="https://github.com/acepilot-app/acepilot"
+          class="btn-primary plausible-event-name=UseCase+LandingPage+Install"
+          rel="noopener noreferrer"
+          target="_blank"
+          >Install AcePilot free</a
+        >
+      </div>
+    </article>
+
+    <footer>
+      <div class="container">
+        <a href="/">AcePilot</a> &middot;
+        <a href="/use-cases/">Use Cases</a> &middot;
+        <a href="/blog/">Blog</a> &middot; <a href="/demo/">Demo</a> &middot;
+        <a href="/compare/acepilot-vs-cursor.html">Compare</a>
+      </div>
+    </footer>
+  </body>
+</html>

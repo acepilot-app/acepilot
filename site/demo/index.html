@@ -1,0 +1,907 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AcePilot Demo — Try It Live in Your Browser</title>
+    <meta
+      name="description"
+      content="See AcePilot in action. Interactive terminal demo showing autonomous execution with 6 specialist agents. Watch god mode ship a full feature in one session."
+    />
+    <meta
+      property="og:title"
+      content="AcePilot Demo — Try It Live in Your Browser"
+    />
+    <meta
+      property="og:description"
+      content="Interactive terminal demo: watch AcePilot ship a full feature autonomously with 6 specialist agents."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://acepilot.app/demo/" />
+    <meta property="og:image" content="https://acepilot.app/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="canonical" href="https://acepilot.app/demo/" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230f172a'/><path fill='%2338bdf8' d='M16 4 L6 27 L16 19 L26 27 Z'/></svg>"
+    />
+    <script
+      defer
+      data-domain="acepilot.app"
+      src="https://plausible.io/js/script.tagged-events.js"
+    ></script>
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --bg: #0a0a0b;
+        --bg-surface: #111113;
+        --bg-elevated: #1a1a1e;
+        --text: #e8e8ed;
+        --text-muted: #a1a1a6;
+        --accent: #38bdf8;
+        --accent-dim: #0ea5e9;
+        --green: #30d158;
+        --yellow: #ff9f0a;
+        --red: #ff453a;
+        --purple: #a78bfa;
+        --border: #2c2c2e;
+        --mono:
+          "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas,
+          monospace;
+        --sans:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: var(--sans);
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      .container {
+        max-width: 860px;
+        margin: 0 auto;
+        padding: 0 clamp(16px, 4vw, 40px);
+      }
+
+      /* Nav */
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        background: rgba(10, 10, 11, 0.85);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-bottom: 1px solid var(--border);
+      }
+      nav .container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 56px;
+        max-width: 860px;
+      }
+      .nav-logo {
+        font-family: var(--mono);
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        letter-spacing: -0.3px;
+        text-decoration: none;
+      }
+      .nav-links {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+      }
+      .nav-links a {
+        color: var(--text-muted);
+        font-size: 14px;
+        transition: color 0.2s;
+      }
+      .nav-links a:hover {
+        color: var(--text);
+        text-decoration: none;
+      }
+      .nav-cta {
+        background: var(--accent);
+        color: #0a0a0b !important;
+        padding: 6px 16px;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 600;
+        transition: background 0.2s;
+      }
+      .nav-cta:hover {
+        background: var(--accent-dim);
+      }
+
+      /* Hero */
+      .demo-hero {
+        padding: 100px 0 40px;
+        text-align: center;
+      }
+      .demo-hero h1 {
+        font-size: clamp(28px, 4vw, 42px);
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        margin-bottom: 12px;
+      }
+      .demo-hero h1 span {
+        color: var(--accent);
+      }
+      .demo-hero p {
+        color: var(--text-muted);
+        font-size: clamp(14px, 1vw + 12px, 17px);
+        max-width: 520px;
+        margin: 0 auto;
+      }
+
+      /* Scenario picker */
+      .scenarios {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin: 32px 0 24px;
+      }
+      .scenario-btn {
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        color: var(--text-muted);
+        font-family: var(--mono);
+        font-size: 13px;
+        padding: 8px 18px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .scenario-btn:hover {
+        border-color: var(--accent);
+        color: var(--text);
+      }
+      .scenario-btn.active {
+        border-color: var(--accent);
+        color: var(--accent);
+        background: rgba(56, 189, 248, 0.06);
+      }
+
+      /* Terminal */
+      .terminal {
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        overflow: hidden;
+        margin-bottom: 40px;
+      }
+      .terminal-header {
+        background: var(--bg-elevated);
+        padding: 10px 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border-bottom: 1px solid var(--border);
+      }
+      .terminal-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+      }
+      .terminal-dot.r {
+        background: var(--red);
+      }
+      .terminal-dot.y {
+        background: var(--yellow);
+      }
+      .terminal-dot.g {
+        background: var(--green);
+      }
+      .terminal-title {
+        flex: 1;
+        text-align: center;
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+      .terminal-controls {
+        display: flex;
+        gap: 8px;
+      }
+      .terminal-ctrl-btn {
+        background: none;
+        border: 1px solid var(--border);
+        color: var(--text-muted);
+        font-family: var(--mono);
+        font-size: 11px;
+        padding: 2px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .terminal-ctrl-btn:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+      .terminal-body {
+        padding: 20px;
+        font-family: var(--mono);
+        font-size: 13px;
+        line-height: 1.9;
+        min-height: 420px;
+        max-height: 520px;
+        overflow-y: auto;
+      }
+      .terminal-body::-webkit-scrollbar {
+        width: 6px;
+      }
+      .terminal-body::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .terminal-body::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: 3px;
+      }
+
+      /* Terminal text styles */
+      .t-prompt {
+        color: var(--accent);
+        user-select: none;
+      }
+      .t-cmd {
+        color: var(--green);
+      }
+      .t-muted {
+        color: var(--text-muted);
+      }
+      .t-accent {
+        color: var(--accent);
+      }
+      .t-green {
+        color: var(--green);
+      }
+      .t-yellow {
+        color: var(--yellow);
+      }
+      .t-red {
+        color: var(--red);
+      }
+      .t-purple {
+        color: var(--purple);
+      }
+      .t-bold {
+        font-weight: 700;
+      }
+      .t-line {
+        display: block;
+        min-height: 1.6em;
+      }
+      .t-cursor {
+        display: inline-block;
+        width: 8px;
+        height: 14px;
+        background: var(--accent);
+        vertical-align: text-bottom;
+        animation: blink 0.9s step-end infinite;
+      }
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0;
+        }
+      }
+      .t-progress {
+        display: inline-block;
+        background: var(--bg-elevated);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        padding: 1px 8px;
+        font-size: 11px;
+        margin-left: 4px;
+      }
+
+      /* Bottom CTA */
+      .demo-cta {
+        text-align: center;
+        padding: 48px 0 80px;
+      }
+      .demo-cta h2 {
+        font-size: clamp(24px, 3vw, 32px);
+        font-weight: 700;
+        margin-bottom: 12px;
+      }
+      .demo-cta p {
+        color: var(--text-muted);
+        font-size: 15px;
+        margin-bottom: 28px;
+      }
+      .btn-primary {
+        display: inline-block;
+        background: var(--accent);
+        color: #0a0a0b;
+        padding: 14px 32px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        transition:
+          background 0.2s,
+          transform 0.1s;
+      }
+      .btn-primary:hover {
+        background: var(--accent-dim);
+        text-decoration: none;
+        transform: translateY(-1px);
+      }
+      .btn-secondary {
+        display: inline-block;
+        color: var(--text-muted);
+        padding: 14px 24px;
+        font-size: 15px;
+      }
+      .btn-secondary:hover {
+        color: var(--text);
+        text-decoration: none;
+      }
+
+      /* Key callouts */
+      .callouts {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 16px;
+        margin: 40px 0;
+      }
+      .callout {
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 20px;
+      }
+      .callout h3 {
+        font-family: var(--mono);
+        font-size: 14px;
+        margin-bottom: 6px;
+      }
+      .callout p {
+        color: var(--text-muted);
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      /* Footer */
+      footer {
+        border-top: 1px solid var(--border);
+        padding: 24px 0;
+        text-align: center;
+        font-size: 13px;
+        color: var(--text-muted);
+      }
+      footer a {
+        color: var(--text-muted);
+      }
+      footer a:hover {
+        color: var(--text);
+      }
+
+      @media (max-width: 640px) {
+        .demo-hero {
+          padding: 80px 0 32px;
+        }
+        .terminal-body {
+          font-size: 11px;
+          min-height: 340px;
+          padding: 14px;
+        }
+        .scenarios {
+          gap: 6px;
+        }
+        .scenario-btn {
+          font-size: 11px;
+          padding: 6px 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div class="container">
+        <a href="/" class="nav-logo">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 32 32"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect width="32" height="32" rx="8" fill="#0f172a" />
+            <path fill="#38bdf8" d="M16 4 L6 27 L16 19 L26 27 Z" />
+          </svg>
+          AcePilot
+        </a>
+        <div class="nav-links">
+          <a href="/">Home</a>
+          <a href="/#pricing">Pricing</a>
+          <a href="/blog/">Blog</a>
+          <a
+            href="https://github.com/acepilot-app/acepilot"
+            class="nav-cta"
+            rel="noopener noreferrer"
+            target="_blank"
+            >Install free</a
+          >
+        </div>
+      </div>
+    </nav>
+
+    <header class="demo-hero">
+      <div class="container">
+        <h1>See AcePilot <span>in action</span></h1>
+        <p>
+          Watch god mode ship features autonomously. Pick a scenario and watch
+          the terminal.
+        </p>
+      </div>
+    </header>
+
+    <main>
+      <div class="container">
+        <div class="scenarios">
+          <button class="scenario-btn active" data-scenario="website">
+            /acepilot god website
+          </button>
+          <button class="scenario-btn" data-scenario="bugfix">
+            /acepilot go fix auth
+          </button>
+          <button class="scenario-btn" data-scenario="review">
+            /acepilot review
+          </button>
+        </div>
+
+        <div class="terminal">
+          <div class="terminal-header">
+            <span class="terminal-dot r"></span>
+            <span class="terminal-dot y"></span>
+            <span class="terminal-dot g"></span>
+            <div class="terminal-title">claude — acepilot demo</div>
+            <div class="terminal-controls">
+              <button class="terminal-ctrl-btn" id="replay-btn">Replay</button>
+            </div>
+          </div>
+          <div class="terminal-body" id="terminal"></div>
+        </div>
+
+        <div class="callouts">
+          <div class="callout">
+            <h3>6 specialists</h3>
+            <p>
+              Designer, security, architect, strategist, reviewer, researcher.
+              Each reviews the diff from their domain lens.
+            </p>
+          </div>
+          <div class="callout">
+            <h3>Zero questions</h3>
+            <p>
+              God mode makes every decision autonomously. Reversible changes
+              execute instantly. Irreversible ones get logged.
+            </p>
+          </div>
+          <div class="callout">
+            <h3>42% faster by session 10</h3>
+            <p>
+              Playbooks capture what works. Self-calibration tunes the engine.
+              Session chains carry momentum.
+            </p>
+          </div>
+        </div>
+
+        <section class="demo-cta">
+          <h2>Ready to ship faster?</h2>
+          <p>Install in 30 seconds. Free tier includes plan + go modes.</p>
+          <a
+            href="https://github.com/acepilot-app/acepilot"
+            class="btn-primary plausible-event-name=Demo+Install+Click"
+            rel="noopener noreferrer"
+            target="_blank"
+            >Install free</a
+          >
+          <a href="/#pricing" class="btn-secondary">See pricing</a>
+        </section>
+      </div>
+    </main>
+
+    <footer>
+      <div class="container">
+        <a href="/">AcePilot</a> &middot; <a href="/blog/">Blog</a> &middot;
+        <a href="/badge/">Badge</a> &middot;
+        <a href="/compare/acepilot-vs-cursor.html">Compare</a> &middot;
+        <a href="/changelog.html">Changelog</a>
+      </div>
+    </footer>
+
+    <script>
+      const scenarios = {
+        website: [
+          { type: "input", text: "> /acepilot god website", delay: 60 },
+          { type: "blank" },
+          {
+            type: "line",
+            cls: "t-bold t-accent",
+            text: "GOD MODE. 8 tasks. Smart dispatch. Zero stops.",
+          },
+          { type: "blank" },
+          {
+            type: "line",
+            cls: "t-muted",
+            text: "ORIENT: new project, no existing files. Archetype: static site.",
+          },
+          {
+            type: "line",
+            cls: "t-muted",
+            text: "IDENTITY: developer tool, dark theme, monospace, direct copy.",
+          },
+          {
+            type: "line",
+            cls: "t-muted",
+            text: "REVENUE: freemium, 3-tier pricing ($0/$29/$79).",
+          },
+          { type: "blank" },
+          {
+            type: "line",
+            cls: "t-green",
+            text: "[1/8] \u2713 site/index.html \u2014 landing page with hero, features, pricing",
+            pause: 800,
+          },
+          {
+            type: "line",
+            cls: "t-muted",
+            text: "       @designer: PASS  @strategist: 2\ud83d\udfe1 (CTA copy, pricing anchor)",
+          },
+          {
+            type: "line",
+            cls: "t-green",
+            text: "[2/8] \u2713 site/index.html \u2014 social proof + testimonials section",
+            pause: 600,
+          },
+          {
+            type: "line",
+            cls: "t-green",
+            text: "[3/8] \u2713 site/robots.txt + sitemap.xml \u2014 SEO infrastructure",
+            pause: 400,
+          },
+          {
+            type: "line",
+            cls: "t-green",
+            text: "[4/8] \u2713 site/compare/ \u2014 3 comparison pages (vs Cursor, vs Bolt, vs v0)",
+            pause: 700,
+          },
+          {
+            type: "line",
+            cls: "t-muted",
+            text: "       @strategist: 1\ud83d\udfe1 (add verdict section with clear CTA)",
+          },
+          {
+            type: "line",
+            cls: "t-green",
+            text: "[5/8] \u2713 site/badge/ \u2014 embeddable badge system with ref tracking",
+            pause: 500,
+          },
+          {
+            type: "line",
+            cls: "t-green",
+            text: "[6/8] \u2713 site/blog/ \u2014 blog scaffold + 4 seed posts",
+            pause: 500,
+          },
+          {
+            type: "line",
+            cls: "t-yellow",
+            text: "       \u23f1 ~2 remaining, ~45s est. Avg cycle: 18s",
+          },
+          {
+            type: "line",
+            cls: "t-green",
+            text: "[7/8] \u2713 site/*.html \u2014 Plausible analytics on all 9 pages",
+            pause: 400,
+          },
+          {
+            type: "line",
+            cls: "t-green",
+            text: "[8/8] \u2713 site/success.html \u2014 share mechanics (Twitter, copy link, badge)",
+            pause: 500,
+          },
+          { type: "blank" },
+          {
+            type: "line",
+            cls: "t-muted",
+            text: "SPECIALIST REVIEW (final diff):",
+          },
+          {
+            type: "line",
+            cls: "t-muted",
+            text: "  @reviewer:   2\ud83d\udfe1 1\ud83d\udfe2  \u2014 fixed inline onclick XSS risk",
+            pause: 400,
+          },
+          {
+            type: "line",
+            cls: "t-muted",
+            text: "  @designer:   PASS     \u2014 mobile responsive, a11y clean",
+            pause: 300,
+          },
+          {
+            type: "line",
+            cls: "t-muted",
+            text: "  @security:   1\ud83d\udfe1      \u2014 added rel=noopener to external links",
+            pause: 300,
+          },
+          {
+            type: "line",
+            cls: "t-muted",
+            text: "  @strategist: 1\ud83d\udfe1 1\ud83d\udfe2  \u2014 improved CTA copy for conversion",
+            pause: 300,
+          },
+          { type: "blank" },
+          {
+            type: "line",
+            cls: "t-bold t-green",
+            text: "GOD MODE COMPLETE. 8 done, 0 blocked. 4 autonomous decisions.",
+          },
+          {
+            type: "line",
+            cls: "t-muted",
+            text: "Gate accuracy: 100%. Specialist precision: 78%. Avg cycle: 18s.",
+          },
+          {
+            type: "line",
+            cls: "t-accent",
+            text: "Ready to push. Branch: feat/website",
+          },
+        ],
+        bugfix: [
+          { type: "input", text: "> /acepilot go fix auth", delay: 60 },
+          { type: "blank" },
+          {
+            type: "line",
+            cls: "t-bold t-accent",
+            text: "ACEPILOT 11.0 ON. go mode. Focus: fix auth",
+          },
+          { type: "blank" },
+          {
+            type: "line",
+            cls: "t-muted",
+            text: "ORIENT: auth middleware returns 401 on valid tokens.",
+          },
+          {
+            type: "line",
+            cls: "t-muted",
+            text: "Reading: src/middleware/auth.ts, src/lib/jwt.ts, tests/auth.test.ts",
+          },
+          { type: "blank" },
+          {
+            type: "line",
+            cls: "t-muted",
+            text: "Root cause: jwt.verify() expects seconds, Date.now() returns ms.",
+          },
+          {
+            type: "line",
+            cls: "t-muted",
+            text: "Fix: Math.floor(Date.now() / 1000) in token expiry check.",
+          },
+          { type: "blank" },
+          {
+            type: "line",
+            cls: "t-green",
+            text: "[1/2] \u2713 src/middleware/auth.ts:47 \u2014 fix token expiry comparison",
+            pause: 600,
+          },
+          {
+            type: "line",
+            cls: "t-muted",
+            text: "       @security: PASS (token handling correct)",
+          },
+          {
+            type: "line",
+            cls: "t-green",
+            text: "[2/2] \u2713 tests/auth.test.ts \u2014 add expired + valid token test cases",
+            pause: 500,
+          },
+          {
+            type: "line",
+            cls: "t-muted",
+            text: "       Tests: 14 passed, 0 failed",
+          },
+          { type: "blank" },
+          {
+            type: "line",
+            cls: "t-bold t-green",
+            text: "SESSION COMPLETE. 2 done, 0 blocked. All tests pass.",
+          },
+          {
+            type: "line",
+            cls: "t-muted",
+            text: "Avg cycle: 12s. Committed: acepilot: fix token expiry comparison",
+          },
+        ],
+        review: [
+          { type: "input", text: "> /acepilot review", delay: 60 },
+          { type: "blank" },
+          {
+            type: "line",
+            cls: "t-bold t-accent",
+            text: "ACEPILOT 11.0 REVIEW. Scanning last 20 acepilot commits.",
+          },
+          { type: "blank" },
+          {
+            type: "line",
+            cls: "t-muted",
+            text: "Found 6 commits across 14 files.",
+            pause: 600,
+          },
+          { type: "blank" },
+          {
+            type: "line",
+            cls: "t-red",
+            text: "\ud83d\udd34 src/api/users.ts:89 \u2014 SQL injection via unescaped user input",
+          },
+          {
+            type: "line",
+            cls: "t-muted",
+            text: "   Use parameterized query: db.query('SELECT * FROM users WHERE id = $1', [id])",
+            pause: 400,
+          },
+          {
+            type: "line",
+            cls: "t-red",
+            text: "\ud83d\udd34 src/middleware/cors.ts:12 \u2014 Access-Control-Allow-Origin: * on auth endpoints",
+          },
+          {
+            type: "line",
+            cls: "t-muted",
+            text: "   Restrict to known origins: config.allowedOrigins",
+            pause: 400,
+          },
+          {
+            type: "line",
+            cls: "t-yellow",
+            text: "\ud83d\udfe1 src/components/Dashboard.tsx:156 \u2014 N+1 query in user list render",
+          },
+          {
+            type: "line",
+            cls: "t-muted",
+            text: "   Batch with: WHERE id IN (...) instead of per-row fetch",
+            pause: 300,
+          },
+          {
+            type: "line",
+            cls: "t-yellow",
+            text: "\ud83d\udfe1 src/lib/cache.ts:34 \u2014 no TTL on session cache (memory leak risk)",
+          },
+          {
+            type: "line",
+            cls: "t-muted",
+            text: "   Add maxAge: 3600 or use LRU cache",
+            pause: 300,
+          },
+          {
+            type: "line",
+            cls: "t-green",
+            text: "\ud83d\udfe2 src/pages/settings.tsx \u2014 form missing aria-labels on 3 inputs",
+            pause: 200,
+          },
+          {
+            type: "line",
+            cls: "t-green",
+            text: "\ud83d\udfe2 package.json \u2014 lodash 4.17.20 has known prototype pollution CVE",
+            pause: 200,
+          },
+          { type: "blank" },
+          {
+            type: "line",
+            cls: "t-bold",
+            text: "REVIEW: 2\ud83d\udd34 2\ud83d\udfe1 2\ud83d\udfe2 across 14 files.",
+          },
+          {
+            type: "line",
+            cls: "t-muted",
+            text: "Run /acepilot go to fix \ud83d\udd34 findings. \ud83d\udfe1 recommended. \ud83d\udfe2 optional.",
+          },
+        ],
+      };
+
+      let currentAnimation = null;
+      const terminal = document.getElementById("terminal");
+
+      function sleep(ms) {
+        return new Promise((r) => {
+          currentAnimation = setTimeout(r, ms);
+        });
+      }
+
+      async function typeText(container, text, charDelay) {
+        for (let i = 0; i < text.length; i++) {
+          container.textContent += text[i];
+          terminal.scrollTop = terminal.scrollHeight;
+          await sleep(charDelay);
+        }
+      }
+
+      async function playScenario(name) {
+        if (currentAnimation) clearTimeout(currentAnimation);
+        terminal.innerHTML = "";
+        const lines = scenarios[name];
+
+        for (const line of lines) {
+          if (line.type === "blank") {
+            const el = document.createElement("span");
+            el.className = "t-line";
+            el.innerHTML = "&nbsp;";
+            terminal.appendChild(el);
+          } else if (line.type === "input") {
+            const el = document.createElement("span");
+            el.className = "t-line";
+            terminal.appendChild(el);
+            await typeText(el, line.text, line.delay || 40);
+            await sleep(300);
+          } else if (line.type === "line") {
+            const el = document.createElement("span");
+            el.className = "t-line " + (line.cls || "");
+            terminal.appendChild(el);
+            el.textContent = line.text;
+            terminal.scrollTop = terminal.scrollHeight;
+            await sleep(line.pause || 150);
+          }
+        }
+
+        // Add cursor at end
+        const cursor = document.createElement("span");
+        cursor.innerHTML =
+          '<span class="t-line"><span class="t-cursor"></span></span>';
+        terminal.appendChild(cursor);
+        terminal.scrollTop = terminal.scrollHeight;
+      }
+
+      // Scenario buttons
+      document.querySelectorAll(".scenario-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          document
+            .querySelectorAll(".scenario-btn")
+            .forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          if (window.plausible)
+            window.plausible("Demo+Scenario", {
+              props: { scenario: btn.dataset.scenario },
+            });
+          playScenario(btn.dataset.scenario);
+        });
+      });
+
+      // Replay
+      document.getElementById("replay-btn").addEventListener("click", () => {
+        const active = document.querySelector(".scenario-btn.active");
+        if (active) playScenario(active.dataset.scenario);
+      });
+
+      // Auto-play first scenario
+      playScenario("website");
+    </script>
+  </body>
+</html>
