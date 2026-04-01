@@ -71,7 +71,7 @@ if [ "${1:-}" = "--changed" ]; then
     full_path="$SCRIPT_DIR/../$file"
     if [ -f "$full_path" ]; then
       deploy_file "$full_path"
-      ((count++))
+      count=$((count + 1))
     fi
   done <<< "$changed"
 
@@ -100,7 +100,7 @@ else
   count=0
   while IFS= read -r file; do
     deploy_file "$file"
-    ((count++))
+    count=$((count + 1))
   done < <(find "$SCRIPT_DIR" -type f \
     ! -name "deploy.sh" \
     ! -name "DEPLOY.md" \
