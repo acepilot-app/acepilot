@@ -480,7 +480,7 @@ The brain tunes itself. Not just logging data — changing behavior from data.
 
 **Trigger:** Every 10 sessions (check Session Rollups count in ANALYTICS.md). Also triggered by `god --calibrate`.
 
-**Calibration cycle** (reads full ANALYTICS.md, not just rollups):
+**Calibration cycle** (reads last 30 Session Rollups + last 50 entries per section from ANALYTICS.md — not the full file, to stay within token budget):
 
 1. **Gate recalibration** — existing v8 rules, but now writes changes to PATTERNS.md:
    - Which task types shifted gate level? Log the shift.
@@ -692,10 +692,10 @@ P0 first → ★ focused tasks → sort by `[score:X.X]` → respect `[needs:X]`
    - Conversion drop-offs (>50% at a step) → flag for UX review
    - Surface top 3 metrics insights as `METRICS: [insight]` in CONTEXT.md
    - If absent → skip (heuristics used instead). No error.
-9. **Session chain pickup** — if CONTEXT.md contains `## Session Handoff` with an active objective → resume chain (see SESSION CHAINS). Log: `CHAIN RESUMED`. Skip directive expansion if chain objective still active.
-10. **Playbook match** — if mode objective contains a creation keyword AND PLAYBOOKS.md has a matching trigger → replay playbook instead of expansion engine. Log: `PLAYBOOK REPLAY: [id]`. No match → fall through to step 11.
+9. **Session chain pickup** — if CONTEXT.md contains `## Session Handoff` with an active objective → resume chain (see SESSION CHAINS). Log: `CHAIN RESUMED — scan suppressed`. Skip scan (steps 4-5), skip directive expansion (step 11), skip playbook match (step 10). Trust the handoff's Next Actions as the task source.
+10. **Playbook match** — if mode objective contains a creation keyword AND PLAYBOOKS.md has a matching trigger → verify top 3 file paths from playbook task sequence still exist. If >50% missing → mark playbook `Success: stale`, fall through to step 11. If paths valid → replay playbook instead of expansion engine. Log: `PLAYBOOK REPLAY: [id]`. No match → fall through to step 11.
 11. **Directive expansion** — if mode objective contains a creation keyword (website, SaaS, app, etc.) AND no TASKS.md with matching `[objective:]` exists AND no playbook matched → run Directive Expansion Engine. Auto-generate IDENTITY.md if absent. Write expanded tasks to TASKS.md.
-12. **Deploy detection** — scan for deployment config files (vercel.json, netlify.toml, Dockerfile, .htaccess, package.json deploy script). Write detected platform to CONTEXT.md. See DEPLOY PIPELINE.
+12. **Deploy detection** — scan for deployment config files (vercel.json, netlify.toml, Dockerfile, .htaccess, package.json deploy script). Write detected platform to KNOWLEDGE.md under `## Deploy target` (survives compaction). For GitHub Actions, verify last workflow status (`gh run list --limit 1`) before auto-push. See DEPLOY PIPELINE.
 13. **Orient** — write 3-line ORIENT to CONTEXT.md (now informed by data insights + product metrics + identity context + chain state + deploy target).
 
 ## PRE-FLIGHT
@@ -742,7 +742,7 @@ Check with: `cat ~/.claude/acepilot-license 2>/dev/null`
 **`god` (Pro) — "You ARE the team. Zero stops."**
 Common + auto-branch + auto-stash. Smart dispatch routes specialists per task. ASK → best call + log.
 
-Objective → (1) Working Backwards (PR desc first), (2) @researcher strategy, (3) TASKS.md `[objective:slug]`.
+Objective → (1) Working Backwards (PR desc first), (2) @researcher strategy, (3) TASKS.md `[objective:slug]`. **If playbook replay fired during ABSORB**, skip Working Backwards and @researcher strategy — the playbook already contains the proven task sequence and decisions. Jump directly to TASKS.md write from playbook data.
 
 `"GOD MODE. [N] tasks. Smart dispatch. Zero stops."`
 
