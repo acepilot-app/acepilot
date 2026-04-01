@@ -3,27 +3,37 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AcePilot — Autonomous Execution for Claude Code</title>
+    <title>AcePilot — Self-Evolving Autonomy for Claude Code</title>
     <meta
       name="description"
-      content="6 specialist agents that turn Claude Code into a full product team. Designer, security, architect, strategist, reviewer, researcher. Scan to PR."
+      content="Ship today. Ship faster tomorrow. AcePilot captures what works, replays proven workflows, and auto-tunes its own execution. 6 specialist agents. Zero questions."
     />
-    <meta property="og:title" content="AcePilot — God Mode for Claude Code" />
+    <meta
+      property="og:title"
+      content="AcePilot — Ship today. Ship faster tomorrow."
+    />
     <meta
       property="og:description"
-      content="6 specialist agents that turn Claude Code into a full product team. Designer, security, architect, strategist, reviewer, researcher."
+      content="Self-evolving autonomy for Claude Code. Playbooks capture proven workflows. Session chains persist objectives. The engine tunes itself. 6 specialist agents."
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://acepilot.app" />
+    <meta property="og:image" content="https://acepilot.app/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="AcePilot — God Mode for Claude Code" />
+    <meta
+      name="twitter:title"
+      content="AcePilot — Ship today. Ship faster tomorrow."
+    />
+    <meta name="twitter:image" content="https://acepilot.app/og-image.png" />
     <meta
       name="twitter:description"
-      content="6 specialist agents that turn Claude Code into a full product team. Scan to PR."
+      content="Self-evolving autonomy for Claude Code. Playbooks capture proven workflows. The engine tunes itself. 6 specialist agents."
     />
     <link
       rel="icon"
-      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%236c5ce7'/><g transform='translate(4,6) scale(0.462)'><path fill-rule='evenodd' fill='white' d='M26 2 L0 44 L14 44 L17 28 L35 28 L38 44 L52 44 Z M26 10 L17 28 L35 28 Z'/></g></svg>"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230f172a'/><path fill='%2338bdf8' d='M16 4 L6 27 L16 19 L26 27 Z'/></svg>"
     />
     <style>
       *,
@@ -40,8 +50,8 @@
         --bg-elevated: #1a1a1e;
         --text: #e8e8ed;
         --text-muted: #a1a1a6;
-        --accent: #6c5ce7;
-        --accent-dim: #5a4bd4;
+        --accent: #38bdf8;
+        --accent-dim: #0ea5e9;
         --green: #30d158;
         --border: #2c2c2e;
         --mono:
@@ -120,16 +130,16 @@
         color: var(--text);
         text-decoration: none;
       }
-      .nav-cta {
+      .nav-links .nav-cta {
         background: var(--accent);
-        color: white;
+        color: #0a0a0b;
         padding: 6px 16px;
         border-radius: 6px;
         font-size: 13px;
         font-weight: 600;
         transition: background 0.2s;
       }
-      .nav-cta:hover {
+      .nav-links .nav-cta:hover {
         background: var(--accent-dim);
         text-decoration: none;
       }
@@ -285,6 +295,109 @@
         color: var(--text-muted);
         font-size: 14px;
         line-height: 1.5;
+      }
+
+      /* Agent cards — the team roster */
+      .agent-card {
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 32px 28px 28px;
+        position: relative;
+        transition:
+          border-color 0.2s,
+          transform 0.2s,
+          box-shadow 0.2s;
+      }
+      .agent-card::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: 16px;
+        right: 16px;
+        height: 2px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--accent),
+          transparent
+        );
+        border-radius: 2px;
+        opacity: 0;
+        transition: opacity 0.25s;
+      }
+      .agent-card:hover {
+        transform: translateY(-4px);
+        border-color: rgba(108, 92, 231, 0.5);
+        box-shadow:
+          0 12px 40px rgba(108, 92, 231, 0.12),
+          0 0 0 1px rgba(108, 92, 231, 0.1);
+      }
+      .agent-card:hover::before {
+        opacity: 1;
+      }
+      .agent-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        color: var(--agent-color, var(--accent));
+        background: var(--agent-bg, rgba(56, 189, 248, 0.08));
+        border: 1px solid var(--agent-border, rgba(56, 189, 248, 0.12));
+        border-radius: 11px;
+        margin-bottom: 18px;
+      }
+      .agent-designer {
+        --agent-color: #38bdf8;
+        --agent-bg: rgba(56, 189, 248, 0.08);
+        --agent-border: rgba(56, 189, 248, 0.12);
+      }
+      .agent-security {
+        --agent-color: #f43f5e;
+        --agent-bg: rgba(244, 63, 94, 0.08);
+        --agent-border: rgba(244, 63, 94, 0.12);
+      }
+      .agent-architect {
+        --agent-color: #f59e0b;
+        --agent-bg: rgba(245, 158, 11, 0.08);
+        --agent-border: rgba(245, 158, 11, 0.12);
+      }
+      .agent-strategist {
+        --agent-color: #30d158;
+        --agent-bg: rgba(48, 209, 88, 0.08);
+        --agent-border: rgba(48, 209, 88, 0.12);
+      }
+      .agent-reviewer {
+        --agent-color: #e8e8ed;
+        --agent-bg: rgba(232, 232, 237, 0.06);
+        --agent-border: rgba(232, 232, 237, 0.1);
+      }
+      .agent-researcher {
+        --agent-color: #a78bfa;
+        --agent-bg: rgba(167, 139, 250, 0.08);
+        --agent-border: rgba(167, 139, 250, 0.12);
+      }
+      .agent-icon svg {
+        width: 22px;
+        height: 22px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 1.6;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .agent-card h3 {
+        font-family: var(--mono);
+        font-size: 15px;
+        font-weight: 700;
+        margin-bottom: 10px;
+        letter-spacing: -0.3px;
+      }
+      .agent-card p {
+        color: var(--text-muted);
+        font-size: 13.5px;
+        line-height: 1.6;
       }
 
       /* Modes */
@@ -467,7 +580,7 @@
       .btn-primary {
         display: inline-block;
         background: var(--accent);
-        color: white;
+        color: #0a0a0b;
         padding: 14px 32px;
         border-radius: 8px;
         font-size: 16px;
@@ -509,7 +622,7 @@
         flex-direction: column;
       }
       .price-card.featured {
-        border-color: var(--accent);
+        border-color: #f59e0b;
         position: relative;
       }
       .price-card.featured::before {
@@ -517,8 +630,8 @@
         position: absolute;
         top: -11px;
         left: 24px;
-        background: var(--accent);
-        color: white;
+        background: #f59e0b;
+        color: #0a0a0b;
         font-size: 11px;
         font-weight: 600;
         padding: 2px 10px;
@@ -731,7 +844,7 @@
           font-size: 15px;
           padding: 8px 0;
         }
-        .nav-cta {
+        .nav-links .nav-cta {
           text-align: center;
           margin-top: 4px;
         }
@@ -878,18 +991,18 @@
             xmlns="http://www.w3.org/2000/svg"
             aria-hidden="true"
           >
-            <rect width="32" height="32" rx="7" fill="#6c5ce7" />
-            <g transform="translate(2,4) scale(0.538)">
-              <path
-                fill-rule="evenodd"
-                fill="white"
-                d="M26 2 L0 44 L14 44 L17 28 L35 28 L38 44 L52 44 Z M26 10 L17 28 L35 28 Z"
-              />
-            </g>
+            <rect width="32" height="32" rx="8" fill="#0f172a" />
+            <path fill="#38bdf8" d="M16 4 L6 27 L16 19 L26 27 Z" />
           </svg>
-          AcePilot<span
-            style="color: var(--text-muted); font-weight: 400; font-size: 13px"
-            >.app</span
+          <span
+            >AcePilot<span
+              style="
+                color: var(--text-muted);
+                font-weight: 400;
+                font-size: 13px;
+              "
+              >.app</span
+            ></span
           >
         </a>
         <button
@@ -924,14 +1037,12 @@
 
     <header class="hero">
       <div class="container">
-        <div class="hero-badge">
-          Grounded in research from 40+ engineering practitioners
-        </div>
-        <h1>Give Claude Code a goal.<br />Get a PR.</h1>
+        <div class="hero-badge">v10.0 — Self-Evolving Autonomy</div>
+        <h1>Ship today.<br /><span>Ship faster tomorrow.</span></h1>
         <p class="hero-sub">
-          One command. 6 specialists scan, review, and ship your code &mdash;
-          designer, security engineer, architect, strategist, reviewer,
-          researcher. Scan to PR in minutes, not hours.
+          Every session is faster than the last. AcePilot captures what works
+          and replays proven workflows &mdash; 42% faster by session 10. 6
+          specialist agents. Zero questions asked.
         </p>
 
         <div class="hero-install">
@@ -942,12 +1053,13 @@
             >git clone https://github.com/acepilot-app/acepilot.git</span
           ><br />
           <span class="prompt">$ </span
-          ><span class="cmd">cd acepilot && ./acepilot-6.0/install.sh</span
+          ><span class="cmd">cd acepilot && ./acepilot-10.0/install.sh</span
           ><br />
           <br />
           <span class="comment"># Then in any project</span><br />
           <span class="prompt">$ </span><span class="cmd">claude</span><br />
-          <span class="prompt">> </span><span class="cmd">/acepilot auto</span>
+          <span class="prompt">> </span
+          ><span class="cmd">/acepilot god website</span>
         </div>
       </div>
     </header>
@@ -956,16 +1068,16 @@
       <div class="container">
         <div class="stats">
           <div class="stat">
+            <div class="stat-num">0</div>
+            <div class="stat-label">Questions asked before shipping</div>
+          </div>
+          <div class="stat">
             <div class="stat-num">6</div>
             <div class="stat-label">Specialist agents per session</div>
           </div>
           <div class="stat">
-            <div class="stat-num">40+</div>
-            <div class="stat-label">Practitioners researched</div>
-          </div>
-          <div class="stat">
-            <div class="stat-num">0</div>
-            <div class="stat-label">Dependencies</div>
+            <div class="stat-num">42%</div>
+            <div class="stat-label">Faster by session 10</div>
           </div>
           <div class="stat">
             <div class="stat-num">30s</div>
@@ -978,18 +1090,21 @@
     <section>
       <div class="container">
         <div class="section-label">The team</div>
-        <h2 class="section-title">6 agents. 40+ practitioners. Zero config.</h2>
+        <h2 class="section-title">6 domain experts. One autonomous team.</h2>
         <p class="section-desc">
-          Every agent is grounded in research from real practitioners &mdash;
-          Nielsen, Schneier, Fowler, Souders, and 36 more. Not theory. Proven
-          mechanisms that catch real problems before they ship.
+          Grounded in research from 40+ practitioners. Each agent tracks its own
+          precision &mdash; low-value findings auto-suppress, high-value
+          patterns auto-prioritize. The team sharpens itself over time.
         </p>
         <div class="features-grid">
-          <div class="feature-card">
-            <div class="feature-icon">
+          <div class="agent-card agent-designer">
+            <div class="agent-icon">
               <svg viewBox="0 0 24 24" fill="none">
-                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7S2 12 2 12z" />
+                <path
+                  d="M2.5 12s3.5-7 9.5-7 9.5 7 9.5 7-3.5 7-9.5 7-9.5-7-9.5-7z"
+                />
                 <circle cx="12" cy="12" r="3" />
+                <circle cx="12" cy="12" r="1" />
               </svg>
             </div>
             <h3>@designer</h3>
@@ -999,12 +1114,14 @@
               Schwartz &amp; Baymard. Mobile-first from Wroblewski.
             </p>
           </div>
-          <div class="feature-card">
-            <div class="feature-icon">
+          <div class="agent-card agent-security">
+            <div class="agent-icon">
               <svg viewBox="0 0 24 24" fill="none">
                 <path
-                  d="M12 2l7 4v5c0 5.25-3.5 9.74-7 11-3.5-1.26-7-5.75-7-11V6l7-4z"
+                  d="M12 2l8 4v5c0 5.5-3.5 10-8 12-4.5-2-8-6.5-8-12V6l8-4z"
                 />
+                <circle cx="12" cy="10.5" r="1.5" />
+                <path d="M12 12v2.5" />
               </svg>
             </div>
             <h3>@security</h3>
@@ -1014,13 +1131,16 @@
               &amp; header misconfig. No security theater.
             </p>
           </div>
-          <div class="feature-card">
-            <div class="feature-icon">
+          <div class="agent-card agent-architect">
+            <div class="agent-icon">
               <svg viewBox="0 0 24 24" fill="none">
-                <rect x="3" y="14" width="7" height="7" rx="1" />
-                <rect x="14" y="3" width="7" height="7" rx="1" />
-                <rect x="14" y="14" width="7" height="7" rx="1" />
-                <rect x="3" y="3" width="7" height="7" rx="1" />
+                <rect x="8" y="2" width="8" height="6" rx="1.5" />
+                <rect x="2" y="16" width="8" height="6" rx="1.5" />
+                <rect x="14" y="16" width="8" height="6" rx="1.5" />
+                <path d="M12 8v4" />
+                <path d="M6 12h12" />
+                <path d="M6 12v4" />
+                <path d="M18 12v4" />
               </svg>
             </div>
             <h3>@architect</h3>
@@ -1030,10 +1150,12 @@
               scaffolding from Gene Kim's Three Ways.
             </p>
           </div>
-          <div class="feature-card">
-            <div class="feature-icon">
+          <div class="agent-card agent-strategist">
+            <div class="agent-icon">
               <svg viewBox="0 0 24 24" fill="none">
-                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+                <circle cx="12" cy="12" r="10" />
+                <circle cx="12" cy="12" r="6" />
+                <circle cx="12" cy="12" r="2" />
               </svg>
             </div>
             <h3>@strategist</h3>
@@ -1043,13 +1165,14 @@
               patterns from Ellis &amp; Rachitsky. No vanity metrics.
             </p>
           </div>
-          <div class="feature-card">
-            <div class="feature-icon">
+          <div class="agent-card agent-reviewer">
+            <div class="agent-icon">
               <svg viewBox="0 0 24 24" fill="none">
-                <path d="M9 11l3 3L22 4" />
                 <path
-                  d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"
+                  d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"
                 />
+                <path d="M14 2v6h6" />
+                <path d="M9 15l2 2 4-4" />
               </svg>
             </div>
             <h3>@reviewer</h3>
@@ -1059,11 +1182,14 @@
               Never approves out of politeness.
             </p>
           </div>
-          <div class="feature-card">
-            <div class="feature-icon">
+          <div class="agent-card agent-researcher">
+            <div class="agent-icon">
               <svg viewBox="0 0 24 24" fill="none">
                 <circle cx="11" cy="11" r="8" />
                 <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                <line x1="8" y1="8" x2="14" y2="8" />
+                <line x1="8" y1="11" x2="14" y2="11" />
+                <line x1="8" y1="14" x2="12" y2="14" />
               </svg>
             </div>
             <h3>@researcher</h3>
@@ -1079,26 +1205,79 @@
 
     <section id="features">
       <div class="container">
-        <div class="section-label">What changes</div>
-        <h2 class="section-title">What happens when you type /acepilot</h2>
+        <div class="section-label">New in v10</div>
+        <h2 class="section-title">The engine that improves itself.</h2>
         <p class="section-desc">
-          Claude Code absorbs your project and shifts into a different operating
-          mode. Same tool, different behavior. One command away.
+          Session 1 figures it out. Session 10 runs it from memory. Every
+          workflow, every decision, every routing choice feeds back into the
+          next session.
         </p>
 
         <div class="features-grid">
           <div class="feature-card">
             <div class="feature-icon">
               <svg viewBox="0 0 24 24" fill="none">
-                <path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z" />
-                <path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z" />
+                <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
+                <path
+                  d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"
+                />
+                <path d="M9 10l2 2 4-4" />
               </svg>
             </div>
-            <h3>Project scanning</h3>
+            <h3>Playbooks</h3>
             <p>
-              Reads your codebase, README, build output, TODOs, and specs.
-              Returns a prioritized task list scored by impact, urgency, and
-              confidence.
+              Every successful session saves its recipe. Say &ldquo;SaaS&rdquo;
+              &mdash; session 1 figures it out and captures the sequence.
+              Session 2 replays it. Faster every time.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"
+                />
+                <circle cx="12" cy="12" r="4" />
+              </svg>
+            </div>
+            <h3>Self-calibration</h3>
+            <p>
+              Gates auto-tighten where they were wrong. Specialists auto-skip
+              where they added noise. Ceremony auto-adjusts by task tier. The
+              brain rewrites its own rules from data.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"
+                />
+                <path
+                  d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"
+                />
+              </svg>
+            </div>
+            <h3>Session chains</h3>
+            <p>
+              Objectives persist across sessions. End-of-session writes a
+              handoff. Next session resumes with momentum &mdash; no
+              re-scanning, no lost context. Your teammate picks up where they
+              left off.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M22 2L11 13" />
+                <path d="M22 2l-7 20-4-9-9-4 20-7z" />
+              </svg>
+            </div>
+            <h3>Deploy pipeline</h3>
+            <p>
+              Auto-detects your platform &mdash; Vercel, Netlify, Docker, GitHub
+              Pages, FTP. Builds, deploys, then runs a 7-point verification
+              checklist. The last mile, automated.
             </p>
           </div>
           <div class="feature-card">
@@ -1112,21 +1291,7 @@
             <p>
               Two-way door &rarr; execute immediately. Higher stakes &rarr; show
               plan, proceed. One-way door &rarr; stop, present options.
-              Reversibility-based, never over-commits.
-            </p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon">
-              <svg viewBox="0 0 24 24" fill="none">
-                <polyline points="20 6 9 17 4 12" />
-                <polyline points="20 12 9 23 4 18" opacity="0.55" />
-              </svg>
-            </div>
-            <h3>Self-validation</h3>
-            <p>
-              Build, lint, test after every change. Then a separate qualify
-              step: did the code solve the right problem? Two independent
-              checks, not one.
+              Calibrates itself from historical accuracy.
             </p>
           </div>
           <div class="feature-card">
@@ -1139,45 +1304,11 @@
                 <line x1="12" y1="22.08" x2="12" y2="12" />
               </svg>
             </div>
-            <h3>Context survival</h3>
+            <h3>13 state files</h3>
             <p>
-              8 state files track tasks, decisions, knowledge, and mode.
-              Survives compaction, model switches, and session crashes. Resumes
-              where it left off.
-            </p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon">
-              <svg viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"
-                />
-                <line x1="12" y1="9" x2="12" y2="13" />
-                <line x1="12" y1="17" x2="12.01" y2="17" />
-              </svg>
-            </div>
-            <h3>Circuit breaker</h3>
-            <p>
-              3 consecutive failures &rarr; stop. Same error 3 times &rarr;
-              stop. Same file edited 3 times in one task &rarr; stop. Enters
-              recovery mode, breaks the problem down, retries.
-            </p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon">
-              <svg viewBox="0 0 24 24" fill="none">
-                <circle cx="12" cy="12" r="4" />
-                <line x1="1.05" y1="12" x2="7" y2="12" />
-                <line x1="17.01" y1="12" x2="22.96" y2="12" />
-                <line x1="12" y1="1" x2="12" y2="8" />
-                <line x1="12" y1="16" x2="12" y2="23" />
-              </svg>
-            </div>
-            <h3>Git checkpoints</h3>
-            <p>
-              Commits after each verified task. Every checkpoint is a buildable
-              state. Stashes dirty trees on start, restores on finish. Feature
-              branches enforced.
+              Tasks, decisions, knowledge, identity, playbooks, analytics,
+              patterns. Survives compaction, model switches, crashes. Every
+              session builds on the last.
             </p>
           </div>
         </div>
@@ -1187,11 +1318,12 @@
     <section id="modes">
       <div class="container">
         <div class="section-label">Execution modes</div>
-        <h2 class="section-title">Eight modes. One clear escalation.</h2>
+        <h2 class="section-title">Nine modes. One trust ladder.</h2>
         <p class="section-desc">
           plan &rarr; go &rarr; auto &rarr; ship &rarr; god. Each step up means
-          more autonomy. Every mode inherits the safety systems &mdash;
-          confidence gate, circuit breaker, qualify step.
+          more autonomy. Every mode inherits playbooks, self-calibration, and
+          session chains &mdash; plus the confidence gate and circuit breaker
+          from day one.
         </p>
 
         <div class="modes-grid">
@@ -1231,10 +1363,11 @@
             <span class="mode-tag full">god mode</span>
             <h3>/acepilot god</h3>
             <p>
-              "You ARE the team." All 6 specialists review every task. Zero
-              stops. Objective-driven when given a goal. The designer, security
-              engineer, architect, strategist, and reviewer you couldn't hire
-              &mdash; reviewing every line you ship.
+              "You ARE the team." Say &ldquo;website&rdquo; and get one. Replays
+              proven playbooks. Self-calibrates from data. Chains objectives
+              across sessions. 6 specialists. Zero stops. The team you couldn't
+              hire &mdash; and unlike a team, it remembers every decision it's
+              ever made.
             </p>
           </div>
           <div class="mode-card">
@@ -1334,9 +1467,9 @@
             <div class="feature-icon">.claude/state/</div>
             <h3>Runtime state</h3>
             <p>
-              8 flat files. TASKS.md, DECISIONS.md, KNOWLEDGE.md, CONTEXT.md,
-              MODE, CIRCUIT, STASH_REF, USER-KNOWLEDGE.md. All plain text. All
-              git-trackable.
+              13 flat files. TASKS, DECISIONS, KNOWLEDGE, IDENTITY, PLAYBOOKS,
+              ANALYTICS, PATTERNS, USER-KNOWLEDGE, CONTEXT, METRICS, MODE,
+              CIRCUIT, STASH_REF. All plain text. All git-trackable.
             </p>
           </div>
         </div>
@@ -1348,8 +1481,8 @@
         <div class="section-label">Pricing</div>
         <h2 class="section-title">Try free. Upgrade when it clicks.</h2>
         <p class="section-desc">
-          Start with plan + go. Pro unlocks auto, ship, and god mode &mdash; 6
-          specialist agents reviewing every line you ship.
+          Start free. Upgrade the second time you ship the same thing and want
+          it 42% faster.
         </p>
 
         <div class="pricing-grid">
@@ -1361,7 +1494,7 @@
             <ul class="price-features">
               <li>Plan + Go modes (interactive)</li>
               <li>Confidence gate + circuit breaker</li>
-              <li>Full state system (8 files)</li>
+              <li>Full state system (TASKS, DECISIONS, KNOWLEDGE + 10 more)</li>
               <li>Git checkpoints + qualify step</li>
               <li>Community support (GitHub)</li>
             </ul>
@@ -1374,14 +1507,16 @@
             <div class="price-amount">$29<span>/mo</span></div>
             <div class="price-period">or $249/year (save 28%)</div>
             <ul class="price-features">
-              <li>All 8 modes including Auto, Ship, and God Mode</li>
+              <li>All 9 modes including Auto, Ship, and God Mode</li>
               <li>
-                6 specialist agents: designer, security, architect, strategist,
-                reviewer, researcher
+                Ship 42% faster by session 10 &mdash; playbooks replay what
+                worked
               </li>
-              <li>God mode: all 6 specialists review every task</li>
-              <li>Dashboard + session sync</li>
-              <li>Priority support</li>
+              <li>
+                One word &rarr; full business spec (Directive Expansion Engine)
+              </li>
+              <li>Session chains + self-calibration + deploy pipeline</li>
+              <li>Dashboard + session sync + priority support</li>
             </ul>
             <a
               href="/api/checkout.php?plan=pro_monthly"
@@ -1440,7 +1575,7 @@
           >View on GitHub</a
         >
         <a
-          href="https://github.com/acepilot-app/acepilot/blob/main/acepilot-6.0/README.md"
+          href="https://github.com/acepilot-app/acepilot/blob/main/acepilot-10.0/README.md"
           class="btn-secondary"
           >Read the docs</a
         >
@@ -1461,7 +1596,7 @@
       /* ── Copy install ── */
       function copyInstall(btn) {
         const text =
-          "git clone https://github.com/acepilot-app/acepilot.git\ncd acepilot && ./acepilot-6.0/install.sh";
+          "git clone https://github.com/acepilot-app/acepilot.git\ncd acepilot && ./acepilot-10.0/install.sh";
         navigator.clipboard.writeText(text).then(() => {
           btn.textContent = "Copied!";
           setTimeout(() => (btn.textContent = "Copy"), 2000);
@@ -1497,63 +1632,83 @@
       /* ── Typewriter demo ── */
       const DEMO_LINES = [
         {
-          text: "> /acepilot god reduce page load time by 50%",
+          text: "> /acepilot god SaaS",
           cls: "accent",
           pause: 700,
         },
         {
-          text: "GOD MODE. Objective: reduce page load time by 50%.",
+          text: "GOD MODE. PLAYBOOK REPLAY: saas-landing — proven workflow from session 4.",
           cls: "out",
-          pause: 200,
+          pause: 300,
         },
         {
-          text: "Working Backwards → strategy → 6 tasks. 6 specialists on every task.",
+          text: "CHAIN RESUMED: saas-landing — session 2, 4 tasks carried from session 1.",
+          cls: "out",
+          pause: 300,
+        },
+        {
+          text: "9 tasks. Smart dispatch. Zero stops.",
           cls: "out",
           pause: 800,
         },
         { text: "", pause: 100 },
         {
-          text: "[1/6] ✓ next.config.js — enable image optimization",
+          text: "[1/9] ✓ index.html — hero + pricing + CTA (from playbook)",
           cls: "status",
-          pause: 220,
+          pause: 180,
         },
         {
-          text: "[2/6] ✓ components/ — lazy-load below-fold components",
+          text: "[2/9] ✓ auth/ — magic link signup + Stripe checkout",
           cls: "status",
-          pause: 220,
+          pause: 180,
         },
         {
-          text: "[3/6] ✓ api/data.ts — add response caching",
+          text: "[3/9] ✓ dashboard/ — app shell + first-action empty state",
           cls: "status",
-          pause: 220,
+          pause: 180,
         },
         {
-          text: "[4/6] ~ bundle.ts — code-split vendor ⚠ 2 chunks over budget",
+          text: "[4/9] ~ pricing.js — annual toggle copy needs review ⚠ auto-fixed",
           cls: "warn",
-          pause: 320,
+          pause: 280,
         },
         {
-          text: "[5/6] ✓ fonts/ — switch to font-display: swap",
+          text: "[5/9] ✓ analytics/ — MRR, trial→paid, churn wired",
           cls: "status",
-          pause: 220,
+          pause: 180,
         },
         {
-          text: "[6/6] ✓ middleware.ts — add compression headers",
+          text: "[6/9] ✓ api/ — webhook + license validation",
+          cls: "status",
+          pause: 180,
+        },
+        {
+          text: "[7/9] ✓ seo/ — meta, OG, sitemap, schema markup",
+          cls: "status",
+          pause: 180,
+        },
+        {
+          text: "[8/9] ✓ IDENTITY.md + PLAYBOOKS.md — state persisted",
+          cls: "status",
+          pause: 180,
+        },
+        {
+          text: "[9/9] ✓ deploy — Vercel detected, live, verified",
           cls: "status",
           pause: 700,
         },
         { text: "", pause: 80 },
         {
-          text: "GOD MODE COMPLETE. 6 done, 1 concern, 0 blocked. 23 specialist findings.",
+          text: "CALIBRATED at session 10. 2 gate adjustments. 1 route optimized.",
           cls: "out",
           pause: 280,
         },
         {
-          text: "Objective assessment: ~62% load time reduction.",
+          text: "GOD MODE COMPLETE. 9 done, 0 blocked. 42% faster than session 1.",
           cls: "out",
           pause: 280,
         },
-        { text: "PR: github.com/you/app/pull/47 ✓", cls: "status", pause: 0 },
+        { text: "PR: github.com/you/app/pull/12 ✓", cls: "status", pause: 0 },
       ];
 
       let _demoTimer = null;
@@ -1604,7 +1759,9 @@
       /* ── Scroll reveal ── */
       function initReveal() {
         document
-          .querySelectorAll(".feature-card, .mode-card, .price-card")
+          .querySelectorAll(
+            ".feature-card, .agent-card, .mode-card, .price-card",
+          )
           .forEach((el, i) => {
             el.classList.add("reveal", "reveal-delay-" + ((i % 6) + 1));
           });

@@ -1,0 +1,58 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "MODE=$(cat .claude/state/MODE 2>/dev/null); echo '{\"additionalContext\": \"Branch: '$(git branch --show-current 2>/dev/null || echo detached)' | Last: '$(git log --oneline -1 2>/dev/null || echo none)'${MODE:+ | Previous AcePilot mode: '$MODE' (run /acepilot resume to continue)}'\"}'"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=\"$CLAUDE_TOOL_INPUT_FILE_PATH\"; case \"${f##*.}\" in py) ruff format \"$f\" 2>/dev/null || black -q \"$f\" 2>/dev/null;; rs) rustfmt \"$f\" 2>/dev/null;; go) gofmt -w \"$f\" 2>/dev/null;; *) npx prettier --write \"$f\" 2>/dev/null;; esac; true"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"$CLAUDE_TOOL_INPUT\" | grep -qE 'rm -rf|rm -r /|rm -r \\.|DROP TABLE|DROP DATABASE|git push.*--force|git push.*-f |git reset --hard|git checkout -- \\.|git clean -fd|chmod 777|curl.*\\|.*bash|wget.*\\|.*bash|sudo |mkfs|> /dev/sd' && echo 'BLOCKED: Dangerous pattern' >&2 && exit 2 || exit 0"
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "TS=$(date +%Y%m%d-%H%M%S); mkdir -p .claude/backups; for f in .claude/state/TASKS.md .claude/state/DECISIONS.md .claude/state/CONTEXT.md .claude/state/KNOWLEDGE.md .claude/state/USER-KNOWLEDGE.md .claude/state/PATTERNS.md .claude/state/MODE .claude/state/CIRCUIT .claude/state/STASH_REF; do [ -f \"$f\" ] && cp \"$f\" \".claude/backups/$(basename \"$f\")-$TS.bak\"; done; echo 'State backed up'",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "MODE=$(cat .claude/state/MODE 2>/dev/null); TASK=$(grep -m1 '\\- \\[ \\]' .claude/state/TASKS.md 2>/dev/null | head -1); DONE=$(grep -cE '- \\[x\\]|- \\[~\\]' .claude/state/TASKS.md 2>/dev/null || echo 0); TOTAL=$(grep -c '- \\[' .claude/state/TASKS.md 2>/dev/null || echo 0); echo '{\"additionalContext\": \"POST-COMPACTION STATE RECOVERY: Mode: '${MODE:-none}' | Progress: '$DONE'/'$TOTAL' tasks | Current: '${TASK:-none}' | CRITICAL: Re-read .claude/state/TASKS.md before continuing. Verify current task ID matches. Do not skip the Qualify step.\"}'"
+          }
+        ]
+      }
+    ]
+  }
+}
