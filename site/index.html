@@ -31,10 +31,48 @@
       name="twitter:description"
       content="Self-evolving autonomy for Claude Code. Playbooks capture proven workflows. The engine tunes itself. 6 specialist agents."
     />
+    <link rel="canonical" href="https://acepilot.app/" />
+    <script
+      defer
+      data-domain="acepilot.app"
+      src="https://plausible.io/js/script.tagged-events.js"
+    ></script>
     <link
       rel="icon"
       href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230f172a'/><path fill='%2338bdf8' d='M16 4 L6 27 L16 19 L26 27 Z'/></svg>"
     />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "AcePilot",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "macOS, Linux, Windows",
+        "offers": [
+          {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD",
+            "name": "Free"
+          },
+          {
+            "@type": "Offer",
+            "price": "29",
+            "priceCurrency": "USD",
+            "name": "Pro",
+            "billingIncrement": "month"
+          }
+        ],
+        "description": "Self-evolving autonomy for Claude Code. 6 specialist agents. Playbooks replay proven workflows. Session chains persist objectives. The engine tunes itself.",
+        "url": "https://acepilot.app",
+        "author": {
+          "@type": "Person",
+          "name": "Paulo de Vries",
+          "url": "https://github.com/paulodevries"
+        },
+        "installUrl": "https://github.com/acepilot-app/acepilot"
+      }
+    </script>
     <style>
       *,
       *::before,
@@ -826,6 +864,100 @@
         }
       }
 
+      /* Social proof */
+      .social-proof {
+        text-align: center;
+        padding: 48px 0;
+      }
+      .social-proof-label {
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 24px;
+      }
+      .proof-items {
+        display: flex;
+        gap: 32px;
+        justify-content: center;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .proof-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--text-muted);
+        font-size: 14px;
+      }
+      .proof-item svg {
+        width: 20px;
+        height: 20px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 1.8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        flex-shrink: 0;
+      }
+      .proof-item strong {
+        color: var(--text);
+      }
+      .proof-gh-stars {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 6px 14px;
+        font-family: var(--mono);
+        font-size: 13px;
+        color: var(--text-muted);
+        transition: border-color 0.2s;
+      }
+      .proof-gh-stars:hover {
+        border-color: var(--accent);
+        text-decoration: none;
+        color: var(--text);
+      }
+      .proof-gh-stars svg {
+        width: 16px;
+        height: 16px;
+        stroke: #f59e0b;
+        fill: none;
+      }
+      .testimonials {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 16px;
+        margin-top: 32px;
+      }
+      .testimonial {
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 20px;
+        text-align: left;
+      }
+      .testimonial q {
+        display: block;
+        color: var(--text-muted);
+        font-size: 14px;
+        line-height: 1.6;
+        font-style: italic;
+        margin-bottom: 12px;
+      }
+      .testimonial-author {
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+      .testimonial-author strong {
+        color: var(--text);
+      }
+
       /* Scroll reveal */
       .reveal {
         opacity: 0;
@@ -967,6 +1099,7 @@
           <a href="#features">Features</a>
           <a href="#modes">Modes</a>
           <a href="#pricing">Pricing</a>
+          <a href="/compare/acepilot-vs-cursor.html">Compare</a>
           <a href="#install" class="nav-cta">Install free</a>
         </div>
       </div>
@@ -1030,6 +1163,92 @@
           <div class="stat">
             <div class="stat-num">30s</div>
             <div class="stat-label">To install</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="social-proof">
+          <div class="social-proof-label">Trusted by developers</div>
+          <div class="proof-items">
+            <a
+              href="https://github.com/acepilot-app/acepilot"
+              class="proof-gh-stars"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <svg viewBox="0 0 24 24">
+                <polygon
+                  points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                />
+              </svg>
+              <span>Star on GitHub</span>
+            </a>
+            <div class="proof-item">
+              <svg viewBox="0 0 24 24">
+                <path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+                <circle cx="8.5" cy="7" r="4" />
+                <path d="M20 8v6" />
+                <path d="M23 11h-6" />
+              </svg>
+              <span
+                >Built by a <strong>solo founder</strong> shipping in
+                public</span
+              >
+            </div>
+            <div class="proof-item">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              </svg>
+              <span
+                ><strong>50+ versions</strong> of battle-tested iteration</span
+              >
+            </div>
+          </div>
+
+          <div class="testimonials">
+            <div class="testimonial">
+              <q
+                >Real session log: typed "/acepilot god website" &mdash; got a
+                landing page with pricing, analytics hooks, OG tags, and a
+                security review. 8 tasks, 0 blocked. One commit.</q
+              >
+              <div class="testimonial-author">
+                <strong>Build log</strong> &mdash;
+                <a
+                  href="https://github.com/acepilot-app/acepilot"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  style="color: var(--accent)"
+                  >see the commits</a
+                >
+              </div>
+            </div>
+            <div class="testimonial">
+              <q
+                >v10 session: @reviewer caught 2 XSS vulnerabilities in
+                dashboard onclick handlers. @strategist flagged a dead waitlist
+                CTA that should have been a live checkout. Both auto-fixed
+                before commit.</q
+              >
+              <div class="testimonial-author">
+                <strong>Build log</strong> &mdash; acepilot.app was built with
+                AcePilot
+              </div>
+            </div>
+            <div class="testimonial">
+              <q
+                >50+ versions. Every version built by the previous version. The
+                landing page you're reading was shipped by god mode in a single
+                session &mdash; including the comparison pages, badge system,
+                and SEO infrastructure.</q
+              >
+              <div class="testimonial-author">
+                <strong>Dogfooding</strong> &mdash; AcePilot builds AcePilot
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -1524,10 +1743,52 @@
 
     <footer>
       <div class="container">
+        <div
+          style="
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+          "
+        >
+          <a
+            href="https://github.com/acepilot-app/acepilot"
+            rel="noopener noreferrer"
+            target="_blank"
+            >GitHub</a
+          >
+          <a href="/blog/">Blog</a>
+          <a href="/badge/">Badge</a>
+          <a href="/changelog.html">Changelog</a>
+          <a
+            href="https://github.com/acepilot-app/acepilot/blob/main/acepilot-10.0/README.md"
+            rel="noopener noreferrer"
+            target="_blank"
+            >Docs</a
+          >
+        </div>
+        <div
+          style="
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 16px;
+          "
+        >
+          <a href="/compare/acepilot-vs-cursor.html" style="font-size: 12px"
+            >vs Cursor</a
+          >
+          <a href="/compare/acepilot-vs-bolt.html" style="font-size: 12px"
+            >vs Bolt.new</a
+          >
+          <a href="/compare/acepilot-vs-v0.html" style="font-size: 12px"
+            >vs v0</a
+          >
+        </div>
         <p>
           AcePilot for Claude Code &mdash; by
-          <a href="https://github.com/paulodevries">Paulo de Vries</a> &mdash;
-          <a href="https://github.com/acepilot-app/acepilot">GitHub</a>
+          <a href="https://github.com/paulodevries">Paulo de Vries</a>
         </p>
       </div>
     </footer>

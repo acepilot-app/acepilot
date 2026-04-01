@@ -151,6 +151,75 @@
       .dashboard-btn:hover {
         opacity: 0.9;
       }
+      .share-section {
+        margin-top: 40px;
+        padding: 28px;
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        text-align: center;
+      }
+      .share-section h2 {
+        font-size: 18px;
+        margin-bottom: 6px;
+      }
+      .share-section p {
+        color: var(--text-muted);
+        font-size: 14px;
+        margin-bottom: 20px;
+      }
+      .share-buttons {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .share-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+        transition:
+          opacity 0.2s,
+          transform 0.1s;
+      }
+      .share-btn:hover {
+        opacity: 0.9;
+        transform: translateY(-1px);
+        text-decoration: none;
+      }
+      .share-btn svg {
+        width: 16px;
+        height: 16px;
+        fill: currentColor;
+      }
+      .share-btn.twitter {
+        background: #1d9bf0;
+        color: white;
+      }
+      .share-btn.copy-link {
+        background: var(--bg-elevated);
+        color: var(--text);
+        border: 1px solid var(--border);
+      }
+      .share-btn.github {
+        background: #24292f;
+        color: white;
+      }
+      .badge-link {
+        display: inline-block;
+        margin-top: 16px;
+        font-size: 13px;
+        color: var(--accent);
+        text-decoration: none;
+      }
+      .badge-link:hover {
+        text-decoration: underline;
+      }
     </style>
   </head>
   <body>
@@ -209,6 +278,60 @@
       </div>
 
       <a href="/dashboard/" class="dashboard-btn">Open Dashboard</a>
+
+      <div class="share-section">
+        <h2>Spread the word</h2>
+        <p>Know someone who ships solo? They'll thank you.</p>
+        <div class="share-buttons">
+          <a
+            href="https://twitter.com/intent/tweet?text=Shipped%20my%20project%20in%20one%20session%20by%20typing%20two%20words%20into%20Claude%20Code.%20AcePilot%20god%20mode%20is%20wild.%20%F0%9F%9A%80%0A%0Ahttps%3A%2F%2Facepilot.app%3Fref%3Dtweet"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="share-btn twitter"
+          >
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+              />
+            </svg>
+            Share on X
+          </a>
+          <button class="share-btn copy-link" onclick="copyShareLink(this)">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"
+              />
+              <path
+                d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"
+              />
+            </svg>
+            Copy link
+          </button>
+          <a
+            href="https://github.com/acepilot-app/acepilot"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="share-btn github"
+          >
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+              />
+            </svg>
+            Star on GitHub
+          </a>
+        </div>
+        <a href="/badge/" class="badge-link"
+          >Add a "Built with AcePilot" badge to your project &rarr;</a
+        >
+      </div>
 
       <div class="help">
         <p>
@@ -294,8 +417,20 @@
           });
       }
 
+      function copyShareLink(btn) {
+        navigator.clipboard.writeText("https://acepilot.app").then(() => {
+          btn.innerHTML =
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><path d="M20 6L9 17l-5-5"/></svg> Copied!';
+          setTimeout(() => {
+            btn.innerHTML =
+              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg> Copy link';
+          }, 2000);
+        });
+      }
+
       function copyCommand() {
         const key = document.getElementById("license-key").textContent;
+        if (!/^[a-zA-Z0-9_-]+$/.test(key)) return;
         const cmd = 'echo "' + key + '" > ~/.claude/acepilot-license';
         navigator.clipboard.writeText(cmd).then(() => {
           const btn = document.getElementById("copy-btn");

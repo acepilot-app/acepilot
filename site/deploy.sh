@@ -37,7 +37,7 @@ deploy_file() {
   local remote_dir
   remote_dir="$(dirname "$rel")"
   if [ "$remote_dir" != "." ]; then
-    ssh -p "$PORT" "$REMOTE" "mkdir -p $REMOTE_PATH/$remote_dir" 2>/dev/null
+    ssh -n -p "$PORT" "$REMOTE" "mkdir -p $REMOTE_PATH/$remote_dir" 2>/dev/null
   fi
 
   scp -P "$PORT" "$src" "$REMOTE:$REMOTE_PATH/$rel" 2>/dev/null

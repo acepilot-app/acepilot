@@ -1,0 +1,603 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Claude Code vs Cursor — Terminal AI vs IDE AI (2026 Comparison)
+    </title>
+    <meta
+      name="description"
+      content="Claude Code vs Cursor: honest comparison for developers in 2026. Claude Code is a terminal-first AI agent. Cursor is an AI-powered IDE. Add AcePilot to Claude Code for autonomous execution with 6 specialist agents."
+    />
+    <meta
+      property="og:title"
+      content="Claude Code vs Cursor — Terminal AI vs IDE AI (2026)"
+    />
+    <meta
+      property="og:description"
+      content="Honest comparison: Claude Code (terminal AI agent) vs Cursor (AI IDE). Features, workflows, and why AcePilot makes Claude Code autonomous."
+    />
+    <meta property="og:type" content="article" />
+    <meta
+      property="og:url"
+      content="https://acepilot.app/compare/claude-code-vs-cursor.html"
+    />
+    <meta property="og:image" content="https://acepilot.app/og-image.png" />
+    <link
+      rel="canonical"
+      href="https://acepilot.app/compare/claude-code-vs-cursor.html"
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230f172a'/><path fill='%2338bdf8' d='M16 4 L6 27 L16 19 L26 27 Z'/></svg>"
+    />
+    <script
+      defer
+      data-domain="acepilot.app"
+      src="https://plausible.io/js/script.tagged-events.js"
+    ></script>
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --bg: #0a0a0b;
+        --bg-surface: #111113;
+        --bg-elevated: #1a1a1e;
+        --text: #e8e8ed;
+        --text-muted: #a1a1a6;
+        --accent: #38bdf8;
+        --accent-dim: #0ea5e9;
+        --green: #30d158;
+        --border: #2c2c2e;
+        --mono:
+          "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas,
+          monospace;
+        --sans:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: var(--sans);
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 clamp(16px, 4vw, 40px);
+      }
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        background: rgba(10, 10, 11, 0.85);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-bottom: 1px solid var(--border);
+      }
+      nav .container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 56px;
+        max-width: 800px;
+      }
+      .nav-logo {
+        font-family: var(--mono);
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        letter-spacing: -0.3px;
+        text-decoration: none;
+      }
+      .nav-links {
+        display: flex;
+        gap: 24px;
+        align-items: center;
+      }
+      .nav-links a {
+        color: var(--text-muted);
+        font-size: 14px;
+        transition: color 0.2s;
+      }
+      .nav-links a:hover {
+        color: var(--text);
+        text-decoration: none;
+      }
+      .nav-cta {
+        background: var(--accent);
+        color: #0a0a0b !important;
+        padding: 6px 16px;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 600;
+        transition: background 0.2s;
+      }
+      .nav-cta:hover {
+        background: var(--accent-dim);
+        text-decoration: none !important;
+      }
+      .hero {
+        padding: 120px 0 60px;
+      }
+      .hero-badge {
+        display: inline-block;
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--accent);
+        background: rgba(56, 189, 248, 0.1);
+        border: 1px solid rgba(56, 189, 248, 0.2);
+        padding: 4px 12px;
+        border-radius: 100px;
+        margin-bottom: 20px;
+      }
+      .hero h1 {
+        font-size: clamp(32px, 5vw, 48px);
+        font-weight: 800;
+        line-height: 1.15;
+        margin-bottom: 16px;
+        letter-spacing: -1px;
+      }
+      .hero h1 span {
+        color: var(--accent);
+      }
+      .hero-sub {
+        font-size: clamp(15px, 1vw + 12px, 18px);
+        color: var(--text-muted);
+        max-width: 600px;
+        line-height: 1.6;
+      }
+      .tldr {
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 28px;
+        margin: 40px 0;
+      }
+      .tldr h2 {
+        font-family: var(--mono);
+        font-size: 14px;
+        color: var(--accent);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 16px;
+      }
+      .tldr p {
+        color: var(--text-muted);
+        font-size: 15px;
+        line-height: 1.7;
+      }
+      .tldr strong {
+        color: var(--text);
+      }
+      section {
+        padding: 60px 0;
+        border-top: 1px solid var(--border);
+      }
+      section h2 {
+        font-size: clamp(24px, 3vw, 32px);
+        font-weight: 700;
+        margin-bottom: 24px;
+        letter-spacing: -0.5px;
+      }
+      .compare-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 24px 0;
+        font-size: 14px;
+      }
+      .compare-table th {
+        text-align: left;
+        padding: 12px 16px;
+        background: var(--bg-elevated);
+        border: 1px solid var(--border);
+        font-family: var(--mono);
+        font-size: 13px;
+        color: var(--accent);
+        font-weight: 600;
+      }
+      .compare-table td {
+        padding: 12px 16px;
+        border: 1px solid var(--border);
+        color: var(--text-muted);
+        vertical-align: top;
+      }
+      .compare-table td:first-child {
+        color: var(--text);
+        font-weight: 500;
+        width: 30%;
+      }
+      .compare-table .check {
+        color: var(--green);
+      }
+      .compare-table .x {
+        color: #ff453a;
+      }
+      .prose {
+        color: var(--text-muted);
+        font-size: 15px;
+        line-height: 1.8;
+      }
+      .prose p {
+        margin-bottom: 16px;
+      }
+      .prose strong {
+        color: var(--text);
+      }
+      .prose ul {
+        margin: 16px 0;
+        padding-left: 24px;
+      }
+      .prose li {
+        margin-bottom: 8px;
+      }
+      .callout {
+        background: rgba(56, 189, 248, 0.06);
+        border: 1px solid rgba(56, 189, 248, 0.15);
+        border-radius: 10px;
+        padding: 24px;
+        margin: 24px 0;
+      }
+      .callout h3 {
+        font-size: 17px;
+        margin-bottom: 8px;
+        color: var(--accent);
+      }
+      .callout p {
+        color: var(--text-muted);
+        font-size: 14px;
+        line-height: 1.6;
+        margin: 0;
+      }
+      .cta-box {
+        background: var(--bg-surface);
+        border: 1px solid var(--accent);
+        border-radius: 12px;
+        padding: 40px;
+        text-align: center;
+        margin: 60px 0 0;
+      }
+      .cta-box h2 {
+        font-size: 28px;
+        margin-bottom: 12px;
+      }
+      .cta-box p {
+        color: var(--text-muted);
+        margin-bottom: 24px;
+        font-size: 15px;
+      }
+      .btn-primary {
+        display: inline-block;
+        background: var(--accent);
+        color: #0a0a0b;
+        padding: 12px 28px;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 600;
+        transition:
+          background 0.2s,
+          transform 0.1s;
+      }
+      .btn-primary:hover {
+        background: var(--accent-dim);
+        text-decoration: none;
+        transform: translateY(-1px);
+      }
+      .other-comparisons {
+        margin-top: 40px;
+        padding-top: 24px;
+        border-top: 1px solid var(--border);
+        font-size: 14px;
+        color: var(--text-muted);
+      }
+      .other-comparisons a {
+        margin: 0 8px;
+      }
+      footer {
+        border-top: 1px solid var(--border);
+        padding: 32px 0;
+        text-align: center;
+        font-size: 13px;
+        color: var(--text-muted);
+      }
+      footer a {
+        color: var(--text-muted);
+      }
+      footer a:hover {
+        color: var(--text);
+      }
+      @media (max-width: 640px) {
+        .compare-table {
+          font-size: 12px;
+        }
+        .compare-table th,
+        .compare-table td {
+          padding: 8px 10px;
+        }
+        .cta-box {
+          padding: 28px 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div class="container">
+        <a href="/" class="nav-logo">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 32 32"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <rect width="32" height="32" rx="8" fill="#0f172a" />
+            <path fill="#38bdf8" d="M16 4 L6 27 L16 19 L26 27 Z" />
+          </svg>
+          AcePilot</a
+        >
+        <div class="nav-links">
+          <a href="/#features">Features</a>
+          <a href="/#pricing">Pricing</a>
+          <a href="/#install" class="nav-cta">Install free</a>
+        </div>
+      </div>
+    </nav>
+
+    <header class="hero">
+      <div class="container">
+        <div class="hero-badge">2026 Comparison</div>
+        <h1>Claude Code vs <span>Cursor</span></h1>
+        <p class="hero-sub">
+          Two approaches to AI-assisted development. One lives in the terminal.
+          One replaces your IDE. Here's how they compare &mdash; and how
+          AcePilot makes Claude Code autonomous.
+        </p>
+      </div>
+    </header>
+
+    <main class="container">
+      <div class="tldr">
+        <h2>TL;DR</h2>
+        <p>
+          <strong>Claude Code</strong> is Anthropic's terminal-first AI agent
+          &mdash; it reads your codebase, edits files, runs commands, and
+          creates commits. <strong>Cursor</strong> is a VS Code fork with AI
+          completions and chat built in. Claude Code is more powerful for
+          multi-file autonomous work. Cursor is better for inline editing. Add
+          <strong>AcePilot</strong> to Claude Code and it becomes a full
+          autonomous team &mdash; 6 specialist agents, playbooks,
+          self-calibration, and a deploy pipeline.
+        </p>
+      </div>
+
+      <section>
+        <h2>Feature comparison</h2>
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th>Claude Code</th>
+              <th>Cursor</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Interface</td>
+              <td>Terminal (CLI)</td>
+              <td>GUI IDE (VS Code fork)</td>
+            </tr>
+            <tr>
+              <td>AI model</td>
+              <td>Claude (Opus, Sonnet, Haiku)</td>
+              <td>GPT-4, Claude, custom models</td>
+            </tr>
+            <tr>
+              <td>Multi-file editing</td>
+              <td>
+                <span class="check">Strong</span> &mdash; reads entire codebase,
+                edits across files
+              </td>
+              <td>Mostly single-file focused</td>
+            </tr>
+            <tr>
+              <td>Autonomous execution</td>
+              <td>Can run commands, create commits, push code</td>
+              <td>Suggests changes, user applies</td>
+            </tr>
+            <tr>
+              <td>Git integration</td>
+              <td>
+                <span class="check">Native</span> &mdash; commits, branches, PRs
+              </td>
+              <td>Standard VS Code git</td>
+            </tr>
+            <tr>
+              <td>Inline completions</td>
+              <td><span class="x">No</span> &mdash; terminal-based</td>
+              <td>
+                <span class="check">Yes</span> &mdash; real-time autocomplete
+              </td>
+            </tr>
+            <tr>
+              <td>Custom commands</td>
+              <td><span class="check">Slash commands</span> via config</td>
+              <td>Limited customization</td>
+            </tr>
+            <tr>
+              <td>Context window</td>
+              <td>200K+ tokens, reads full projects</td>
+              <td>Varies by model</td>
+            </tr>
+            <tr>
+              <td>IDE features</td>
+              <td>None &mdash; terminal only</td>
+              <td>
+                <span class="check">Full VS Code</span> &mdash; extensions,
+                debugging, etc.
+              </td>
+            </tr>
+            <tr>
+              <td>Pricing</td>
+              <td>Anthropic API usage</td>
+              <td>$20/mo Pro</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <h2>When to choose Claude Code</h2>
+        <div class="prose">
+          <ul>
+            <li>
+              <strong>You want autonomous multi-file execution</strong> &mdash;
+              Claude Code can read your entire codebase, edit multiple files,
+              run tests, and commit. It thinks at the project level, not the
+              file level.
+            </li>
+            <li>
+              <strong>You work in the terminal</strong> &mdash; if your workflow
+              is git, vim/neovim, tmux, and CLI tools, Claude Code fits
+              naturally.
+            </li>
+            <li>
+              <strong>You want to automate workflows</strong> &mdash; custom
+              slash commands and config-based behavior let you build repeatable
+              workflows.
+            </li>
+            <li>
+              <strong>You want the most capable Claude model</strong> &mdash;
+              Claude Code gives you direct access to Claude Opus with full tool
+              use.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>When to choose Cursor</h2>
+        <div class="prose">
+          <ul>
+            <li>
+              <strong>You want inline code completions</strong> &mdash; Cursor's
+              real-time autocomplete is its killer feature. Claude Code doesn't
+              have this.
+            </li>
+            <li>
+              <strong>You prefer a GUI IDE</strong> &mdash; if you live in VS
+              Code, Cursor is a natural upgrade with AI built in.
+            </li>
+            <li>
+              <strong>You want model flexibility</strong> &mdash; Cursor
+              supports GPT-4, Claude, and other models. You can switch between
+              them.
+            </li>
+            <li>
+              <strong>You need debugging, extensions, and IDE tooling</strong>
+              &mdash; Cursor inherits the full VS Code ecosystem.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>The missing piece: autonomous execution</h2>
+        <div class="prose">
+          <p>
+            Claude Code is powerful, but out of the box it doesn't remember
+            across sessions, doesn't review its own code, and doesn't learn from
+            mistakes. It executes one task at a time and waits for your next
+            prompt.
+          </p>
+          <p>
+            <strong>AcePilot fixes that.</strong> It installs as config files
+            into Claude Code (30 seconds, no fork) and adds:
+          </p>
+        </div>
+        <div class="callout">
+          <h3>What AcePilot adds to Claude Code</h3>
+          <p>
+            <strong>6 specialist agents</strong> (designer, security, architect,
+            strategist, reviewer, researcher) that review every task.
+            <strong>Playbooks</strong> that capture proven workflows and replay
+            them &mdash; 42% faster by session 10.
+            <strong>Session chains</strong> that persist objectives across
+            sessions. <strong>Self-calibration</strong> that tunes confidence
+            gates and specialist routing from data. <strong>God mode</strong>:
+            say one word and get a scanned, planned, executed, reviewed, and
+            deployed project.
+          </p>
+        </div>
+        <div class="prose">
+          <p>
+            The result: Claude Code + AcePilot is an autonomous team. Cursor +
+            AI is a smarter editor. Both are useful. They solve different
+            problems.
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <h2>Can you use both?</h2>
+        <div class="prose">
+          <p>
+            <strong>Yes.</strong> Many developers use Cursor for day-to-day
+            editing (inline completions, quick fixes) and Claude Code + AcePilot
+            for autonomous project execution (shipping features, running
+            security reviews, deploying). They don't conflict.
+          </p>
+        </div>
+      </section>
+
+      <div class="cta-box">
+        <h2>Make Claude Code autonomous</h2>
+        <p>Add AcePilot in 30 seconds. Free forever. No credit card.</p>
+        <a href="/#install" class="btn-primary">Install AcePilot</a>
+      </div>
+
+      <div class="other-comparisons">
+        Also compare:
+        <a href="/compare/acepilot-vs-cursor.html">AcePilot vs Cursor</a>
+        <a href="/compare/acepilot-vs-bolt.html">AcePilot vs Bolt.new</a>
+        <a href="/compare/acepilot-vs-v0.html">AcePilot vs v0</a>
+      </div>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>
+          AcePilot for Claude Code &mdash; <a href="/">Home</a> &middot;
+          <a
+            href="https://github.com/acepilot-app/acepilot"
+            rel="noopener noreferrer"
+            target="_blank"
+            >GitHub</a
+          >
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>
