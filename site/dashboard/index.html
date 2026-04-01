@@ -1,0 +1,1546 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AcePilot Dashboard</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230f172a'/><path fill='%2338bdf8' d='M16 4 L6 27 L16 19 L26 27 Z'/></svg>"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --bg: #0a0a0b;
+        --bg-surface: #111113;
+        --bg-elevated: #1a1a1e;
+        --text: #e8e8ed;
+        --text-muted: #8e8e93;
+        --accent: #38bdf8;
+        --accent-dim: #0ea5e9;
+        --green: #30d158;
+        --yellow: #ffd60a;
+        --red: #ff453a;
+        --orange: #ff9f0a;
+        --border: #2c2c2e;
+        --mono:
+          "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas,
+          monospace;
+        --sans:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: var(--sans);
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        min-height: 100vh;
+      }
+
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+
+      /* Nav */
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        background: rgba(10, 10, 11, 0.85);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-bottom: 1px solid var(--border);
+      }
+      .nav-inner {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 56px;
+      }
+      .nav-logo {
+        font-family: var(--mono);
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--text);
+        letter-spacing: 2px;
+      }
+      .nav-logo span {
+        color: var(--text-muted);
+        font-weight: 400;
+        font-size: 14px;
+        margin-left: 8px;
+        letter-spacing: 0;
+      }
+      .nav-right {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+      .nav-user {
+        font-family: var(--mono);
+        font-size: 13px;
+        color: var(--text-muted);
+      }
+      .btn-logout {
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--text-muted);
+        background: none;
+        border: 1px solid var(--border);
+        padding: 4px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .btn-logout:hover {
+        color: var(--text);
+        border-color: var(--text-muted);
+      }
+
+      /* Layout */
+      .app {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 80px 24px 48px;
+      }
+
+      /* Login View */
+      .login-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        padding: 24px;
+      }
+      .login-box {
+        width: 100%;
+        max-width: 400px;
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 40px 32px;
+      }
+      .login-box h1 {
+        font-family: var(--mono);
+        font-size: 24px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        margin-bottom: 8px;
+      }
+      .login-box p {
+        color: var(--text-muted);
+        font-size: 14px;
+        margin-bottom: 32px;
+      }
+      .form-group {
+        margin-bottom: 20px;
+      }
+      .form-group label {
+        display: block;
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 8px;
+      }
+      .form-group input {
+        width: 100%;
+        padding: 12px 16px;
+        background: var(--bg-elevated);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        color: var(--text);
+        font-family: var(--mono);
+        font-size: 14px;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+      .form-group input:focus {
+        border-color: var(--accent);
+      }
+      .form-group input::placeholder {
+        color: #48484a;
+      }
+      .btn-primary {
+        width: 100%;
+        padding: 12px;
+        background: var(--accent);
+        color: #0a0a0b;
+        border: none;
+        border-radius: 8px;
+        font-family: var(--mono);
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s;
+        margin-top: 8px;
+      }
+      .btn-primary:hover {
+        background: var(--accent-dim);
+      }
+      .btn-primary:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .login-error {
+        color: var(--red);
+        font-size: 13px;
+        margin-top: 12px;
+        display: none;
+      }
+      .login-footer {
+        text-align: center;
+        margin-top: 24px;
+        font-size: 13px;
+        color: var(--text-muted);
+      }
+
+      /* Dashboard View */
+      .dashboard {
+        display: none;
+      }
+      .dashboard.active {
+        display: block;
+      }
+
+      /* Tab Navigation */
+      .tabs {
+        display: flex;
+        gap: 4px;
+        margin-bottom: 32px;
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 0;
+      }
+      .tab {
+        font-family: var(--mono);
+        font-size: 13px;
+        color: var(--text-muted);
+        background: none;
+        border: none;
+        padding: 12px 20px;
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        transition: all 0.2s;
+        position: relative;
+        bottom: -1px;
+      }
+      .tab:hover {
+        color: var(--text);
+      }
+      .tab.active {
+        color: var(--accent);
+        border-bottom-color: var(--accent);
+      }
+      .tab-count {
+        font-size: 11px;
+        background: var(--bg-elevated);
+        padding: 1px 6px;
+        border-radius: 10px;
+        margin-left: 6px;
+      }
+
+      /* Tab Panels */
+      .tab-panel {
+        display: none;
+      }
+      .tab-panel.active {
+        display: block;
+      }
+
+      /* Stats Row */
+      .stats-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 16px;
+        margin-bottom: 32px;
+      }
+      .stat-card {
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 20px;
+      }
+      .stat-label {
+        font-family: var(--mono);
+        font-size: 11px;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 4px;
+      }
+      .stat-value {
+        font-family: var(--mono);
+        font-size: 28px;
+        font-weight: 700;
+        color: var(--text);
+      }
+      .stat-value.green {
+        color: var(--green);
+      }
+      .stat-value.accent {
+        color: var(--accent);
+      }
+      .stat-sub {
+        font-size: 12px;
+        color: var(--text-muted);
+        margin-top: 2px;
+      }
+
+      /* Project Cards */
+      .project-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+        gap: 16px;
+      }
+      .project-card {
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 24px;
+        transition: border-color 0.2s;
+        cursor: pointer;
+      }
+      .project-card:hover {
+        border-color: var(--accent-dim);
+      }
+      .project-name {
+        font-family: var(--mono);
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 12px;
+      }
+      .project-meta {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .project-meta-item {
+        font-size: 13px;
+        color: var(--text-muted);
+      }
+      .project-meta-item strong {
+        color: var(--text);
+        font-weight: 600;
+      }
+
+      /* Session List */
+      .session-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .session-item {
+        display: grid;
+        grid-template-columns: 120px 1fr 100px 80px 100px;
+        align-items: center;
+        gap: 16px;
+        padding: 16px 20px;
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        font-size: 13px;
+        transition: border-color 0.2s;
+      }
+      .session-item:hover {
+        border-color: var(--accent-dim);
+      }
+      .session-date {
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+      .session-project {
+        font-weight: 600;
+      }
+      .session-mode {
+        font-family: var(--mono);
+        font-size: 11px;
+        padding: 3px 8px;
+        border-radius: 4px;
+        background: var(--bg-elevated);
+        color: var(--accent);
+        text-transform: uppercase;
+        text-align: center;
+      }
+      .session-tasks {
+        font-family: var(--mono);
+        text-align: center;
+      }
+      .session-status {
+        text-align: right;
+      }
+
+      /* Objective Cards */
+      .objectives-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+      }
+      .objectives-header h2 {
+        font-family: var(--mono);
+        font-size: 16px;
+        font-weight: 600;
+      }
+      .btn-new {
+        font-family: var(--mono);
+        font-size: 13px;
+        color: #0a0a0b;
+        background: var(--accent);
+        border: none;
+        padding: 8px 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .btn-new:hover {
+        background: var(--accent-dim);
+      }
+      .objective-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .objective-card {
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 24px;
+        transition: border-color 0.2s;
+      }
+      .objective-card:hover {
+        border-color: var(--accent-dim);
+      }
+      .objective-text {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 12px;
+      }
+      .objective-meta {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .status-badge {
+        font-family: var(--mono);
+        font-size: 11px;
+        padding: 3px 10px;
+        border-radius: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .status-pending {
+        background: rgba(255, 214, 10, 0.12);
+        color: var(--yellow);
+      }
+      .status-in_progress {
+        background: rgba(108, 92, 231, 0.12);
+        color: var(--accent);
+      }
+      .status-completed {
+        background: rgba(48, 209, 88, 0.12);
+        color: var(--green);
+      }
+      .status-assessed {
+        background: rgba(48, 209, 88, 0.2);
+        color: var(--green);
+      }
+      .objective-date {
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+      .objective-project {
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+      .objective-pr {
+        font-family: var(--mono);
+        font-size: 12px;
+      }
+
+      /* New Objective Modal */
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 200;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+      }
+      .modal-overlay.active {
+        display: flex;
+      }
+      .modal {
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 32px;
+        width: 100%;
+        max-width: 520px;
+      }
+      .modal h2 {
+        font-family: var(--mono);
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 8px;
+      }
+      .modal p {
+        color: var(--text-muted);
+        font-size: 14px;
+        margin-bottom: 24px;
+      }
+      .modal textarea {
+        width: 100%;
+        min-height: 100px;
+        padding: 12px 16px;
+        background: var(--bg-elevated);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        color: var(--text);
+        font-family: var(--sans);
+        font-size: 14px;
+        resize: vertical;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+      .modal textarea:focus {
+        border-color: var(--accent);
+      }
+      .modal textarea::placeholder {
+        color: #48484a;
+      }
+      .modal-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        margin-top: 20px;
+      }
+      .btn-cancel {
+        font-family: var(--mono);
+        font-size: 13px;
+        color: var(--text-muted);
+        background: none;
+        border: 1px solid var(--border);
+        padding: 8px 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .btn-cancel:hover {
+        color: var(--text);
+        border-color: var(--text-muted);
+      }
+
+      /* License Info */
+      .license-card {
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 24px;
+        margin-bottom: 24px;
+      }
+      .license-card h3 {
+        font-family: var(--mono);
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 16px;
+      }
+      .license-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+        border-bottom: 1px solid var(--border);
+        font-size: 14px;
+      }
+      .license-row:last-child {
+        border-bottom: none;
+      }
+      .license-label {
+        color: var(--text-muted);
+      }
+      .license-value {
+        font-family: var(--mono);
+        font-weight: 600;
+      }
+      .plan-badge {
+        font-family: var(--mono);
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: 4px;
+        background: rgba(108, 92, 231, 0.15);
+        color: var(--accent);
+        text-transform: uppercase;
+      }
+
+      /* Empty States */
+      .empty-state {
+        text-align: center;
+        padding: 64px 24px;
+        color: var(--text-muted);
+      }
+      .empty-state h3 {
+        font-family: var(--mono);
+        font-size: 16px;
+        color: var(--text);
+        margin-bottom: 8px;
+      }
+      .empty-state p {
+        font-size: 14px;
+        max-width: 400px;
+        margin: 0 auto 24px;
+      }
+      .empty-code {
+        font-family: var(--mono);
+        font-size: 13px;
+        background: var(--bg-elevated);
+        padding: 12px 20px;
+        border-radius: 8px;
+        display: inline-block;
+        color: var(--green);
+      }
+
+      /* Action Cards */
+      .action-card {
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 20px 24px;
+        transition: border-color 0.2s;
+      }
+      .action-card:hover {
+        border-color: var(--orange);
+      }
+      .action-card.done {
+        opacity: 0.5;
+      }
+      .action-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 16px;
+        margin-bottom: 8px;
+      }
+      .action-title {
+        font-size: 15px;
+        font-weight: 600;
+      }
+      .action-priority {
+        font-family: var(--mono);
+        font-size: 10px;
+        padding: 2px 8px;
+        border-radius: 4px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        flex-shrink: 0;
+      }
+      .priority-high {
+        background: rgba(255, 69, 58, 0.15);
+        color: var(--red);
+      }
+      .priority-medium {
+        background: rgba(255, 159, 10, 0.15);
+        color: var(--orange);
+      }
+      .priority-low {
+        background: rgba(142, 142, 147, 0.15);
+        color: var(--text-muted);
+      }
+      .action-desc {
+        font-size: 13px;
+        color: var(--text-muted);
+        margin-bottom: 12px;
+      }
+      .action-bottom {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .action-link {
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--accent);
+        word-break: break-all;
+      }
+      .action-project-tag {
+        font-family: var(--mono);
+        font-size: 11px;
+        color: var(--text-muted);
+        background: var(--bg-elevated);
+        padding: 2px 8px;
+        border-radius: 4px;
+      }
+      .action-category {
+        font-family: var(--mono);
+        font-size: 11px;
+        color: var(--text-muted);
+      }
+      .btn-done {
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--green);
+        background: rgba(48, 209, 88, 0.1);
+        border: 1px solid rgba(48, 209, 88, 0.3);
+        padding: 4px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        margin-left: auto;
+        transition: all 0.2s;
+      }
+      .btn-done:hover {
+        background: rgba(48, 209, 88, 0.2);
+        border-color: var(--green);
+      }
+      .btn-dismiss {
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--text-muted);
+        background: none;
+        border: 1px solid var(--border);
+        padding: 4px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .btn-dismiss:hover {
+        color: var(--text);
+        border-color: var(--text-muted);
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .stats-row {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .session-item {
+          grid-template-columns: 1fr 1fr;
+          gap: 8px;
+        }
+        .session-date {
+          grid-column: 1 / -1;
+        }
+        .project-grid {
+          grid-template-columns: 1fr;
+        }
+        .tabs {
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+        }
+      }
+
+      /* Loading */
+      .loading {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 48px;
+        color: var(--text-muted);
+        font-family: var(--mono);
+        font-size: 13px;
+      }
+      .spinner {
+        width: 20px;
+        height: 20px;
+        border: 2px solid var(--border);
+        border-top-color: var(--accent);
+        border-radius: 50%;
+        animation: spin 0.6s linear infinite;
+        margin-right: 12px;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* Toast */
+      .toast {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        padding: 12px 20px;
+        background: var(--bg-elevated);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        font-family: var(--mono);
+        font-size: 13px;
+        color: var(--green);
+        z-index: 300;
+        transform: translateY(100px);
+        opacity: 0;
+        transition: all 0.3s ease;
+      }
+      .toast.show {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      .toast.error {
+        color: var(--red);
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Login View -->
+    <div id="login-view" class="login-wrapper">
+      <div class="login-box">
+        <h1>ACEPILOT</h1>
+        <p>Sign in with your email and license key.</p>
+        <form id="login-form">
+          <div class="form-group">
+            <label>Email</label>
+            <input
+              type="email"
+              id="login-email"
+              placeholder="you@company.com"
+              required
+              autocomplete="email"
+            />
+          </div>
+          <div class="form-group">
+            <label>License Key</label>
+            <input
+              type="text"
+              id="login-key"
+              placeholder="pro-paid-xxxxxxxx"
+              required
+              autocomplete="off"
+            />
+          </div>
+          <button type="submit" class="btn-primary" id="login-btn">
+            Sign In
+          </button>
+          <div class="login-error" id="login-error"></div>
+        </form>
+        <div class="login-footer">
+          <a href="https://acepilot.app">Back to acepilot.app</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dashboard View -->
+    <div id="dashboard-view" class="dashboard">
+      <nav>
+        <div class="nav-inner">
+          <div class="nav-logo">ACEPILOT <span>Dashboard</span></div>
+          <div class="nav-right">
+            <span class="nav-user" id="nav-email"></span>
+            <button class="btn-logout" id="btn-logout">Log out</button>
+          </div>
+        </div>
+      </nav>
+
+      <div class="app">
+        <!-- Stats -->
+        <div class="stats-row" id="stats-row">
+          <div class="stat-card">
+            <div class="stat-label">Projects</div>
+            <div class="stat-value accent" id="stat-projects">-</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Sessions</div>
+            <div class="stat-value" id="stat-sessions">-</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Tasks Shipped</div>
+            <div class="stat-value green" id="stat-tasks">-</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Objectives</div>
+            <div class="stat-value accent" id="stat-objectives">-</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Actions Required</div>
+            <div
+              class="stat-value"
+              id="stat-actions"
+              style="color: var(--orange)"
+            >
+              -
+            </div>
+          </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+          <button class="tab active" data-tab="projects">
+            Projects<span class="tab-count" id="tab-projects-count">0</span>
+          </button>
+          <button class="tab" data-tab="sessions">
+            Sessions<span class="tab-count" id="tab-sessions-count">0</span>
+          </button>
+          <button class="tab" data-tab="objectives">
+            CEO Objectives<span class="tab-count" id="tab-objectives-count"
+              >0</span
+            >
+          </button>
+          <button class="tab" data-tab="actions">
+            Action Required<span
+              class="tab-count"
+              id="tab-actions-count"
+              style="background: rgba(255, 159, 10, 0.2); color: var(--orange)"
+              >0</span
+            >
+          </button>
+          <button class="tab" data-tab="account">Account</button>
+        </div>
+
+        <!-- Projects Panel -->
+        <div class="tab-panel active" id="panel-projects">
+          <div class="project-grid" id="project-grid">
+            <div class="loading">
+              <div class="spinner"></div>
+              Loading projects...
+            </div>
+          </div>
+        </div>
+
+        <!-- Sessions Panel -->
+        <div class="tab-panel" id="panel-sessions">
+          <div class="session-list" id="session-list">
+            <div class="loading">
+              <div class="spinner"></div>
+              Loading sessions...
+            </div>
+          </div>
+        </div>
+
+        <!-- Objectives Panel -->
+        <div class="tab-panel" id="panel-objectives">
+          <div class="objectives-header">
+            <h2>CEO Objectives</h2>
+            <button class="btn-new" id="btn-new-objective">
+              + New Objective
+            </button>
+          </div>
+          <div class="objective-list" id="objective-list">
+            <div class="loading">
+              <div class="spinner"></div>
+              Loading objectives...
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions Panel -->
+        <div class="tab-panel" id="panel-actions">
+          <div class="objectives-header">
+            <h2>Action Required</h2>
+            <div style="display: flex; gap: 8px">
+              <button
+                class="btn-cancel"
+                id="btn-show-done-actions"
+                style="font-size: 12px"
+              >
+                Show completed
+              </button>
+            </div>
+          </div>
+          <div class="objective-list" id="action-list">
+            <div class="loading">
+              <div class="spinner"></div>
+              Loading actions...
+            </div>
+          </div>
+        </div>
+
+        <!-- Account Panel -->
+        <div class="tab-panel" id="panel-account">
+          <div class="license-card" id="license-info"></div>
+          <div class="license-card">
+            <h3>CLI Sync Setup</h3>
+            <p
+              style="
+                color: var(--text-muted);
+                font-size: 14px;
+                margin-bottom: 16px;
+              "
+            >
+              To sync session data from your CLI to this dashboard, your
+              AcePilot installation uses the license key in
+              <code
+                style="
+                  font-family: var(--mono);
+                  background: var(--bg-elevated);
+                  padding: 2px 6px;
+                  border-radius: 4px;
+                "
+                >.claude/acepilot-license</code
+              >. Session summaries are automatically pushed after each completed
+              session.
+            </p>
+            <p style="color: var(--text-muted); font-size: 14px">
+              To pull CEO objectives into your CLI:
+            </p>
+            <div
+              style="
+                font-family: var(--mono);
+                font-size: 13px;
+                background: var(--bg-elevated);
+                padding: 12px 16px;
+                border-radius: 8px;
+                margin-top: 8px;
+                color: var(--green);
+              "
+            >
+              /acepilot ceo --from-dashboard
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- New Objective Modal -->
+    <div class="modal-overlay" id="modal-objective">
+      <div class="modal">
+        <h2>New CEO Objective</h2>
+        <p>
+          Define a business outcome. AcePilot will work backwards from this to
+          figure out the code changes.
+        </p>
+        <form id="objective-form">
+          <div class="form-group">
+            <label>Objective</label>
+            <textarea
+              id="objective-text"
+              placeholder="e.g., Reduce page load time by 50%"
+              required
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <label>Project (optional)</label>
+            <input
+              type="text"
+              id="objective-project"
+              placeholder="e.g., my-saas-app"
+            />
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="btn-cancel" id="btn-cancel-objective">
+              Cancel
+            </button>
+            <button type="submit" class="btn-new">Create Objective</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+      const API_BASE =
+        window.location.hostname === "localhost"
+          ? "/api"
+          : "https://acepilot.app/api";
+
+      // State
+      let currentUser = null;
+      let sessionsData = null;
+      let objectivesData = null;
+
+      // DOM refs
+      const loginView = document.getElementById("login-view");
+      const dashboardView = document.getElementById("dashboard-view");
+      const loginForm = document.getElementById("login-form");
+      const loginError = document.getElementById("login-error");
+      const loginBtn = document.getElementById("login-btn");
+
+      // --- Auth ---
+      async function checkAuth() {
+        try {
+          const res = await fetch(`${API_BASE}/auth.php?action=check`, {
+            credentials: "include",
+          });
+          const data = await res.json();
+          if (data.authenticated) {
+            currentUser = data.user;
+            showDashboard();
+          }
+        } catch (e) {
+          // Not authenticated, show login
+        }
+      }
+
+      loginForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        loginError.style.display = "none";
+        loginBtn.disabled = true;
+        loginBtn.textContent = "Signing in...";
+
+        try {
+          const res = await fetch(`${API_BASE}/auth.php?action=login`, {
+            method: "POST",
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: document.getElementById("login-email").value,
+              key: document.getElementById("login-key").value,
+            }),
+          });
+          const data = await res.json();
+
+          if (data.success) {
+            currentUser = data.user;
+            showDashboard();
+          } else {
+            loginError.textContent = data.error || "Login failed";
+            loginError.style.display = "block";
+          }
+        } catch (e) {
+          loginError.textContent = "Connection error. Try again.";
+          loginError.style.display = "block";
+        }
+        loginBtn.disabled = false;
+        loginBtn.textContent = "Sign In";
+      });
+
+      document
+        .getElementById("btn-logout")
+        .addEventListener("click", async () => {
+          await fetch(`${API_BASE}/auth.php?action=logout`, {
+            method: "POST",
+            credentials: "include",
+          });
+          currentUser = null;
+          dashboardView.classList.remove("active");
+          loginView.style.display = "flex";
+        });
+
+      // --- Dashboard ---
+      function showDashboard() {
+        loginView.style.display = "none";
+        dashboardView.classList.add("active");
+        document.getElementById("nav-email").textContent = currentUser.email;
+        loadDashboard();
+      }
+
+      async function loadDashboard() {
+        await Promise.all([loadSessions(), loadObjectives(), loadActions()]);
+        renderAccount();
+      }
+
+      async function loadSessions() {
+        try {
+          const res = await fetch(`${API_BASE}/sessions.php`, {
+            credentials: "include",
+          });
+          sessionsData = await res.json();
+          renderStats();
+          renderProjects();
+          renderSessions();
+        } catch (e) {
+          document.getElementById("project-grid").innerHTML =
+            '<div class="empty-state"><h3>Connection Error</h3><p>Could not load session data.</p></div>';
+        }
+      }
+
+      async function loadObjectives() {
+        try {
+          const res = await fetch(`${API_BASE}/objectives.php`, {
+            credentials: "include",
+          });
+          objectivesData = await res.json();
+          renderObjectives();
+          document.getElementById("stat-objectives").textContent =
+            objectivesData.objectives.length;
+          document.getElementById("tab-objectives-count").textContent =
+            objectivesData.objectives.length;
+        } catch (e) {
+          document.getElementById("objective-list").innerHTML =
+            '<div class="empty-state"><h3>Connection Error</h3><p>Could not load objectives.</p></div>';
+        }
+      }
+
+      function renderStats() {
+        const d = sessionsData;
+        const totalTasks = (d.projects || []).reduce(
+          (sum, p) => sum + p.tasks_done,
+          0,
+        );
+        document.getElementById("stat-projects").textContent = (
+          d.projects || []
+        ).length;
+        document.getElementById("stat-sessions").textContent =
+          d.total_sessions || 0;
+        document.getElementById("stat-tasks").textContent = totalTasks;
+        document.getElementById("tab-projects-count").textContent = (
+          d.projects || []
+        ).length;
+        document.getElementById("tab-sessions-count").textContent =
+          d.total_sessions || 0;
+      }
+
+      function renderProjects() {
+        const grid = document.getElementById("project-grid");
+        const projects = sessionsData.projects || [];
+
+        if (projects.length === 0) {
+          grid.innerHTML = `
+            <div class="empty-state" style="grid-column: 1/-1;">
+              <h3>No projects yet</h3>
+              <p>Run AcePilot in any project to see it here. Session data syncs automatically after each completed session.</p>
+              <div class="empty-code">/acepilot auto</div>
+            </div>`;
+          return;
+        }
+
+        grid.innerHTML = projects
+          .map(
+            (p) => `
+          <div class="project-card">
+            <div class="project-name">${escHtml(p.name)}${p.last_mode ? ' <span class="session-mode" style="margin-left:8px;font-size:10px">' + escHtml(p.last_mode) + "</span>" : ""}</div>
+            <div class="project-meta">
+              <div class="project-meta-item"><strong>${p.sessions}</strong> sessions</div>
+              <div class="project-meta-item"><strong style="color:var(--green)">${p.tasks_done}</strong> shipped</div>
+              ${p.tasks_blocked > 0 ? '<div class="project-meta-item"><strong style="color:var(--red)">' + p.tasks_blocked + "</strong> blocked</div>" : ""}
+              ${p.prs > 0 ? '<div class="project-meta-item"><strong>' + p.prs + "</strong> PRs</div>" : ""}
+              ${p.knowledge_entries > 0 ? '<div class="project-meta-item"><strong style="color:var(--accent)">' + p.knowledge_entries + "</strong> knowledge</div>" : ""}
+              <div class="project-meta-item">Last: ${formatDate(p.last_session)}</div>
+            </div>
+          </div>`,
+          )
+          .join("");
+      }
+
+      function renderSessions() {
+        const list = document.getElementById("session-list");
+        const sessions = sessionsData.sessions || [];
+
+        if (sessions.length === 0) {
+          list.innerHTML = `
+            <div class="empty-state">
+              <h3>No sessions yet</h3>
+              <p>Session summaries appear here after each AcePilot run completes.</p>
+              <div class="empty-code">/acepilot full build the checkout flow</div>
+            </div>`;
+          return;
+        }
+
+        list.innerHTML = sessions
+          .map(
+            (s) => `
+          <div class="session-item">
+            <div class="session-date">${formatDate(s.timestamp)}</div>
+            <div class="session-project">${escHtml(s.project)}${s.focus ? ' <span style="color:var(--text-muted)">(' + escHtml(s.focus) + ")</span>" : ""}</div>
+            <div class="session-mode">${escHtml(s.mode)}</div>
+            <div class="session-tasks">${s.tasks_done}/${s.tasks_total}</div>
+            <div class="session-status">${s.pr_url ? '<a href="' + escHtml(s.pr_url) + '" target="_blank">PR</a>' : s.tasks_blocked > 0 ? '<span style="color:var(--red)">' + s.tasks_blocked + " blocked</span>" : '<span style="color:var(--green)">clean</span>'}</div>
+          </div>`,
+          )
+          .join("");
+      }
+
+      function renderObjectives() {
+        const list = document.getElementById("objective-list");
+        const objectives = objectivesData.objectives || [];
+
+        if (objectives.length === 0) {
+          list.innerHTML = `
+            <div class="empty-state">
+              <h3>No objectives yet</h3>
+              <p>Create a CEO objective here, then pull it into your CLI. AcePilot works backwards from your goal to figure out the code changes.</p>
+              <div class="empty-code">/acepilot ceo --from-dashboard</div>
+            </div>`;
+          return;
+        }
+
+        list.innerHTML = objectives
+          .map(
+            (o) => `
+          <div class="objective-card">
+            <div class="objective-text">${escHtml(o.objective)}</div>
+            <div class="objective-meta">
+              <span class="status-badge status-${o.status}">${o.status.replace("_", " ")}</span>
+              ${o.project ? '<span class="objective-project">' + escHtml(o.project) + "</span>" : ""}
+              <span class="objective-date">${formatDate(o.created)}</span>
+              ${o.sessions > 0 ? '<span class="objective-date">' + o.sessions + " sessions</span>" : ""}
+              ${o.pr_url ? '<a class="objective-pr" href="' + escHtml(o.pr_url) + '" target="_blank">View PR</a>' : ""}
+            </div>
+          </div>`,
+          )
+          .join("");
+      }
+
+      // --- Actions ---
+      let actionsData = null;
+      let showDoneActions = false;
+
+      async function loadActions() {
+        try {
+          const res = await fetch(`${API_BASE}/actions.php`, {
+            credentials: "include",
+          });
+          actionsData = await res.json();
+          renderActions();
+          const pending = actionsData.pending_count || 0;
+          document.getElementById("stat-actions").textContent = pending;
+          document.getElementById("tab-actions-count").textContent = pending;
+          // Pulse the tab if there are pending actions
+          if (pending > 0) {
+            document.getElementById("tab-actions-count").style.background =
+              "rgba(255,159,10,0.3)";
+          }
+        } catch (e) {
+          document.getElementById("action-list").innerHTML =
+            '<div class="empty-state"><h3>Connection Error</h3><p>Could not load actions.</p></div>';
+        }
+      }
+
+      function renderActions() {
+        const list = document.getElementById("action-list");
+        let actions = actionsData.actions || [];
+
+        if (!showDoneActions) {
+          actions = actions.filter((a) => a.status === "pending");
+        }
+
+        if (actions.length === 0) {
+          const msg = showDoneActions
+            ? "No actions found."
+            : "No pending actions. AcePilot is handling everything autonomously.";
+          list.innerHTML = `
+            <div class="empty-state">
+              <h3>${showDoneActions ? "All clear" : "Nothing to do"}</h3>
+              <p>${msg}</p>
+              <div class="empty-code">Autonomous mode active</div>
+            </div>`;
+          return;
+        }
+
+        list.innerHTML = actions
+          .map(
+            (a) => `
+          <div class="action-card ${a.status === "done" || a.status === "dismissed" ? "done" : ""}">
+            <div class="action-top">
+              <div class="action-title">${escHtml(a.title)}</div>
+              <span class="action-priority priority-${a.priority}">${a.priority}</span>
+            </div>
+            ${a.description ? '<div class="action-desc">' + escHtml(a.description) + "</div>" : ""}
+            <div class="action-bottom">
+              ${a.project ? '<span class="action-project-tag">' + escHtml(a.project) + "</span>" : ""}
+              ${a.category ? '<span class="action-category">' + escHtml(a.category) + "</span>" : ""}
+              ${a.link ? '<a class="action-link" href="' + escHtml(a.link) + '" target="_blank">' + escHtml(a.link.replace("https://", "").substring(0, 50)) + "</a>" : ""}
+              ${a.status === "pending" ? '<button class="btn-dismiss" onclick="dismissAction(\'' + a.id + '\')">Dismiss</button><button class="btn-done" onclick="completeAction(\'' + a.id + "')\">Mark Done</button>" : '<span class="action-category" style="margin-left:auto">' + a.status + (a.resolved_at ? " " + formatDate(a.resolved_at) : "") + "</span>"}
+            </div>
+          </div>`,
+          )
+          .join("");
+      }
+
+      async function completeAction(id) {
+        try {
+          await fetch(`${API_BASE}/actions.php?action=update`, {
+            method: "POST",
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id, status: "done" }),
+          });
+          showToast(
+            "Action marked done. AcePilot will pick this up next session.",
+          );
+          loadActions();
+        } catch (e) {
+          showToast("Failed to update action", true);
+        }
+      }
+
+      async function dismissAction(id) {
+        try {
+          await fetch(`${API_BASE}/actions.php?action=update`, {
+            method: "POST",
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id, status: "dismissed" }),
+          });
+          showToast("Action dismissed.");
+          loadActions();
+        } catch (e) {
+          showToast("Failed to dismiss action", true);
+        }
+      }
+
+      document
+        .getElementById("btn-show-done-actions")
+        .addEventListener("click", () => {
+          showDoneActions = !showDoneActions;
+          document.getElementById("btn-show-done-actions").textContent =
+            showDoneActions ? "Hide completed" : "Show completed";
+          renderActions();
+        });
+
+      function renderAccount() {
+        const info = document.getElementById("license-info");
+        info.innerHTML = `
+          <h3>License</h3>
+          <div class="license-row">
+            <span class="license-label">Email</span>
+            <span class="license-value">${escHtml(currentUser.email)}</span>
+          </div>
+          <div class="license-row">
+            <span class="license-label">Plan</span>
+            <span class="plan-badge">${escHtml(currentUser.plan)}</span>
+          </div>
+          <div class="license-row">
+            <span class="license-label">Type</span>
+            <span class="license-value">${escHtml(currentUser.type)}</span>
+          </div>
+          <div class="license-row">
+            <span class="license-label">Key</span>
+            <span class="license-value">${escHtml(currentUser.key_prefix)}</span>
+          </div>`;
+      }
+
+      // --- Tabs ---
+      document.querySelectorAll(".tab").forEach((tab) => {
+        tab.addEventListener("click", () => {
+          document
+            .querySelectorAll(".tab")
+            .forEach((t) => t.classList.remove("active"));
+          document
+            .querySelectorAll(".tab-panel")
+            .forEach((p) => p.classList.remove("active"));
+          tab.classList.add("active");
+          document
+            .getElementById("panel-" + tab.dataset.tab)
+            .classList.add("active");
+        });
+      });
+
+      // --- Objectives CRUD ---
+      document
+        .getElementById("btn-new-objective")
+        .addEventListener("click", () => {
+          document.getElementById("modal-objective").classList.add("active");
+          document.getElementById("objective-text").focus();
+        });
+
+      document
+        .getElementById("btn-cancel-objective")
+        .addEventListener("click", () => {
+          document.getElementById("modal-objective").classList.remove("active");
+        });
+
+      document
+        .getElementById("modal-objective")
+        .addEventListener("click", (e) => {
+          if (e.target === e.currentTarget) {
+            e.currentTarget.classList.remove("active");
+          }
+        });
+
+      document
+        .getElementById("objective-form")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const text = document.getElementById("objective-text").value.trim();
+          const project = document
+            .getElementById("objective-project")
+            .value.trim();
+
+          if (!text) return;
+
+          try {
+            const res = await fetch(`${API_BASE}/objectives.php`, {
+              method: "POST",
+              credentials: "include",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                objective: text,
+                project: project || null,
+              }),
+            });
+            const data = await res.json();
+
+            if (data.success) {
+              document
+                .getElementById("modal-objective")
+                .classList.remove("active");
+              document.getElementById("objective-text").value = "";
+              document.getElementById("objective-project").value = "";
+              showToast(
+                "Objective created. Pull it into your CLI with /acepilot ceo --from-dashboard",
+              );
+              loadObjectives();
+            }
+          } catch (e) {
+            showToast("Failed to create objective", true);
+          }
+        });
+
+      // --- Helpers ---
+      function formatDate(iso) {
+        if (!iso) return "-";
+        const d = new Date(iso);
+        const now = new Date();
+        const diff = now - d;
+        if (diff < 86400000) {
+          const hours = Math.floor(diff / 3600000);
+          return hours < 1 ? "just now" : hours + "h ago";
+        }
+        if (diff < 604800000) {
+          return Math.floor(diff / 86400000) + "d ago";
+        }
+        return d.toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+        });
+      }
+
+      function escHtml(str) {
+        if (!str) return "";
+        const div = document.createElement("div");
+        div.textContent = str;
+        return div.innerHTML;
+      }
+
+      function showToast(msg, isError) {
+        const toast = document.getElementById("toast");
+        toast.textContent = msg;
+        toast.classList.toggle("error", !!isError);
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 4000);
+      }
+
+      // --- Keyboard shortcuts ---
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          document.getElementById("modal-objective").classList.remove("active");
+        }
+      });
+
+      // --- Init ---
+      checkAuth();
+    </script>
+  </body>
+</html>
