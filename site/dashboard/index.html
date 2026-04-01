@@ -1257,7 +1257,7 @@
             <div class="session-project">${escHtml(s.project)}${s.focus ? ' <span style="color:var(--text-muted)">(' + escHtml(s.focus) + ")</span>" : ""}</div>
             <div class="session-mode">${escHtml(s.mode)}</div>
             <div class="session-tasks">${s.tasks_done}/${s.tasks_total}</div>
-            <div class="session-status">${s.pr_url ? '<a href="' + escHtml(s.pr_url) + '" target="_blank">PR</a>' : s.tasks_blocked > 0 ? '<span style="color:var(--red)">' + s.tasks_blocked + " blocked</span>" : '<span style="color:var(--green)">clean</span>'}</div>
+            <div class="session-status">${s.pr_url ? '<a href="' + escHtml(s.pr_url) + '" target="_blank" rel="noopener noreferrer">PR</a>' : s.tasks_blocked > 0 ? '<span style="color:var(--red)">' + s.tasks_blocked + " blocked</span>" : '<span style="color:var(--green)">clean</span>'}</div>
           </div>`,
           )
           .join("");
@@ -1287,7 +1287,7 @@
               ${o.project ? '<span class="objective-project">' + escHtml(o.project) + "</span>" : ""}
               <span class="objective-date">${formatDate(o.created)}</span>
               ${o.sessions > 0 ? '<span class="objective-date">' + o.sessions + " sessions</span>" : ""}
-              ${o.pr_url ? '<a class="objective-pr" href="' + escHtml(o.pr_url) + '" target="_blank">View PR</a>' : ""}
+              ${o.pr_url ? '<a class="objective-pr" href="' + escHtml(o.pr_url) + '" target="_blank" rel="noopener noreferrer">View PR</a>' : ""}
             </div>
           </div>`,
           )
@@ -1352,8 +1352,8 @@
             <div class="action-bottom">
               ${a.project ? '<span class="action-project-tag">' + escHtml(a.project) + "</span>" : ""}
               ${a.category ? '<span class="action-category">' + escHtml(a.category) + "</span>" : ""}
-              ${a.link ? '<a class="action-link" href="' + escHtml(a.link) + '" target="_blank">' + escHtml(a.link.replace("https://", "").substring(0, 50)) + "</a>" : ""}
-              ${a.status === "pending" ? '<button class="btn-dismiss" onclick="dismissAction(\'' + a.id + '\')">Dismiss</button><button class="btn-done" onclick="completeAction(\'' + a.id + "')\">Mark Done</button>" : '<span class="action-category" style="margin-left:auto">' + a.status + (a.resolved_at ? " " + formatDate(a.resolved_at) : "") + "</span>"}
+              ${a.link ? '<a class="action-link" href="' + escHtml(a.link) + '" target="_blank" rel="noopener noreferrer" rel="noopener noreferrer">' + escHtml(a.link.replace("https://", "").substring(0, 50)) + "</a>" : ""}
+              ${a.status === "pending" ? '<button class="btn-dismiss" data-action-id="' + escHtml(String(a.id)) + '" data-action-type="dismiss">Dismiss</button><button class="btn-done" data-action-id="' + escHtml(String(a.id)) + '" data-action-type="done">Mark Done</button>' : '<span class="action-category" style="margin-left:auto">' + escHtml(String(a.status)) + (a.resolved_at ? " " + escHtml(String(formatDate(a.resolved_at))) : "") + "</span>"}
             </div>
           </div>`,
           )
@@ -1391,6 +1391,15 @@
           showToast("Failed to dismiss action", true);
         }
       }
+
+      /* Delegated handlers for action buttons (avoids inline onclick + XSS) */
+      document.addEventListener("click", (e) => {
+        const btn = e.target.closest("[data-action-id]");
+        if (!btn) return;
+        const id = btn.dataset.actionId;
+        if (btn.dataset.actionType === "dismiss") dismissAction(id);
+        else if (btn.dataset.actionType === "done") completeAction(id);
+      });
 
       document
         .getElementById("btn-show-done-actions")
